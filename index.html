@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Math Quest - Learn Math Through Adventure!</title>
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="application-name" content="Math Quest">
+    <meta name="math-quest-version" content="3.0.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/style.css?v=3.0.0">
+    <link rel="stylesheet" href="css/icons.css?v=3.0.0">
+</head>
+<body>
+    <div id="save-warning" class="save-warning" role="alert" hidden></div>
+    <div id="app-error" class="save-warning" role="alert" hidden></div>
+    <!-- Main Container -->
+    <div id="game-container">
+        <!-- Main Menu Screen -->
+        <div id="main-menu" class="screen active">
+            <div class="menu-content">
+                <div class="game-title">
+                    <h1><i class="fas fa-gamepad"></i> MATH QUEST</h1>
+                    <p class="tagline">Learn Math Through Adventure!</p>
+                </div>
+                
+                <div class="menu-buttons">
+                    <button id="start-game" class="btn-primary btn-large">
+                        <i class="fas fa-play"></i> Start Game
+                    </button>
+                    <button id="install-app" class="btn-secondary" hidden>
+                        <i class="fas fa-download"></i> Install App
+                    </button>
+                    <button id="profiles" class="btn-secondary">
+                        <i class="fas fa-users"></i> Profiles
+                    </button>
+                    <button id="how-to-play" class="btn-secondary">
+                        <i class="fas fa-question-circle"></i> How to Play
+                    </button>
+                    <button id="settings" class="btn-secondary">
+                        <i class="fas fa-cog"></i> Settings
+                    </button>
+                </div>
+                
+                <div class="version-info">
+                    <p>Version 3.0.0</p>
+                    <p class="features">• 13 Grades • College Readiness Lab • Subject Mastery Practice •</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profiles Screen -->
+        <div id="profiles-screen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-users"></i> Profiles</h2>
+            </div>
+            
+            <div class="profiles-container">
+                <div id="profiles-list" class="profiles-grid">
+                    <!-- Profiles will be loaded here -->
+                </div>
+                
+                <div class="create-profile">
+                    <input type="text" id="new-profile-name" placeholder="Enter player name" maxlength="20">
+                    <button id="create-profile" class="btn-primary">
+                        <i class="fas fa-plus"></i> Create New Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- World Hub Screen -->
+        <div id="world-hub" class="screen">
+            <div class="hub-header">
+                <button class="btn-back"><i class="fas fa-home"></i> Menu</button>
+                <div class="player-info">
+                    <span id="player-avatar" class="avatar">👤</span>
+                    <span id="player-name">Player</span>
+                    <div class="stats">
+                        <span class="stat"><i class="fas fa-star"></i> <span id="player-points">0</span></span>
+                        <span class="stat"><i class="fas fa-gem"></i> <span id="player-crystals">0</span></span>
+                        <span class="stat">Lvl <span id="player-level">1</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hub-content">
+                <h2>Choose Your Grade</h2>
+                <div id="grade-grid" class="grades-grid">
+                    <!-- Grades will be loaded here -->
+                </div>
+                
+                <div class="hub-navigation">
+                    <button id="pet-room-btn" class="hub-btn">
+                        <i class="fas fa-paw"></i> Pet Room
+                    </button>
+                    <button id="shop-btn" class="hub-btn">
+                        <i class="fas fa-store"></i> Shop
+                    </button>
+                    <button id="achievements-btn" class="hub-btn">
+                        <i class="fas fa-trophy"></i> Achievements
+                    </button>
+                    <button id="college-lab-btn" class="hub-btn">
+                        <i class="fas fa-graduation-cap"></i> College Readiness Lab
+                    </button>
+                    <button id="stats-btn" class="hub-btn">
+                        <i class="fas fa-chart-bar"></i> Stats
+                    </button>
+                    <button id="switch-profile-btn" class="hub-btn">
+                        <i class="fas fa-exchange-alt"></i> Switch Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Selection Screen -->
+        <div id="mode-selection" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2 id="grade-title">Grade 1 - Forest Realm</h2>
+            </div>
+            
+            <div class="category-filter">
+                <h3 id="topic-selection-title">Step 1: Choose a subject</h3>
+                <p id="available-subjects" class="available-subjects" aria-live="polite">Loading available subjects…</p>
+                <div class="category-buttons">
+                    <button class="category-btn active" data-category="all">All Topics</button>
+                    <button class="category-btn" data-category="arithmetic">➕ Arithmetic</button>
+                    <button class="category-btn" data-category="algebra">🔤 Algebra</button>
+                    <button class="category-btn" data-category="geometry">📐 Geometry</button>
+                    <button class="category-btn" data-category="trigonometry">📊 Trigonometry</button>
+                    <button class="category-btn" data-category="calculus">📈 Calculus</button>
+                    <button class="category-btn" data-category="reading">📖 Reading</button>
+                    <button class="category-btn" data-category="science">🔬 Science</button>
+                    <button class="category-btn" data-category="history">🏛️ History</button>
+                    <button class="category-btn" data-category="economics">💰 Economics</button>
+                    <button class="category-btn" data-category="politics">🏛️ Civics</button>
+                    <button class="category-btn" data-category="astronomy">🪐 Astronomy</button>
+                </div>
+                <p id="question-coverage" class="question-coverage" aria-live="polite"></p>
+                <div class="checkpoint-strip">
+                    <button id="start-grade-checkpoint" class="btn-secondary">Take academic checkpoint (no hints or rewards)</button>
+                    <p id="grade-checkpoint-status" aria-live="polite"></p>
+                </div>
+                <p class="topics-hint">Only subjects with playable questions at this grade are listed. Each answer has a study explanation in the end-of-game review.</p>
+            </div>
+            <h3 class="mode-step-heading">Step 2: Choose a game mode</h3>
+            <div class="mode-container">
+                <div class="mode-card" data-mode="relaxed">
+                    <div class="mode-icon">😌</div>
+                    <h3>RELAXED MODE</h3>
+                    <ul class="mode-features">
+                        <li><i class="fas fa-check"></i> No timer</li>
+                        <li><i class="fas fa-check"></i> Learn at your own pace</li>
+                        <li><i class="fas fa-check"></i> Hints available</li>
+                        <li><i class="fas fa-check"></i> 1.0x points multiplier</li>
+                    </ul>
+                    <button class="btn-select-mode">Select</button>
+                </div>
+                
+                <div class="mode-card" data-mode="timed">
+                    <div class="mode-icon">⚡</div>
+                    <h3>TIMED MODE</h3>
+                    <ul class="mode-features">
+                        <li><i class="fas fa-clock"></i> 30s per question</li>
+                        <li><i class="fas fa-fire"></i> Streak bonuses</li>
+                        <li><i class="fas fa-bolt"></i> Speed bonuses</li>
+                        <li><i class="fas fa-star"></i> 1.5x base points</li>
+                    </ul>
+                    <button class="btn-select-mode">Select</button>
+                </div>
+            </div>
+            
+
+        </div>
+
+        <!-- Gameplay Screen -->
+        <div id="gameplay" class="screen">
+            <div class="game-header">
+                <div class="game-info">
+                    <span id="current-grade">Grade 1</span>
+                    <span id="game-mode">• Relaxed</span>
+                </div>
+                <button id="pause-game" class="btn-pause">
+                    <i class="fas fa-pause"></i> Pause
+                </button>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="question-progress" class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    Question <span id="current-question">1</span>/<span id="total-questions">10</span>
+                </div>
+            </div>
+            
+            <div class="timer-container" hidden>
+                <div id="timer-bar" class="timer-bar"></div>
+            </div>
+            
+            <div class="question-container">
+                <div id="question-text" class="question-text">
+                    What is 5 + 3?
+                </div>
+                
+                <div id="visual-aid" class="visual-aid">
+                    <!-- Visual aids for K-2 -->
+                </div>
+                
+                <div id="answers-grid" class="answers-grid">
+                    <!-- Answers will be loaded here -->
+                </div>
+                
+                <button id="hint-btn" class="btn-hint">
+                    <i class="fas fa-lightbulb"></i> Hint (Cost: 10 ⭐)
+                </button>
+            </div>
+            
+            <div class="game-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Streak:</span>
+                    <span id="current-streak" class="streak-display">🔥0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Points:</span>
+                    <span id="current-points" class="points-display">⭐0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results" class="screen">
+            <div class="results-header">
+                <div class="celebration">🎉 Game Complete! 🎉</div>
+            </div>
+            
+            <div class="results-content">
+                <div class="results-stats">
+                    <h3>Results:</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">✅ Correct:</span>
+                        <span id="correct-count" class="stat-value">8</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">❌ Incorrect:</span>
+                        <span id="incorrect-count" class="stat-value">2</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">🎯 Accuracy:</span>
+                        <span id="accuracy-percent" class="stat-value">80%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">🔥 Best Streak:</span>
+                        <span id="best-streak" class="stat-value">5</span>
+                    </div>
+                </div>
+                
+                <div class="rewards-earned">
+                    <h3>Rewards Earned:</h3>
+                    <div class="reward-item">
+                        <i class="fas fa-star"></i>
+                        <span>Points: <span id="points-earned">+120</span></span>
+                    </div>
+                    <div class="reward-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>XP: <span id="xp-earned">+80</span></span>
+                    </div>
+                    <div class="reward-item">
+                        <i class="fas fa-gem"></i>
+                        <span>Crystals: <span id="crystals-earned">+2</span></span>
+                    </div>
+                </div>
+                
+                <div id="level-up-result" class="achievement-summary" role="status" hidden></div>
+                <div id="answer-review" class="answer-review" aria-live="polite"></div>
+                <div id="achievements-unlocked" class="achievements-unlocked">
+                    <!-- Achievements will be shown here -->
+                </div>
+                
+                <div class="results-buttons">
+                    <button id="play-again" class="btn-primary">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+                    <button id="back-to-hub" class="btn-secondary">
+                        <i class="fas fa-home"></i> Back to Hub
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Screen -->
+        <div id="shop" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-store"></i> Shop</h2>
+                <div class="currency-display">
+                    <span><i class="fas fa-star"></i> <span id="shop-points">0</span></span>
+                    <span><i class="fas fa-gem"></i> <span id="shop-crystals">0</span></span>
+                </div>
+            </div>
+            
+            <div class="shop-content">
+                <div class="shop-tabs">
+                    <button class="shop-tab active" data-tab="skins">Avatar Skins</button>
+                    <button class="shop-tab" data-tab="pets">Pets</button>
+                </div>
+                
+                <div id="skins-tab" class="shop-items active">
+                    <h3>Regular Skins</h3>
+                    <div id="regular-skins" class="items-grid">
+                        <!-- Regular skins will be loaded here -->
+                    </div>
+                    
+                    <h3>Legendary Skins</h3>
+                    <div id="legendary-skins" class="items-grid">
+                        <!-- Legendary skins will be loaded here -->
+                    </div>
+                </div>
+                
+                <div id="pets-tab" class="shop-items">
+                    <h3>Pets</h3>
+                    <div id="pets-items" class="items-grid">
+                        <!-- Pets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pet Room Screen -->
+        <div id="pet-room" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-paw"></i> Pet Room</h2>
+                <div class="pet-name" id="current-pet-name">No Pet Selected</div>
+            </div>
+            
+            <div class="pet-room-content">
+                <div id="pet-empty-state" class="pet-empty-state" hidden>
+                    <h3>No pet adopted yet</h3>
+                    <p>Earn points from math questions, then adopt a pet from the shop.</p>
+                    <button id="adopt-pet-btn" class="btn-primary" type="button">Browse pets</button>
+                </div>
+                <div class="pet-display-area" id="pet-display-area">
+                    <div class="pet-scene">
+                        <div class="clouds">
+                            <div class="cloud cloud1">☁️</div>
+                            <div class="cloud cloud2">☁️</div>
+                            <div class="cloud cloud3">☁️</div>
+                        </div>
+                        <div id="pet-character" class="pet-character" aria-live="polite"></div>
+                        <div class="pet-toys">
+                            <button type="button" class="toy" data-toy="ball" aria-label="Play with ball (15 points)">⚽</button>
+                            <button type="button" class="toy" data-toy="bone" aria-label="Play with bone (15 points)">🦴</button>
+                            <button type="button" class="toy" data-toy="yarn" aria-label="Play with yarn (15 points)">🧶</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pet-stats" id="pet-stats" hidden>
+                    <div class="stat-bar">
+                        <div class="stat-label">❤️ Happiness</div>
+                        <div class="bar-container">
+                            <div id="happiness-bar" class="bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="happiness-value">—</span>
+                    </div>
+                    
+                    <div class="stat-bar">
+                        <div class="stat-label">🍖 Hunger</div>
+                        <div class="bar-container">
+                            <div id="hunger-bar" class="bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="hunger-value">—</span>
+                    </div>
+                    
+                    <div class="stat-bar">
+                        <div class="stat-label">⭐ Level</div>
+                        <div class="bar-container">
+                            <div id="xp-bar" class="bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="level-display">—</span>
+                    </div>
+                </div>
+                
+                <p id="pet-status" class="pet-status" hidden></p>
+                <div class="pet-interactions" id="pet-interactions" hidden>
+                    <h3>Interact with Your Pet:</h3>
+                    <div class="interaction-buttons">
+                        <button class="interaction-btn" data-action="feed">
+                            <i class="fas fa-utensils"></i> Feed (10 ⭐)
+                        </button>
+                        <button class="interaction-btn" data-action="play">
+                            <i class="fas fa-baseball-ball"></i> Play (15 ⭐)
+                        </button>
+                        <button class="interaction-btn" data-action="pet">
+                            <i class="fas fa-hand-paper"></i> Pet (5 ⭐)
+                        </button>
+                        <button class="interaction-btn" data-action="train">
+                            <i class="fas fa-graduation-cap"></i> Train (20 ⭐)
+                        </button>
+                        <button class="interaction-btn" data-action="treat">
+                            <i class="fas fa-candy-cane"></i> Treat (1 💎)
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="my-pets">
+                    <h3>My Pets:</h3>
+                    <div id="pets-list" class="pets-list" aria-label="Select an owned pet">
+                        <!-- Pets will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Screen -->
+        <div id="achievements" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-trophy"></i> Achievements</h2>
+                <div class="achievement-count">
+                    Unlocked: <span id="unlocked-count">0</span>/<span id="total-count">19</span>
+                </div>
+            </div>
+            
+            <div class="achievements-content">
+                <div class="achievement-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="streak">Streak</button>
+                    <button class="filter-btn" data-filter="accuracy">Accuracy</button>
+                    <button class="filter-btn" data-filter="volume">Volume</button>
+                    <button class="filter-btn" data-filter="progression">Progression</button>
+                </div>
+                
+                <div id="achievements-list" class="achievements-grid">
+                    <!-- Achievements will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Screen -->
+        <div id="stats" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-chart-bar"></i> Statistics</h2>
+            </div>
+            
+            <div class="stats-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Overall Stats</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Questions:</span>
+                            <span id="stat-total-questions" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Correct Answers:</span>
+                            <span id="stat-correct-answers" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Accuracy:</span>
+                            <span id="stat-accuracy" class="stat-value">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Games Played:</span>
+                            <span id="stat-games-played" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Best Streak:</span>
+                            <span id="stat-best-streak" class="stat-value">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Topic Stats</h3>
+                        <div id="category-stats">
+                            <!-- Category stats will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Economy Stats</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Points Available:</span>
+                            <span id="stat-total-points" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Points Spent (Tracked):</span>
+                            <span id="stat-total-spent" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Crystals Spent (Tracked):</span>
+                            <span id="stat-crystals-spent" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Perfect Games:</span>
+                            <span id="stat-perfect-games" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Crystals Available:</span>
+                            <span id="stat-crystals-earned" class="stat-value">0</span>
+                        </div>
+                        <p class="stat-note">For profiles created before v2.3, spending totals start when this version is installed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Independent academic practice and application preparation -->
+        <div id="college-lab" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2>College Readiness Lab</h2>
+            </div>
+            <div class="college-content">
+                <p class="college-disclaimer">Independent practice, not a credential or an admissions-probability forecast. Universities assess grades, course prerequisites, academic work, recommendations, examinations where required and other criteria. This game does not replace any of them.</p>
+                <section class="college-panel">
+                    <h3>1. Choose an academic pathway</h3>
+                    <label for="college-track">Intended field</label>
+                    <select id="college-track"><option value="balanced">Broad university preparation</option><option value="stem">STEM / engineering</option><option value="humanities">Humanities / languages</option><option value="social">Economics / politics / social sciences</option><option value="health">Health / life sciences</option></select>
+                    <p id="college-track-plan"></p>
+                </section>
+                <section class="college-panel">
+                    <h3>2. Baseline and retest</h3>
+                    <p>Complete a 40-question practice diagnostic, with 10 questions in each of four broad domains. No hints, timer or rewards. Retake after study to measure progress. Scores are NOT standardized SAT/ACT scores.</p>
+                    <button id="college-start-diagnostic" class="btn-primary">Start 40-question diagnostic</button>
+                    <div id="college-latest-diagnostic" aria-live="polite"></div>
+                </section>
+                <section class="college-panel">
+                    <h3>3. Practice evidence and next skills</h3>
+                    <p>Results count independently answered attempts, unique problems and study days. Strong in-game performance is NOT a verified examination result. Repeat skills on separate days and apply them in unfamiliar problems.</p>
+                    <div id="college-recommendations"></div>
+                    <div id="college-practice-summary"></div>
+                    <div id="college-route"></div>
+                </section>
+                <section class="college-panel">
+                    <h3>4. Create substantial original work</h3>
+                    <p>Writing, research and projects require human evaluation. Keep an evidence-based portfolio; saving text records authorship locally but does not grade it.</p>
+                    <label for="college-assignment">Portfolio assignment</label>
+                    <select id="college-assignment"></select>
+                    <p id="college-assignment-prompt"></p>
+                    <ul id="college-assignment-rubric"></ul>
+                    <label for="college-writing">Your work or methods and evidence</label>
+                    <textarea id="college-writing" rows="8" maxlength="12000" placeholder="Write a substantive analysis, source notes, project specification, or reproducibility record."></textarea>
+                    <label for="college-feedback">Independent feedback (optional; self-entered, not verified)</label>
+                    <textarea id="college-feedback" rows="3" maxlength="4000" placeholder="Document actual reviewer feedback and changes made."></textarea>
+                    <button id="college-save-portfolio" class="btn-primary">Save portfolio entry</button>
+                    <p id="college-portfolio-message" role="status"></p>
+                    <div id="college-portfolio-list"></div>
+                </section>
+                <section class="college-panel">
+                    <h3>5. Requirements outside the game</h3>
+                    <p>Check the intended university and course: prerequisites, qualifications, deadlines, exams, writing, references, interviews, finance and genuine work outside the game. Admission standards change, and there is no universal acceptance score.</p>
+                    <p><a href="https://satsuite.collegeboard.org/practice" target="_blank" rel="noopener noreferrer">Official SAT practice information</a> · <a href="https://www.ox.ac.uk/admissions/undergraduate/courses/admissions-requirements" target="_blank" rel="noopener noreferrer">Oxford course requirements</a> · <a href="https://mitadmissions.org/apply/process/what-we-look-for/" target="_blank" rel="noopener noreferrer">MIT selection considerations</a></p>
+                </section>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-cog"></i> Settings</h2>
+            </div>
+            
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h3>Audio Settings</h3>
+                    <div class="setting-item">
+                        <label for="sfx-volume">Sound Effects Volume:</label>
+                        <input type="range" id="sfx-volume" min="0" max="100" value="70">
+                        <span id="sfx-value">70%</span>
+                    </div>
+                    <button id="mute-toggle" class="btn-secondary">
+                        <i class="fas fa-volume-up"></i> Toggle Mute
+                    </button>
+                </div>
+                
+                <div class="setting-group">
+                    <h3>Game Settings</h3>
+                    <div class="setting-item">
+                        <label for="questions-count">Questions per Game:</label>
+                        <select id="questions-count">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3>Data Management</h3>
+                    <button id="export-data" class="btn-secondary">
+                        <i class="fas fa-download"></i> Export Save Data
+                    </button>
+                    <button id="import-data" class="btn-secondary">
+                        <i class="fas fa-upload"></i> Import Save Data
+                    </button>
+                    <button id="reset-data" class="btn-danger">
+                        <i class="fas fa-trash"></i> Reset All Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Play Screen -->
+        <div id="how-to-play-screen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2><i class="fas fa-question-circle"></i> How to Play</h2>
+            </div>
+            
+            <div class="how-to-play-content">
+                <div class="instruction-section">
+                    <h3>🎮 Getting Started</h3>
+                    <p>1. Create a profile or select an existing one</p>
+                    <p>2. Choose a grade level from the World Hub</p>
+                    <p>3. Select a game mode (Relaxed or Timed)</p>
+                    <p>4. Answer math questions to earn points and XP</p>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>⭐ Earning Rewards</h3>
+                    <p><strong>Points (⭐):</strong> Earned by answering questions correctly</p>
+                    <p><strong>Crystals (💎):</strong> Earned from perfect games and streaks</p>
+                    <p><strong>XP:</strong> Earned to level up and unlock new grades</p>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🏆 Progression System</h3>
+                    <p>• Level up by earning XP</p>
+                    <p>• Each level unlocks new grade levels</p>
+                    <p>• Complete achievements for bonus rewards</p>
+                    <p>• Unlock all 13 grades from K to 12</p>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🐾 Pet System</h3>
+                    <p>• Adopt pets from the shop</p>
+                    <p>• Visit the Pet Room to interact with them</p>
+                    <p>• Keep pets happy and fed</p>
+                    <p>• Level up pets through interactions</p>
+                </div>
+                
+                <div class="instruction-section">
+                    <h3>🏪 Shop System</h3>
+                    <p>• Spend points on avatar skins</p>
+                    <p>• Spend crystals on legendary items</p>
+                    <p>• Collect all pets and skins</p>
+                    <p>• Customize your character</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Menu -->
+        <div id="pause-menu" class="modal">
+            <div class="modal-content">
+                <h2>Game Paused</h2>
+                <div class="modal-buttons">
+                    <button id="resume-game" class="btn-primary">
+                        <i class="fas fa-play"></i> Resume
+                    </button>
+                    <button id="quit-game" class="btn-secondary">
+                        <i class="fas fa-home"></i> Quit to Hub
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Popup -->
+        <div id="achievement-popup" class="popup">
+            <div class="popup-content">
+                <div class="popup-icon">🏆</div>
+                <div class="popup-text">
+                    <h3>Achievement Unlocked!</h3>
+                    <p id="achievement-title">First Steps</p>
+                    <p id="achievement-desc">Answer your first question</p>
+                    <p class="reward">Reward: <span id="achievement-reward">+10 ⭐</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level Up Popup -->
+        <div id="level-up-popup" class="popup">
+            <div class="popup-content">
+                <div class="popup-icon">✨</div>
+                <div class="popup-text">
+                    <h3>Level Up!</h3>
+                    <p>You reached <span id="new-level">Level 2</span></p>
+                    <p id="unlocked-grade"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js?v=3.0.0"></script>
+    <script src="js/question-templates.js?v=3.0.0"></script>
+    <script src="js/question-templates-advanced.js?v=3.0.0"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.0.0"></script>
+    <script src="js/college-curriculum.js?v=3.0.0"></script>
+    <script src="js/college-procedural.js?v=3.0.0"></script>
+    <script src="js/question-catalogue.js?v=3.0.0"></script>
+    <script src="js/math-engine.js?v=3.0.0"></script>
+    <script src="js/readiness-lab.js?v=3.0.0"></script>
+    <script src="js/save-manager.js?v=3.0.0"></script>
+    <script src="js/audio.js?v=3.0.0"></script>
+    <script src="js/profile-system.js?v=3.0.0"></script>
+    <script src="js/progression-system.js?v=3.0.0"></script>
+    <script src="js/reward-system.js?v=3.0.0"></script>
+    <script src="js/shop-system.js?v=3.0.0"></script>
+    <script src="js/pet-manager.js?v=3.0.0"></script>
+    <script src="js/game-manager.js?v=3.0.0"></script>
+    <script src="js/ui-manager.js?v=3.0.0"></script>
+    <script src="js/main.js?v=3.0.0"></script>
+    <script src="js/pwa.js?v=3.0.0"></script>
+</body>
+</html>
