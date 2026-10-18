@@ -1,0 +1,35 @@
+name: Math Quest Quality Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Verify game logic and academic readiness
+        run: npm test
+      - name: Build web and Android assets
+        run: npm run build
+      - name: Check generated application assets
+        run: |
+          test -s www/index.html
+          test -s www/js/college-curriculum.js
+          test -s www/js/readiness-lab.js
+          test -s www/js/college-procedural.js
+          cmp js/college-curriculum.js www/js/college-curriculum.js
+          cmp js/readiness-lab.js www/js/readiness-lab.js
+          cmp js/college-procedural.js www/js/college-procedural.js
