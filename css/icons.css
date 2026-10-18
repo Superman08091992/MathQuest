@@ -1,0 +1,36 @@
+/* Font-free local icon fallback, retained for fully offline installation. */
+.fas { display: inline-block; font-style: normal; min-width: 1em; line-height: 1; vertical-align: -0.06em; }
+.fas::before { content: "•"; }
+.fa-arrow-left::before { content: "←"; }
+.fa-baseball-ball::before { content: "⚾"; }
+.fa-bolt::before { content: "⚡"; }
+.fa-candy-cane::before { content: "🍬"; }
+.fa-chart-bar::before { content: "▥"; }
+.fa-chart-line::before { content: "↗"; }
+.fa-check::before { content: "✓"; }
+.fa-clock::before { content: "◷"; }
+.fa-cog::before { content: "⚙"; }
+.fa-download::before { content: "⇩"; }
+.fa-exchange-alt::before { content: "⇄"; }
+.fa-fire::before { content: "🔥"; }
+.fa-gamepad::before { content: "🎮"; }
+.fa-gem::before { content: "💎"; }
+.fa-graduation-cap::before { content: "🎓"; }
+.fa-hand-paper::before { content: "✋"; }
+.fa-home::before { content: "⌂"; }
+.fa-lightbulb::before { content: "💡"; }
+.fa-lock::before { content: "🔒"; }
+.fa-pause::before { content: "Ⅱ"; }
+.fa-paw::before { content: "🐾"; }
+.fa-play::before { content: "▶"; }
+.fa-plus::before { content: "+"; }
+.fa-question-circle::before { content: "?"; }
+.fa-redo::before { content: "↻"; }
+.fa-star::before { content: "★"; }
+.fa-store::before { content: "🏬"; }
+.fa-trash::before { content: "🗑"; }
+.fa-trophy::before { content: "🏆"; }
+.fa-upload::before { content: "⇧"; }
+.fa-users::before { content: "👥"; }
+.fa-utensils::before { content: "🍴"; }
+.fa-volume-up::before { content: "🔊"; }
