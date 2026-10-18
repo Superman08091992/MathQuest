@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "method": "Seeded independent sampling: 5000 generated questions per grade (65000 total)",
   "caution": "Distinct observed is only a sampling lower bound, not total available questions or a proof of mathematical/curricular correctness.",
   "originalProceduralTemplates": 29,

@@ -1,14 +1,19 @@
-# Math Quest 3.0 — Academic Foundations and College Readiness
+# Math Quest 3.1 — Grades K–12 Academic Pathway
 
-Math Quest is a local-first educational game with 13 grade levels (Kindergarten to Grade 12), adaptive procedural questions, subject selection, games, profiles, pets, achievements, and an optional College Readiness Lab.
+Math Quest is a local-first educational game with 13 grade levels (Kindergarten to Grade 12), adaptive procedural questions, subject selection, games, profiles, pets, achievements, and an optional university application workshop. Grade-specific cumulative assessments and applied assignments are part of the **core K–12 curriculum**.
 
 **Purpose:** broaden foundational academic knowledge, practice higher-order reasoning, and build an inspectable portfolio. **It is not accredited, proctored, or an admissions qualification, and does not predict an applicant's chance of admission.** A strong learner may still need external qualifications, course-specific admissions tests, interviews, written work, and references.
 
-## Included in 3.0
+
+### Academic versus game progression
+
+Game XP provides access for exploration, **not academic mastery**. At each grade, learners can view target competencies, take a cumulative no-hint checkpoint revisiting earlier grades, and submit an open-ended applied assignment. Two qualifying checkpoints at least seven days apart and a submitted grade project are recorded as in-app evidence. The K–12 pathway is not complete until **all 13 grades** have both forms of evidence; reported results remain unproctored and assignments ungraded. See [ACADEMIC_PATHWAY_3.1.md](ACADEMIC_PATHWAY_3.1.md).
+
+## Included in 3.1
 
 - 526 registered question definitions across all 13 grades, including 233 newly authored fixed questions and 94 new procedural generators (at the current checkout).
-- Expanded reading, writing, science, mathematics, economics, history, government, statistics, computing, research, and logic coverage.
-- College Readiness Lab: balanced 40-question diagnostic, five preparatory tracks, category-level practice summaries, grade-level 20-plus-question checkpoints, retesting after seven days, portfolio assignments and manual review notes.
+- Expanded reading, writing, science, mathematics, economics, history, government, statistics, computing, research, and logic coverage. The [actual curriculum map](K12_CURRICULUM_MAP.json) records available definitions per grade and marks small subject banks (all grades still have some underrepresented categories).
+- Optional application workshop: balanced 40-question diagnostic, five preparatory tracks, category-level practice summaries, grade-level 20-plus-question checkpoints, retesting after seven days, portfolio assignments and manual review notes.
 - Practice diagnostics and checkpoints are scored in-game without granting XP or currency; no deceptive academic certification.
 - Offline-first web/PWA source, Android/Capacitor and Linux/Electron build configurations.
 
@@ -22,13 +27,14 @@ npm run build
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-Open `http://127.0.0.1:4173/` and create a profile. The College Readiness Lab is accessible from the main hub. For a Linux application window with Chromium available, run `./launch-linux.sh`.
+Open `http://127.0.0.1:4173/` and create a profile. The optional application workshop is accessible from the main hub; foundational preparation happens within every grade. For a Linux application window with Chromium available, run `./launch-linux.sh`.
 
 ## Test and audit
 
 ```sh
 npm test
 npm run audit:questions
+npm run audit:curriculum
 npm run build
 CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_college.py
 CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_regression.py

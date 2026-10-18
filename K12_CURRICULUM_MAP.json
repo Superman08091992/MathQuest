@@ -1,0 +1,2487 @@
+{
+  "version": "3.1.0",
+  "evidenceType": "Actual registered subject types and drafted learning outcomes",
+  "limitations": "The counts are templates, not vetted unique lessons, independently validated skills or curriculum standards. Small banks are marked underrepresented. Project submissions are not automatically graded.",
+  "assessmentContract": {
+    "checkpointPasses": 2,
+    "daysBetween": 7,
+    "overallMinimum": 0.9,
+    "currentGradeMinimum": 0.9,
+    "earlierGradeMinimum": 0.75,
+    "minimumCurrentQuestions": 20,
+    "earlierGradeReviewQuestions": 8,
+    "minimumSubjects": 6,
+    "appliedProjectRequired": true,
+    "independentlyGraded": false
+  },
+  "grades": [
+    {
+      "grade": 0,
+      "displayName": "Kindergarten",
+      "subjectCount": 6,
+      "definitionCount": 32,
+      "goals": [
+        "Recognize numbers and quantities",
+        "Explain observations using words or pictures",
+        "Identify basic shapes, patterns, and story meaning"
+      ],
+      "appliedAssignment": {
+        "title": "Explain a pattern",
+        "prompt": "Find a simple pattern in shapes, sounds or numbers. Describe or dictate what repeats. Draw it on paper and describe what comes next.",
+        "minimumCharacters": 20,
+        "rubric": [
+          "Shows a real repeating pattern",
+          "States or records a prediction",
+          "Explains why the next item follows"
+        ]
+      },
+      "categories": {
+        "arithmetic": {
+          "definitions": 17,
+          "procedural": 17,
+          "fixed": 0,
+          "skills": [
+            "addition_visual",
+            "compare_numbers",
+            "compare_objects",
+            "compare_small_sum",
+            "compose_ten",
+            "count_back",
+            "count_by_twos",
+            "counting",
+            "make_number_from_parts",
+            "missing_addend_to_ten",
+            "number_after",
+            "number_before",
+            "order_three",
+            "skip_one",
+            "take_away_objects",
+            "tens_and_ones",
+            "two_number_total"
+          ]
+        },
+        "civics": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "community"
+          ]
+        },
+        "geometry": {
+          "definitions": 5,
+          "procedural": 3,
+          "fixed": 2,
+          "skills": [
+            "2d_shapes",
+            "3d_shapes",
+            "identify_shape_by_corners",
+            "shape_sides",
+            "shape_vertices"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "patterns",
+            "sorting"
+          ]
+        },
+        "reading": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "character",
+            "initial_sounds",
+            "rhyme",
+            "sequence"
+          ]
+        },
+        "science": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "living_things",
+            "observation",
+            "plants"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "civics",
+        "logic"
+      ]
+    },
+    {
+      "grade": 1,
+      "displayName": "Grade 1",
+      "subjectCount": 7,
+      "definitionCount": 50,
+      "goals": [
+        "Add, subtract and reason with place value",
+        "Read and explain a short passage",
+        "Record and compare observations"
+      ],
+      "appliedAssignment": {
+        "title": "Measure and describe",
+        "prompt": "Choose three objects, predict which is longest, measure or compare them safely, then write or dictate how your prediction compared with the result.",
+        "minimumCharacters": 40,
+        "rubric": [
+          "Makes a clear prediction",
+          "Records comparable measurements",
+          "Explains what happened"
+        ]
+      },
+      "categories": {
+        "arithmetic": {
+          "definitions": 19,
+          "procedural": 19,
+          "fixed": 0,
+          "skills": [
+            "addition_three_terms",
+            "addition_within20",
+            "compare_objects",
+            "compose_ten",
+            "count_back",
+            "difference_word_problem",
+            "double_a_number",
+            "missing_addend",
+            "missing_subtrahend",
+            "one_less_ten_more",
+            "order_three",
+            "place_value_tens",
+            "skip_count_by_five",
+            "skip_one",
+            "subtraction_within20",
+            "sum_vs_difference",
+            "tens_place",
+            "time_one_hour",
+            "two_step_add"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "community",
+            "community_roles"
+          ]
+        },
+        "geometry": {
+          "definitions": 6,
+          "procedural": 3,
+          "fixed": 3,
+          "skills": [
+            "2d_shapes",
+            "3d_shapes",
+            "rectangle_sides",
+            "rectangle_vertices",
+            "shape_vertices",
+            "symmetry"
+          ]
+        },
+        "logic": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "patterns",
+            "sorting",
+            "sorting_rules"
+          ]
+        },
+        "reading": {
+          "definitions": 9,
+          "procedural": 0,
+          "fixed": 9,
+          "skills": [
+            "character",
+            "inference",
+            "initial_sounds",
+            "main_idea",
+            "punctuation",
+            "rhyme",
+            "sequence",
+            "vocabulary"
+          ]
+        },
+        "science": {
+          "definitions": 9,
+          "procedural": 0,
+          "fixed": 9,
+          "skills": [
+            "basics",
+            "food_chains",
+            "habitats",
+            "living_things",
+            "measurement",
+            "observation",
+            "plants",
+            "states_of_matter"
+          ]
+        },
+        "writing": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "capitalization",
+            "sentence_complete"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "civics",
+        "writing"
+      ]
+    },
+    {
+      "grade": 2,
+      "displayName": "Grade 2",
+      "subjectCount": 8,
+      "definitionCount": 54,
+      "goals": [
+        "Work with two-digit operations, fractions and measurements",
+        "Write explanatory sentences",
+        "Interpret evidence in simple charts"
+      ],
+      "appliedAssignment": {
+        "title": "A question from everyday life",
+        "prompt": "Ask a measurable question, collect five observations or counts, summarize the findings and explain one limitation of your method.",
+        "minimumCharacters": 70,
+        "rubric": [
+          "Defines one measurable question",
+          "Uses at least five observations",
+          "Describes the evidence and a limitation"
+        ]
+      },
+      "categories": {
+        "arithmetic": {
+          "definitions": 19,
+          "procedural": 19,
+          "fixed": 0,
+          "skills": [
+            "addition_within100",
+            "difference_three_digits",
+            "difference_word_problem",
+            "fraction_one_half",
+            "hours_to_minutes",
+            "hundreds_tens_ones",
+            "minutes_to_hours",
+            "missing_addend",
+            "money_cents",
+            "money_change",
+            "multiples_2_5_10",
+            "multiplication_intro",
+            "round_to_nearest_ten",
+            "subtract_within100",
+            "sum_three_digits",
+            "tens_place",
+            "three_digit_addition",
+            "time_one_hour",
+            "two_step_add"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "community_roles",
+            "rules"
+          ]
+        },
+        "geometry": {
+          "definitions": 5,
+          "procedural": 3,
+          "fixed": 2,
+          "skills": [
+            "perimeter_unit_squares",
+            "rectangle_perimeter_word",
+            "rectangle_sides",
+            "shapes",
+            "symmetry"
+          ]
+        },
+        "history": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "timeline"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "causality",
+            "sorting_rules"
+          ]
+        },
+        "reading": {
+          "definitions": 10,
+          "procedural": 0,
+          "fixed": 10,
+          "skills": [
+            "context_clues",
+            "evidence",
+            "inference",
+            "main_idea",
+            "punctuation",
+            "sequence",
+            "vocabulary"
+          ]
+        },
+        "science": {
+          "definitions": 11,
+          "procedural": 0,
+          "fixed": 11,
+          "skills": [
+            "basics",
+            "changes_of_matter",
+            "earth_rotation",
+            "food_chains",
+            "habitats",
+            "measurement",
+            "states_of_matter",
+            "weather"
+          ]
+        },
+        "writing": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "capitalization",
+            "commas",
+            "sentence_complete",
+            "verb_tense"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "civics",
+        "history",
+        "logic"
+      ]
+    },
+    {
+      "grade": 3,
+      "displayName": "Grade 3",
+      "subjectCount": 10,
+      "definitionCount": 65,
+      "goals": [
+        "Explain multiplication and division strategies",
+        "Compare sources and claims",
+        "Plan a controlled observation"
+      ],
+      "appliedAssignment": {
+        "title": "Explain an investigation",
+        "prompt": "Compare two plausible explanations for an observation in nature. Identify what evidence would distinguish them and write a connected paragraph.",
+        "minimumCharacters": 100,
+        "rubric": [
+          "Compares two explanations fairly",
+          "Gives a testable observation",
+          "Provides a reasoned conclusion"
+        ]
+      },
+      "categories": {
+        "arithmetic": {
+          "definitions": 17,
+          "procedural": 17,
+          "fixed": 0,
+          "skills": [
+            "difference_three_digits",
+            "divide_equal_groups",
+            "division_basic",
+            "division_remainder",
+            "division_story",
+            "elapsed_minutes",
+            "fraction_of_group",
+            "fraction_of_quantity",
+            "fraction_one_half",
+            "minutes_to_hours",
+            "money_change",
+            "multiplication_basic",
+            "multiply_by_ten",
+            "round_to_hundred",
+            "round_to_tens",
+            "sum_three_digits",
+            "three_digit_subtraction"
+          ]
+        },
+        "astronomy": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "solar system"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "representation",
+            "rules"
+          ]
+        },
+        "geometry": {
+          "definitions": 7,
+          "procedural": 5,
+          "fixed": 2,
+          "skills": [
+            "area_fencing_compare",
+            "area_perimeter",
+            "area_rectangle",
+            "parallel_sides",
+            "rectangle_perimeter",
+            "rectangle_perimeter_word",
+            "shapes"
+          ]
+        },
+        "history": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "primary_sources",
+            "timeline"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "causality",
+            "evidence_vs_opinion"
+          ]
+        },
+        "reading": {
+          "definitions": 17,
+          "procedural": 0,
+          "fixed": 17,
+          "skills": [
+            "antonyms",
+            "context_clues",
+            "evidence",
+            "grammar",
+            "inference",
+            "main_idea",
+            "sequence",
+            "synonyms",
+            "vocabulary",
+            "word_meaning"
+          ]
+        },
+        "science": {
+          "definitions": 12,
+          "procedural": 0,
+          "fixed": 12,
+          "skills": [
+            "basics",
+            "changes_of_matter",
+            "earth_rotation",
+            "ecosystems",
+            "experiment",
+            "force",
+            "weather"
+          ]
+        },
+        "statistics": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "range_three"
+          ]
+        },
+        "writing": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "commas",
+            "conjunction",
+            "paragraph_structure",
+            "verb_tense"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "astronomy",
+        "civics",
+        "history",
+        "logic",
+        "statistics"
+      ]
+    },
+    {
+      "grade": 4,
+      "displayName": "Grade 4",
+      "subjectCount": 13,
+      "definitionCount": 73,
+      "goals": [
+        "Reason with fractions, area and multi-step problems",
+        "Summarize informational texts accurately",
+        "Describe scientific evidence and community decisions"
+      ],
+      "appliedAssignment": {
+        "title": "A community and environment study",
+        "prompt": "Choose an issue affecting your community or local environment. Research two distinct sources, describe a measurable feature and propose a fair way to test one improvement.",
+        "minimumCharacters": 140,
+        "rubric": [
+          "Identifies the issue precisely",
+          "Uses and distinguishes two sources",
+          "Proposes a fair comparison"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "unknown_multiplication"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 17,
+          "procedural": 17,
+          "fixed": 0,
+          "skills": [
+            "add_like_fractions",
+            "decimal_comparison",
+            "divide_equal_groups",
+            "elapsed_minutes",
+            "equivalent_fractions",
+            "factors_identify",
+            "four_digit_addition",
+            "fraction_compare_equal_denominator",
+            "fraction_equivalence",
+            "fraction_of_quantity",
+            "long_division_exact",
+            "multi_digit_product",
+            "multi_digit_subtraction",
+            "multiplication_2digit",
+            "multiply_two_digit_numbers",
+            "prime_or_composite",
+            "round_to_tens"
+          ]
+        },
+        "astronomy": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "solar system"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "representation",
+            "rights_responsibilities"
+          ]
+        },
+        "computer_science": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "algorithms"
+          ]
+        },
+        "economics": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "scarcity"
+          ]
+        },
+        "geometry": {
+          "definitions": 4,
+          "procedural": 3,
+          "fixed": 1,
+          "skills": [
+            "area_fencing_compare",
+            "area_perimeter",
+            "missing_rectangle_side",
+            "rectangle_missing_side"
+          ]
+        },
+        "history": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "US history",
+            "chronology",
+            "corroboration",
+            "primary_sources"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "evidence_vs_opinion",
+            "fair_comparison"
+          ]
+        },
+        "reading": {
+          "definitions": 22,
+          "procedural": 0,
+          "fixed": 22,
+          "skills": [
+            "antonyms",
+            "author_purpose",
+            "compare_texts",
+            "grammar",
+            "inference",
+            "main_idea",
+            "quantitative_evidence",
+            "synonyms",
+            "vocabulary",
+            "word_meaning"
+          ]
+        },
+        "science": {
+          "definitions": 10,
+          "procedural": 0,
+          "fixed": 10,
+          "skills": [
+            "basics",
+            "ecosystem_impacts",
+            "ecosystems",
+            "energy_transfer",
+            "experiment",
+            "experimental_controls",
+            "force"
+          ]
+        },
+        "statistics": {
+          "definitions": 2,
+          "procedural": 2,
+          "fixed": 0,
+          "skills": [
+            "interpret_frequency",
+            "range_three"
+          ]
+        },
+        "writing": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "conjunction",
+            "evidence_claim",
+            "paragraph_structure",
+            "quotation",
+            "revision"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "algebra",
+        "astronomy",
+        "civics",
+        "computer_science",
+        "economics",
+        "logic",
+        "statistics"
+      ]
+    },
+    {
+      "grade": 5,
+      "displayName": "Grade 5",
+      "subjectCount": 13,
+      "definitionCount": 79,
+      "goals": [
+        "Solve decimal, fraction and measurement problems",
+        "Write structured arguments with examples",
+        "Use evidence to test hypotheses"
+      ],
+      "appliedAssignment": {
+        "title": "A quantitative decision",
+        "prompt": "Collect or find data about a real decision, use fractions or decimals to compare options, show your calculations and defend a conclusion including uncertainty.",
+        "minimumCharacters": 180,
+        "rubric": [
+          "Documents a relevant data source",
+          "Shows correct calculations",
+          "Explains trade-offs and uncertainty"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "unknown_multiplication"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 15,
+          "procedural": 15,
+          "fixed": 0,
+          "skills": [
+            "add_like_fractions",
+            "calculate_average",
+            "calculate_mean",
+            "centimeters_to_meters",
+            "decimal_addition",
+            "decimal_comparison",
+            "decimal_product",
+            "fraction_add_same_denominator",
+            "fraction_equivalence",
+            "multi_digit_product",
+            "multiply_decimal_tenths",
+            "multiply_unit_fraction",
+            "order_of_operations",
+            "percent_as_decimal",
+            "percent_of_amount"
+          ]
+        },
+        "astronomy": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "solar system"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "rights_responsibilities",
+            "three_branches"
+          ]
+        },
+        "computer_science": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "algorithms",
+            "variables"
+          ]
+        },
+        "economics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "opportunity_cost",
+            "scarcity"
+          ]
+        },
+        "geometry": {
+          "definitions": 5,
+          "procedural": 5,
+          "fixed": 0,
+          "skills": [
+            "coordinate_distance_axis",
+            "polygon_angle_sum_intro",
+            "rectangle_missing_side",
+            "rectangular_volume",
+            "volume_rectangular_prism"
+          ]
+        },
+        "history": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "US history",
+            "change_over_time",
+            "chronology",
+            "corroboration",
+            "historical_context"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "correlation_causation",
+            "fair_comparison"
+          ]
+        },
+        "reading": {
+          "definitions": 23,
+          "procedural": 0,
+          "fixed": 23,
+          "skills": [
+            "antonyms",
+            "author_purpose",
+            "compare_texts",
+            "grammar",
+            "graph_literacy",
+            "implicit_assumption",
+            "quantitative_evidence",
+            "synonyms",
+            "vocabulary"
+          ]
+        },
+        "science": {
+          "definitions": 9,
+          "procedural": 0,
+          "fixed": 9,
+          "skills": [
+            "basics",
+            "biology",
+            "chemical_physical",
+            "controlled_variables",
+            "ecology",
+            "ecosystem_impacts",
+            "energy_transfer",
+            "experimental_controls"
+          ]
+        },
+        "statistics": {
+          "definitions": 3,
+          "procedural": 3,
+          "fixed": 0,
+          "skills": [
+            "interpret_frequency",
+            "median_five",
+            "weighted_mean"
+          ]
+        },
+        "writing": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "counterargument",
+            "evidence_claim",
+            "paraphrase",
+            "quotation",
+            "revision",
+            "thesis"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "algebra",
+        "civics",
+        "computer_science",
+        "economics",
+        "logic"
+      ]
+    },
+    {
+      "grade": 6,
+      "displayName": "Grade 6",
+      "subjectCount": 15,
+      "definitionCount": 79,
+      "goals": [
+        "Analyze ratios, negative numbers and basic statistics",
+        "Distinguish evidence from opinion",
+        "Explain systems in science and history"
+      ],
+      "appliedAssignment": {
+        "title": "Evaluate an evidence claim",
+        "prompt": "Select a claim from science, history or economics. Find independent evidence for and against it, calculate a relevant ratio or rate, and explain what evidence would change your conclusion.",
+        "minimumCharacters": 220,
+        "rubric": [
+          "States a falsifiable or contestable claim",
+          "Uses at least two independent sources",
+          "Computes and explains a quantitative comparison"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 4,
+          "procedural": 4,
+          "fixed": 0,
+          "skills": [
+            "evaluate_linear_expression",
+            "exponents_basic",
+            "solve_linear",
+            "solve_one_step_equation"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 14,
+          "procedural": 14,
+          "fixed": 0,
+          "skills": [
+            "decimal_product",
+            "discount_price",
+            "fraction_multiply",
+            "integer_addition",
+            "integer_subtraction",
+            "least_common_multiple",
+            "multiply_unit_fraction",
+            "percent_discount",
+            "percent_of_amount",
+            "percent_of_number",
+            "ratio_scale",
+            "ratio_simplify",
+            "signed_product",
+            "unit_rate"
+          ]
+        },
+        "astronomy": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "solar system",
+            "space"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "constitutional_limits",
+            "three_branches"
+          ]
+        },
+        "computer_science": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "conditionals",
+            "debugging",
+            "variables"
+          ]
+        },
+        "economics": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "basics",
+            "opportunity_cost",
+            "supply_demand"
+          ]
+        },
+        "geometry": {
+          "definitions": 4,
+          "procedural": 4,
+          "fixed": 0,
+          "skills": [
+            "polygon_angle_sum_intro",
+            "rectangular_volume",
+            "triangle_area"
+          ]
+        },
+        "history": {
+          "definitions": 8,
+          "procedural": 0,
+          "fixed": 8,
+          "skills": [
+            "US history",
+            "cause_complexity",
+            "change_over_time",
+            "historical_bias",
+            "historical_context",
+            "world history"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "correlation_causation",
+            "logical_form"
+          ]
+        },
+        "physics": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "newtons_laws"
+          ]
+        },
+        "politics": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 15,
+          "procedural": 0,
+          "fixed": 15,
+          "skills": [
+            "antonyms",
+            "claim_and_evidence",
+            "grammar",
+            "graph_literacy",
+            "implicit_assumption",
+            "rhetorical_purpose",
+            "synonyms",
+            "vocabulary"
+          ]
+        },
+        "science": {
+          "definitions": 8,
+          "procedural": 0,
+          "fixed": 8,
+          "skills": [
+            "biology",
+            "chemical_physical",
+            "controlled_variables",
+            "density",
+            "ecology",
+            "evolution_adaptation",
+            "hypotheses"
+          ]
+        },
+        "statistics": {
+          "definitions": 5,
+          "procedural": 4,
+          "fixed": 1,
+          "skills": [
+            "mean_four",
+            "median_five",
+            "probability_marbles",
+            "sampling",
+            "weighted_mean"
+          ]
+        },
+        "writing": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "counterargument",
+            "paragraph_cohesion",
+            "paraphrase",
+            "source_quality",
+            "thesis"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "civics",
+        "logic",
+        "physics",
+        "politics"
+      ]
+    },
+    {
+      "grade": 7,
+      "displayName": "Grade 7",
+      "subjectCount": 18,
+      "definitionCount": 78,
+      "goals": [
+        "Solve proportional and algebraic relationships",
+        "Evaluate competing explanations",
+        "Interpret data and research methods"
+      ],
+      "appliedAssignment": {
+        "title": "Model a system",
+        "prompt": "Choose a real-world process. Represent two related variables in an equation, chart or table; test whether the model predicts observations; identify assumptions and weaknesses.",
+        "minimumCharacters": 280,
+        "rubric": [
+          "Defines variables and units",
+          "Documents tested predictions",
+          "Describes when the model fails"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 9,
+          "procedural": 9,
+          "fixed": 0,
+          "skills": [
+            "distribute_negative",
+            "percent_increase",
+            "proportional_unknown",
+            "slope_two_points",
+            "solve_linear",
+            "solve_negative_linear",
+            "solve_ratio_equation",
+            "two_step_equation",
+            "unit_rate"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 9,
+          "procedural": 9,
+          "fixed": 0,
+          "skills": [
+            "negative_expression",
+            "percent_change",
+            "percent_discount",
+            "probability_single_event",
+            "proportion_cost",
+            "proportion_missing_value",
+            "ratio_scale",
+            "signed_product",
+            "tax_percent"
+          ]
+        },
+        "astronomy": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "solar system",
+            "space"
+          ]
+        },
+        "biology": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "cell_structure"
+          ]
+        },
+        "chemistry": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "conservation_matter"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "constitutional_limits",
+            "rights"
+          ]
+        },
+        "computer_science": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "conditionals",
+            "debugging",
+            "loops"
+          ]
+        },
+        "economics": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "basics",
+            "inflation",
+            "supply_demand"
+          ]
+        },
+        "geometry": {
+          "definitions": 3,
+          "procedural": 3,
+          "fixed": 0,
+          "skills": [
+            "circumference_pi",
+            "scale_drawing",
+            "triangle_area"
+          ]
+        },
+        "history": {
+          "definitions": 9,
+          "procedural": 0,
+          "fixed": 9,
+          "skills": [
+            "US history",
+            "causal_evidence",
+            "cause_complexity",
+            "historical_bias",
+            "world history"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "logical_form",
+            "necessary_sufficient"
+          ]
+        },
+        "physics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "newtons_laws",
+            "speed_velocity"
+          ]
+        },
+        "politics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 9,
+          "procedural": 0,
+          "fixed": 9,
+          "skills": [
+            "antonyms",
+            "bias_language",
+            "claim_and_evidence",
+            "cross_text",
+            "grammar",
+            "inference_strength",
+            "rhetorical_purpose",
+            "synonyms",
+            "vocabulary"
+          ]
+        },
+        "research": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "reproducibility"
+          ]
+        },
+        "science": {
+          "definitions": 8,
+          "procedural": 0,
+          "fixed": 8,
+          "skills": [
+            "biology",
+            "density",
+            "ecosystem_feedback",
+            "evolution_adaptation",
+            "hypotheses"
+          ]
+        },
+        "statistics": {
+          "definitions": 5,
+          "procedural": 3,
+          "fixed": 2,
+          "skills": [
+            "mean_four",
+            "median_outliers",
+            "probability_marbles",
+            "relative_frequency",
+            "sampling"
+          ]
+        },
+        "writing": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "counterclaim",
+            "paragraph_cohesion",
+            "precise_language",
+            "source_quality"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "biology",
+        "chemistry",
+        "civics",
+        "logic",
+        "physics",
+        "politics",
+        "research"
+      ]
+    },
+    {
+      "grade": 8,
+      "displayName": "Grade 8",
+      "subjectCount": 18,
+      "definitionCount": 78,
+      "goals": [
+        "Apply linear functions and geometry",
+        "Assess source reliability and statistical claims",
+        "Write evidence-based conclusions"
+      ],
+      "appliedAssignment": {
+        "title": "Compare competing arguments",
+        "prompt": "Take a question in literature, science or public policy. Present the strongest argument on each side, assess at least three pieces of evidence and propose a justified position.",
+        "minimumCharacters": 350,
+        "rubric": [
+          "Accurately represents disagreement",
+          "Assesses provenance of three sources",
+          "Acknowledges a serious counterargument"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 15,
+          "procedural": 15,
+          "fixed": 0,
+          "skills": [
+            "exponent_product_rule",
+            "function_evaluation",
+            "linear_equation",
+            "linear_function_evaluate",
+            "percent_increase",
+            "power_rules",
+            "proportional_unknown",
+            "scientific_notation",
+            "simultaneous_equations",
+            "slope_from_points",
+            "slope_intercept",
+            "slope_two_points",
+            "solve_linear_system_value",
+            "square_roots",
+            "unit_rate"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "negative_expression"
+          ]
+        },
+        "astronomy": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "solar system",
+            "space"
+          ]
+        },
+        "biology": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "cell_structure",
+            "genetics"
+          ]
+        },
+        "chemistry": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "atoms_ions",
+            "conservation_matter"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "federalism",
+            "rights"
+          ]
+        },
+        "computer_science": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "algorithm_complexity",
+            "data_privacy",
+            "loops"
+          ]
+        },
+        "economics": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "basics",
+            "externalities",
+            "inflation"
+          ]
+        },
+        "geometry": {
+          "definitions": 6,
+          "procedural": 6,
+          "fixed": 0,
+          "skills": [
+            "distance_horizontal",
+            "pythagorean",
+            "pythagorean_missing_leg",
+            "pythagorean_theorem",
+            "reflection_over_y",
+            "scale_drawing"
+          ]
+        },
+        "history": {
+          "definitions": 8,
+          "procedural": 0,
+          "fixed": 8,
+          "skills": [
+            "US history",
+            "causal_evidence",
+            "historiography",
+            "world history"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "counterexample",
+            "necessary_sufficient"
+          ]
+        },
+        "physics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "kinetic_energy",
+            "speed_velocity"
+          ]
+        },
+        "politics": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "argument_structure",
+            "bias_language",
+            "cross_text",
+            "data_inference",
+            "inference_strength"
+          ]
+        },
+        "research": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "confounding",
+            "reproducibility"
+          ]
+        },
+        "science": {
+          "definitions": 7,
+          "procedural": 0,
+          "fixed": 7,
+          "skills": [
+            "biology",
+            "ecosystem_feedback",
+            "scientific_models"
+          ]
+        },
+        "statistics": {
+          "definitions": 4,
+          "procedural": 2,
+          "fixed": 2,
+          "skills": [
+            "mean_comparison",
+            "median_outliers",
+            "relative_frequency",
+            "sample_vs_population"
+          ]
+        },
+        "writing": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "counterclaim",
+            "precise_language",
+            "scope_claim",
+            "synthesis"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "arithmetic",
+        "biology",
+        "chemistry",
+        "civics",
+        "logic",
+        "physics",
+        "research"
+      ]
+    },
+    {
+      "grade": 9,
+      "displayName": "Grade 9",
+      "subjectCount": 17,
+      "definitionCount": 84,
+      "goals": [
+        "Model functions and scientific systems",
+        "Critique historical and economic arguments",
+        "Use computational reasoning and documented methods"
+      ],
+      "appliedAssignment": {
+        "title": "Reproducible inquiry",
+        "prompt": "Design and document a small investigation. State a testable hypothesis, explain sampling, build a data table, discuss bias and show how somebody could reproduce the results.",
+        "minimumCharacters": 450,
+        "rubric": [
+          "Testable hypothesis and sampling method",
+          "Documented observations and calculations",
+          "Reproducible procedure and limitations"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 18,
+          "procedural": 16,
+          "fixed": 2,
+          "skills": [
+            "binomial_multiply_middle",
+            "function_domain",
+            "function_evaluation",
+            "function_output",
+            "linear_equation",
+            "linear_inequality",
+            "polynomial_expand",
+            "power_of_power",
+            "power_rules",
+            "quadratic_expand",
+            "quadratic_factor_roots",
+            "quadratic_factoring",
+            "simultaneous_equations",
+            "solve_quadratic_square",
+            "system_linear",
+            "systems_interpretation",
+            "vertex_of_parabola"
+          ]
+        },
+        "astronomy": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "space"
+          ]
+        },
+        "biology": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "cell_division",
+            "enzymes",
+            "genetics"
+          ]
+        },
+        "chemistry": {
+          "definitions": 4,
+          "procedural": 1,
+          "fixed": 3,
+          "skills": [
+            "atomic_structure",
+            "atoms_in_compounds",
+            "atoms_ions",
+            "conservation_atoms"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "federalism",
+            "rule_of_law"
+          ]
+        },
+        "computer_science": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "algorithm_complexity",
+            "boolean_logic",
+            "data_privacy",
+            "testing_boundaries"
+          ]
+        },
+        "economics": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "basics",
+            "comparative_advantage",
+            "externalities"
+          ]
+        },
+        "geometry": {
+          "definitions": 5,
+          "procedural": 4,
+          "fixed": 1,
+          "skills": [
+            "coordinate_midpoint",
+            "distance_horizontal",
+            "line_midpoint",
+            "proof",
+            "pythagorean"
+          ]
+        },
+        "history": {
+          "definitions": 8,
+          "procedural": 0,
+          "fixed": 8,
+          "skills": [
+            "US history",
+            "historical_claims",
+            "historiography",
+            "primary_secondary",
+            "world history"
+          ]
+        },
+        "logic": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "counterexample"
+          ]
+        },
+        "physics": {
+          "definitions": 4,
+          "procedural": 1,
+          "fixed": 3,
+          "skills": [
+            "acceleration",
+            "kinetic_energy",
+            "newton_second",
+            "speed_distance"
+          ]
+        },
+        "politics": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "argument_structure",
+            "data_inference",
+            "inference_boundaries",
+            "textual_evidence"
+          ]
+        },
+        "research": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "confounding",
+            "experiment_randomization",
+            "publication_bias"
+          ]
+        },
+        "science": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "biology",
+            "scientific_models"
+          ]
+        },
+        "statistics": {
+          "definitions": 6,
+          "procedural": 3,
+          "fixed": 3,
+          "skills": [
+            "correlation",
+            "distribution",
+            "mean_comparison",
+            "sample_vs_population",
+            "standardize_z_score",
+            "weighted_average"
+          ]
+        },
+        "writing": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "academic_integrity",
+            "citation_quality",
+            "claim_evidence_reasoning",
+            "scope_claim",
+            "synthesis"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "civics",
+        "logic"
+      ]
+    },
+    {
+      "grade": 10,
+      "displayName": "Grade 10",
+      "subjectCount": 17,
+      "definitionCount": 101,
+      "goals": [
+        "Analyze quadratics, probability and experimental error",
+        "Construct sustained written arguments",
+        "Evaluate causal claims and complex evidence"
+      ],
+      "appliedAssignment": {
+        "title": "Causal and statistical reasoning",
+        "prompt": "Analyze a dataset that seems to support a causal claim. Describe the variables, alternative explanations, statistics, uncertainty, limitations and a more credible follow-up design.",
+        "minimumCharacters": 550,
+        "rubric": [
+          "Correct numerical analysis",
+          "Alternative explanations and confounders",
+          "Responsible causal interpretation"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 10,
+          "procedural": 6,
+          "fixed": 4,
+          "skills": [
+            "discriminant",
+            "exponential_growth",
+            "function_domain",
+            "line_y_intercept_from_point",
+            "linear_inequality",
+            "polynomial_expand",
+            "quadratic_discriminant",
+            "quadratic_factor_roots",
+            "quadratic_vertex",
+            "systems_interpretation"
+          ]
+        },
+        "astronomy": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "space"
+          ]
+        },
+        "biology": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "cell_division",
+            "enzymes",
+            "genetic_expression",
+            "selection_pressure"
+          ]
+        },
+        "chemistry": {
+          "definitions": 6,
+          "procedural": 2,
+          "fixed": 4,
+          "skills": [
+            "atomic_structure",
+            "atoms_in_compounds",
+            "conservation_atoms",
+            "molar_mass_water",
+            "mole_concept",
+            "periodic_trends"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "policy_analysis",
+            "rule_of_law"
+          ]
+        },
+        "computer_science": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "algorithm_correctness",
+            "boolean_logic",
+            "data_structures",
+            "testing_boundaries"
+          ]
+        },
+        "economics": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "basics",
+            "comparative_advantage",
+            "elasticity"
+          ]
+        },
+        "geometry": {
+          "definitions": 21,
+          "procedural": 19,
+          "fixed": 2,
+          "skills": [
+            "area_right_triangle_coordinates",
+            "area_scale_factor",
+            "circle_area",
+            "circle_area_coefficient",
+            "circle_sector_pi",
+            "cone_volume_coefficient_pi",
+            "coordinate_midpoint",
+            "cylinder_volume_pi",
+            "distance_on_plane",
+            "perimeter_scaling",
+            "point_distance_horizontal",
+            "polygon_angle_sum",
+            "prism_surface_area",
+            "proof",
+            "regular_polygon_exterior",
+            "right_triangle_leg",
+            "sector_arc_length_pi",
+            "similar_triangles",
+            "similarity",
+            "trapezoid_area",
+            "triangle_angle_sum"
+          ]
+        },
+        "history": {
+          "definitions": 7,
+          "procedural": 0,
+          "fixed": 7,
+          "skills": [
+            "US history",
+            "historical_claims",
+            "historical_comparisons",
+            "primary_secondary",
+            "world history"
+          ]
+        },
+        "physics": {
+          "definitions": 6,
+          "procedural": 2,
+          "fixed": 4,
+          "skills": [
+            "acceleration",
+            "circuits",
+            "energy_conservation",
+            "newton_second",
+            "speed_distance",
+            "work_energy"
+          ]
+        },
+        "politics": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "inference_boundaries",
+            "paired_arguments",
+            "rhetorical_synthesis",
+            "textual_evidence"
+          ]
+        },
+        "research": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "causal_inference",
+            "experiment_randomization",
+            "measurement_validity",
+            "publication_bias"
+          ]
+        },
+        "science": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "biology"
+          ]
+        },
+        "statistics": {
+          "definitions": 8,
+          "procedural": 4,
+          "fixed": 4,
+          "skills": [
+            "base_rates",
+            "binomial_probability",
+            "conditional_percentage",
+            "confidence_interval",
+            "correlation",
+            "distribution",
+            "standardize_z_score",
+            "weighted_average"
+          ]
+        },
+        "trigonometry": {
+          "definitions": 4,
+          "procedural": 3,
+          "fixed": 1,
+          "skills": [
+            "sine_ratio",
+            "sine_special_angles",
+            "tangent_ratio",
+            "trigonometry_sohcahtoa"
+          ]
+        },
+        "writing": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "academic_integrity",
+            "citation_quality",
+            "claim_evidence_reasoning",
+            "logical_coherence",
+            "research_question",
+            "source_integration"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "civics"
+      ]
+    },
+    {
+      "grade": 11,
+      "displayName": "Grade 11",
+      "subjectCount": 19,
+      "definitionCount": 86,
+      "goals": [
+        "Use advanced algebra, chemistry and physics models",
+        "Interpret primary sources and quantitative studies",
+        "Design and document reproducible investigations"
+      ],
+      "appliedAssignment": {
+        "title": "Cross-disciplinary research argument",
+        "prompt": "Investigate a question requiring at least two school subjects. Review at least four credible sources, articulate an original argument, test a competing explanation and disclose your methods.",
+        "minimumCharacters": 650,
+        "rubric": [
+          "Integrates two academic fields",
+          "Accurate source citations and counterargument",
+          "Clear, inspectable methods"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 17,
+          "procedural": 14,
+          "fixed": 3,
+          "skills": [
+            "arithmetic_sequence",
+            "complex_add_real",
+            "complex_multiply_i",
+            "composition_linear",
+            "discriminant",
+            "exponential_equation",
+            "exponential_growth",
+            "exponential_power_law",
+            "geometric_sequence_nth",
+            "inverse_function_linear",
+            "log_change_form",
+            "log_power",
+            "logarithm_basic",
+            "logarithms",
+            "quadratic_discriminant",
+            "quadratic_vertex"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "factorial_ratio"
+          ]
+        },
+        "astronomy": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "space"
+          ]
+        },
+        "biology": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "experimental_genetics",
+            "genetic_expression",
+            "homeostasis",
+            "selection_pressure"
+          ]
+        },
+        "calculus": {
+          "definitions": 3,
+          "procedural": 1,
+          "fixed": 2,
+          "skills": [
+            "continuity",
+            "derivative_meaning",
+            "differentiate_polynomial"
+          ]
+        },
+        "chemistry": {
+          "definitions": 6,
+          "procedural": 2,
+          "fixed": 4,
+          "skills": [
+            "acid_base",
+            "dilution",
+            "equilibrium",
+            "molar_mass_water",
+            "mole_concept",
+            "periodic_trends"
+          ]
+        },
+        "civics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "institutional_accountability",
+            "policy_analysis"
+          ]
+        },
+        "computer_science": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "algorithm_correctness",
+            "computational_complexity",
+            "data_structures",
+            "security_models"
+          ]
+        },
+        "economics": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "basics",
+            "elasticity",
+            "market_failure",
+            "monetary_policy"
+          ]
+        },
+        "geometry": {
+          "definitions": 2,
+          "procedural": 1,
+          "fixed": 1,
+          "skills": [
+            "circle_area_coefficient",
+            "similarity"
+          ]
+        },
+        "history": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "causal_comparison",
+            "historical_comparisons",
+            "source_criticism",
+            "world history"
+          ]
+        },
+        "physics": {
+          "definitions": 6,
+          "procedural": 2,
+          "fixed": 4,
+          "skills": [
+            "circuits",
+            "energy_conservation",
+            "kinematics",
+            "momentum",
+            "wave_frequency",
+            "work_energy"
+          ]
+        },
+        "politics": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "close_reading",
+            "evidence_hierarchy",
+            "paired_arguments",
+            "rhetorical_synthesis"
+          ]
+        },
+        "research": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "causal_inference",
+            "measurement_validity",
+            "preregistration",
+            "replication"
+          ]
+        },
+        "science": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "biology"
+          ]
+        },
+        "statistics": {
+          "definitions": 8,
+          "procedural": 3,
+          "fixed": 5,
+          "skills": [
+            "base_rates",
+            "binomial_probability",
+            "conditional_percentage",
+            "confidence_interval",
+            "effect_sizes",
+            "expected_value_fair_die",
+            "observational_studies",
+            "p_values"
+          ]
+        },
+        "trigonometry": {
+          "definitions": 4,
+          "procedural": 2,
+          "fixed": 2,
+          "skills": [
+            "radian_measure",
+            "radians",
+            "sine_ratio",
+            "sine_special_angles"
+          ]
+        },
+        "writing": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "academic_voice",
+            "argumentative_essay",
+            "logical_coherence",
+            "research_question",
+            "source_integration"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "arithmetic",
+        "astronomy",
+        "civics",
+        "geometry",
+        "politics",
+        "science"
+      ]
+    },
+    {
+      "grade": 12,
+      "displayName": "Grade 12",
+      "subjectCount": 19,
+      "definitionCount": 93,
+      "goals": [
+        "Integrate calculus, statistics and scientific reasoning",
+        "Write and defend rigorous cross-disciplinary analyses",
+        "Independently investigate unfamiliar problems and limitations"
+      ],
+      "appliedAssignment": {
+        "title": "Grade 12 independent capstone",
+        "prompt": "Investigate an original, advanced research or engineering problem. Define specifications or a research question; cite appropriate sources; provide calculations, tests or analyses; discuss negative results and competing explanations; include reproducibility and a substantial written conclusion.",
+        "minimumCharacters": 800,
+        "rubric": [
+          "Independent, well-scoped research question",
+          "Evidence, calculations and transparent methods",
+          "Counterevidence and failure analysis",
+          "Reproducible artifacts and defensible conclusions"
+        ]
+      },
+      "categories": {
+        "algebra": {
+          "definitions": 8,
+          "procedural": 5,
+          "fixed": 3,
+          "skills": [
+            "arithmetic_sequence",
+            "eigenvalues",
+            "exponential_equation",
+            "functions_inverse",
+            "geometric_sequence",
+            "log_power",
+            "logarithms",
+            "matrix_determinant"
+          ]
+        },
+        "arithmetic": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "expected_value_die"
+          ]
+        },
+        "astronomy": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "space"
+          ]
+        },
+        "biology": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "evolutionary_mechanisms",
+            "experimental_genetics",
+            "homeostasis",
+            "research_ethics"
+          ]
+        },
+        "calculus": {
+          "definitions": 16,
+          "procedural": 11,
+          "fixed": 5,
+          "skills": [
+            "continuity",
+            "definite_integral_linear",
+            "derivative_exponential",
+            "derivative_meaning",
+            "derivative_power_rule",
+            "derivative_sum_constant",
+            "derivative_value",
+            "differentiate_cubic",
+            "differentiate_polynomial",
+            "fundamental_theorem",
+            "integral_interpretation",
+            "limit_basic",
+            "limit_removable",
+            "optimization",
+            "slope_at_x_constant"
+          ]
+        },
+        "chemistry": {
+          "definitions": 6,
+          "procedural": 2,
+          "fixed": 4,
+          "skills": [
+            "acid_base",
+            "dilution",
+            "equilibrium",
+            "ph_concentration",
+            "reaction_rate",
+            "thermodynamics"
+          ]
+        },
+        "civics": {
+          "definitions": 3,
+          "procedural": 0,
+          "fixed": 3,
+          "skills": [
+            "institutional_accountability",
+            "institutional_tradeoffs",
+            "judicial_review"
+          ]
+        },
+        "computer_science": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "computational_complexity",
+            "database_transactions",
+            "security_models",
+            "security_threat_models",
+            "unit_integration_tests"
+          ]
+        },
+        "economics": {
+          "definitions": 6,
+          "procedural": 0,
+          "fixed": 6,
+          "skills": [
+            "basics",
+            "gdp_limits",
+            "market_failure",
+            "monetary_policy",
+            "policy_counterfactual"
+          ]
+        },
+        "geometry": {
+          "definitions": 1,
+          "procedural": 1,
+          "fixed": 0,
+          "skills": [
+            "vector_magnitude"
+          ]
+        },
+        "history": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "causal_comparison",
+            "counterfactuals",
+            "historical_methods",
+            "source_criticism"
+          ]
+        },
+        "logic": {
+          "definitions": 2,
+          "procedural": 0,
+          "fixed": 2,
+          "skills": [
+            "deductive_validity",
+            "uncertainty_calibration"
+          ]
+        },
+        "physics": {
+          "definitions": 7,
+          "procedural": 3,
+          "fixed": 4,
+          "skills": [
+            "electric_fields",
+            "electromagnetic_waves",
+            "kinematics",
+            "kinetic_energy",
+            "momentum",
+            "ohms_law",
+            "wave_frequency"
+          ]
+        },
+        "politics": {
+          "definitions": 1,
+          "procedural": 0,
+          "fixed": 1,
+          "skills": [
+            "government"
+          ]
+        },
+        "reading": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "author_assumptions",
+            "close_reading",
+            "evidence_hierarchy",
+            "methodology_critique",
+            "steelman"
+          ]
+        },
+        "research": {
+          "definitions": 4,
+          "procedural": 0,
+          "fixed": 4,
+          "skills": [
+            "causal_identification",
+            "open_science",
+            "preregistration",
+            "replication"
+          ]
+        },
+        "statistics": {
+          "definitions": 10,
+          "procedural": 4,
+          "fixed": 6,
+          "skills": [
+            "bayes",
+            "binomial_expectation",
+            "conditional_independence",
+            "effect_sizes",
+            "expected_value_fair_die",
+            "multiple_testing",
+            "observational_studies",
+            "p_values",
+            "risk_difference",
+            "selection_bias"
+          ]
+        },
+        "trigonometry": {
+          "definitions": 4,
+          "procedural": 2,
+          "fixed": 2,
+          "skills": [
+            "degrees_to_radians_pi",
+            "radian_measure",
+            "radians",
+            "unit_circle"
+          ]
+        },
+        "writing": {
+          "definitions": 5,
+          "procedural": 0,
+          "fixed": 5,
+          "skills": [
+            "abstract",
+            "academic_voice",
+            "argumentative_essay",
+            "research_ethics",
+            "research_synthesis"
+          ]
+        }
+      },
+      "underrepresentedSubjects": [
+        "arithmetic",
+        "astronomy",
+        "geometry",
+        "logic",
+        "politics"
+      ]
+    }
+  ]
+}
