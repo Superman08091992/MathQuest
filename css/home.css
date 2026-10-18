@@ -1,0 +1,250 @@
+/* Math Quest 3.4 — the home screen is the game's opening scene, not a settings page.
+   Entirely local CSS scenery. Existing game navigation and 3D canvases stay live. */
+#main-menu {
+    padding: 0;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse 57% 60% at 80% 20%, rgba(73, 85, 178, .20), transparent 80%),
+        radial-gradient(ellipse 46% 48% at 4% 72%, rgba(22, 121, 125, .15), transparent 86%),
+        linear-gradient(146deg, #0e142b 4%, #141a39 51%, #100f2a 100%);
+}
+#main-menu .home-atmosphere { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+#main-menu .home-atmosphere::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(215, 233, 255, .85) 1px, transparent 1.8px),
+                      radial-gradient(circle, rgba(139, 205, 255, .8) 1px, transparent 2px);
+    background-size: 146px 117px, 251px 207px;
+    background-position: 26px 11px, 94px 71px;
+    opacity: .22;
+}
+#main-menu .home-atmosphere::after {
+    content: ''; position: absolute; width: 940px; height: 940px; left: -630px; bottom: -780px;
+    border-radius: 50%; border: 100px solid rgba(96, 244, 197, .022); box-shadow: 0 0 160px rgba(59, 178, 183, .07);
+}
+#main-menu .home-orbit { position: absolute; border-radius: 50%; opacity: .85; }
+#main-menu .home-orbit-one { width: 620px; height: 620px; top: 10px; right: -330px; border: 1px solid rgba(165, 171, 255, .11); box-shadow: 0 0 0 85px rgba(154, 150, 245, .016), 0 0 0 185px rgba(154, 150, 245, .012); }
+#main-menu .home-orbit-two { width: 300px; height: 300px; top: -165px; right: 26%; border: 1px solid rgba(137, 242, 211, .08); }
+#main-menu .home-starlight { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #bbffe2; box-shadow: 0 0 18px #72e3c5; animation: home-twinkle 4.8s ease-in-out infinite alternate; }
+#main-menu .home-starlight-a { right: 7%; top: 10%; }
+#main-menu .home-starlight-b { left: 15%; top: 55%; animation-delay: 1.2s; }
+#main-menu .home-starlight-c { right: 32%; bottom: 22%; animation-delay: 2.7s; }
+@keyframes home-twinkle { from { opacity: .16; transform: scale(.6); } to { opacity: .9; transform: scale(1.25); } }
+
+#main-menu .menu-content {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    max-width: 1352px;
+    margin: 0 auto;
+    padding: clamp(18px, 2.4vw, 32px) clamp(18px, 4vw, 64px) 25px;
+    display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
+    gap: 0;
+}
+#main-menu .home-topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 22px; border-bottom: 1px solid rgba(190, 220, 255, .09); }
+#main-menu .home-brand { display: inline-flex; align-items: center; gap: 11px; }
+#main-menu .home-brand-emblem {
+    width: 45px; height: 45px; flex: none; border-radius: 15px; display: grid; place-items: center;
+    background: linear-gradient(145deg, #ddfa87 6%, #71ecc7 84%); color: #18373e;
+    font-size: 1.8rem; box-shadow: 0 6px 20px rgba(113, 235, 197, .25); transform: rotate(-8deg);
+}
+#main-menu .home-brand-type { display: flex; flex-direction: column; line-height: 1.03; }
+#main-menu .home-brand-type strong { font-size: 1.28rem; font-weight: 900; letter-spacing: -.035em; color: #f5f5ff; }
+#main-menu .home-brand-type strong span { color: #a28aff; }
+#main-menu .home-brand-type small { color: #8e9cbe; font-size: .59rem; letter-spacing: .17em; margin-top: 5px; font-weight: 700; }
+#main-menu .home-topbar-right { display: flex; align-items: center; gap: 16px; }
+#main-menu .home-worlds-label { color: #bac8ee; font-weight: 700; font-size: .75rem; letter-spacing: .07em; }
+#main-menu .home-worlds-label span { color: #8bf5d9; font-size: 1.25rem; vertical-align: -.10em; margin-right: .3rem; }
+#main-menu .home-topbar-version { font-size: .74rem; color: #9bafd9; border: 1px solid rgba(155, 187, 228, .20); padding: .38rem .66rem; border-radius: 9999px; }
+
+#main-menu .home-hero {
+    display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    align-items: center; column-gap: clamp(24px, 4vw, 60px);
+    padding: clamp(32px, 4.5vw, 58px) 0 clamp(35px, 4vw, 52px);
+}
+#main-menu .home-intro { min-width: 0; max-width: 520px; }
+#main-menu .home-eyebrow {
+    display: inline-flex; align-items: center; gap: 9px; color: #b6ebd9;
+    font-size: .73rem; letter-spacing: .16em; font-weight: 800; margin-bottom: 22px;
+}
+#main-menu .home-eyebrow-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #97f9cc; box-shadow: 0 0 0 5px rgba(130, 242, 192, .12); }
+#main-menu .game-title { animation: none; text-align: left; }
+#main-menu .game-title h1 {
+    font-size: clamp(3.3rem, 5.1vw, 5.65rem);
+    line-height: .98; font-weight: 900; letter-spacing: -.065em;
+    -webkit-text-fill-color: initial;
+    background: none; color: #f8f9ff; margin: 0 0 22px;
+    text-wrap: balance;
+}
+#main-menu .game-title h1 em {
+    display: inline-block; font-style: normal; letter-spacing: -.068em;
+    background: linear-gradient(115deg, #baf8a7 0%, #73eacc 55%, #80c7fc 100%);
+    background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 6px 22px rgba(111, 236, 191, .13));
+}
+#main-menu .tagline { color: #b9c8e2; font-size: clamp(1.04rem, 1.5vw, 1.16rem); line-height: 1.75; font-weight: 400; max-width: 430px; }
+#main-menu .home-returning-player { margin-top: 14px; color: #d0fce5; border-left: 3px solid #a0f4c7; padding: .35rem 0 .35rem 12px; font-weight: 650; }
+#main-menu .home-returning-player[hidden] { display: none; }
+#main-menu .menu-buttons { width: 100%; max-width: 445px; margin-top: 29px; gap: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#main-menu .menu-buttons [hidden] { display: none !important; }
+#main-menu .menu-buttons .btn-primary {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    font-size: 1.09rem; font-weight: 850; border-radius: 15px; padding: 17px 20px 17px 24px;
+    color: #15283c;
+    background: linear-gradient(105deg, #c6fb83 0%, #82f0c0 100%);
+    box-shadow: 0 10px 32px rgba(103, 217, 164, .19), inset 0 1px rgba(255, 255, 255, .55);
+}
+#main-menu .menu-buttons .btn-primary:hover { background: linear-gradient(105deg, #d9ffaa 0%, #95f8d1 100%); box-shadow: 0 14px 40px rgba(103, 217, 164, .29); transform: translateY(-2px); }
+#main-menu .home-button-arrow { font-size: 1.37rem; line-height: 1; }
+#main-menu .menu-buttons .btn-secondary {
+    font-size: .86rem; font-weight: 750; min-height: 48px; padding: .76rem .8rem;
+    border: 1px solid rgba(183, 202, 239, .19); border-radius: 13px;
+    color: #dce6ff; background: rgba(116, 136, 192, .095); backdrop-filter: blur(14px);
+}
+#main-menu .menu-buttons .btn-secondary:hover { border-color: rgba(142, 247, 201, .57); background: rgba(107, 167, 185, .21); transform: translateY(-2px); }
+#main-menu #profiles { grid-column: 1 / -1; background: rgba(121, 146, 214, .15); }
+#main-menu #install-app { grid-column: 1 / -1; }
+#main-menu .home-value-note {
+    margin-top: 27px; display: flex; align-items: center; gap: 13px;
+    font-size: .79rem; line-height: 1.58; color: #91a3c4;
+}
+#main-menu .home-value-note strong { color: #c4d2eb; font-weight: 600; }
+#main-menu .home-note-symbol { flex: none; font-size: 1.25rem; width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(157, 217, 192, .25); border-radius: 13px; color: #aef5c4; background: rgba(151, 233, 199, .07); }
+
+#main-menu .welcome-3d-showcase {
+    position: relative; width: 100%; min-width: 0; isolation: isolate; overflow: hidden;
+    padding: 22px 21px 16px;
+    border: 1px solid rgba(152, 184, 252, .28); border-radius: 32px;
+    background:
+        radial-gradient(ellipse at 52% 1%, rgba(135, 119, 235, .28), transparent 62%),
+        radial-gradient(ellipse at 10% 85%, rgba(51, 185, 186, .17), transparent 56%),
+        linear-gradient(135deg, rgba(34, 44, 92, .96) 0%, rgba(21, 31, 71, .97) 100%);
+    box-shadow: 0 24px 76px rgba(3, 6, 28, .45), inset 0 1px 0 rgba(241, 245, 255, .10);
+}
+#main-menu .welcome-3d-showcase::before {
+    position: absolute; content: ''; z-index: -1; inset: 40px -100px auto;
+    height: 330px; border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(129, 105, 239, .21), transparent 66%);
+}
+#main-menu .home-scene-arch {
+    position: absolute; z-index: -1; top: 65px; left: 10%; width: 80%; height: 70%;
+    border: 1px solid rgba(164, 202, 254, .13); border-radius: 50% 50% 30px 30px;
+    background: linear-gradient(to bottom, rgba(117, 149, 244, .045), transparent 70%);
+    box-shadow: 0 0 0 26px rgba(180, 206, 254, .020), 0 0 0 65px rgba(154, 174, 249, .014);
+    pointer-events: none;
+}
+#main-menu .welcome-3d-heading { display: flex; justify-content: flex-start; gap: 10px; align-items: center; position: relative; font-size: .72rem; font-weight: 850; letter-spacing: .12em; color: #e2e9ff; }
+#main-menu .welcome-live-indicator { width: 8px; height: 8px; flex: none; border-radius: 50%; background: #9bffca; box-shadow: 0 0 0 5px rgba(106, 228, 178, .1), 0 0 12px #68d3b0; }
+#main-menu .welcome-scene-badge { margin-left: auto; color: #c4d9fc; font-size: .61rem; letter-spacing: .08em; padding: .35rem .6rem; border-radius: 999px; border: 1px solid rgba(156, 189, 243, .24); background: rgba(111, 146, 199, .13); white-space: nowrap; }
+#main-menu .welcome-3d-characters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; margin-top: 22px; }
+#main-menu .welcome-character {
+    display: flex; flex-direction: column; align-items: stretch; text-align: left;
+    min-width: 0; position: relative; padding: 12px;
+    border: 1px solid rgba(186, 215, 251, .16); border-radius: 23px;
+    background: rgba(100, 132, 202, .105);
+}
+#main-menu .home-pet-card { background: rgba(41, 137, 139, .095); border-color: rgba(103, 215, 197, .18); }
+#main-menu .home-character-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; padding: 3px 5px 0; }
+#main-menu .home-character-head span { font-size: .62rem; font-weight: 800; color: #8eeacc; letter-spacing: .10em; }
+#main-menu .home-character-head h2 { margin: 0; color: #d5dff6; font-size: .64rem; font-weight: 800; letter-spacing: .1em; }
+#main-menu .welcome-character-stage {
+    flex: none; width: 100%; height: clamp(235px, 24vw, 328px);
+    border-radius: 16px; margin-top: 9px;
+    background: radial-gradient(ellipse at 50% 70%, rgba(166, 157, 247, .22), transparent 68%),
+                linear-gradient(to bottom, rgba(43, 67, 137, .36), rgba(25, 49, 104, .4));
+}
+#main-menu .home-pet-card .welcome-character-stage { background: radial-gradient(ellipse at 50% 70%, rgba(119, 229, 180, .21), transparent 68%), linear-gradient(to bottom, rgba(27, 77, 110, .34), rgba(17, 70, 77, .32)); }
+#main-menu .home-character-foot { margin-top: 10px; padding: 0 3px 3px; display: flex; gap: 7px; align-items: center; justify-content: space-between; }
+#main-menu .home-character-foot > div { min-width: 0; }
+#main-menu .welcome-character p { color: #fff; font-size: .86rem; line-height: 1.25; margin: 0; min-height: 0; font-weight: 750; overflow-wrap: anywhere; }
+#main-menu .home-character-foot small { display: block; color: #aabfdf; font-size: .7rem; margin-top: 4px; }
+#main-menu .welcome-character .character-gesture {
+    flex: none; border: 1px solid rgba(176, 229, 225, .31); background: rgba(117, 193, 200, .17);
+    padding: .55rem .75rem; border-radius: 11px; font-size: .75rem; color: #e0fff5;
+}
+#main-menu .welcome-character .character-gesture:hover { border-color: #98ebd9; background: rgba(117, 193, 200, .27); }
+#main-menu .welcome-3d-help { text-align: center; margin: 16px 0 0; color: #b2c5e3; font-size: .75rem; line-height: 1.4; }
+#main-menu .welcome-3d-help span { color: #aef7d8; font-weight: 850; font-size: 1rem; margin-right: 7px; }
+
+#main-menu .home-pathway { border-top: 1px solid rgba(193, 216, 246, .09); padding-top: 24px; }
+#main-menu .home-pathway-heading { display: flex; align-items: end; justify-content: space-between; gap: 22px; margin-bottom: 16px; }
+#main-menu .home-section-eyebrow { display: block; color: #8de7c3; font-size: .65rem; font-weight: 800; letter-spacing: .15em; margin-bottom: 6px; }
+#main-menu .home-pathway-heading h2 { font-size: clamp(1.23rem, 2vw, 1.6rem); font-weight: 800; letter-spacing: -.03em; color: #e9efff; }
+#main-menu .home-pathway-heading > p { color: #94a8ca; font-size: .83rem; padding-bottom: 3px; }
+#main-menu .home-realms { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+#main-menu .home-realm {
+    position: relative; overflow: hidden; min-width: 0; display: flex; gap: 13px; align-items: center;
+    border-radius: 17px; border: 1px solid rgba(185, 214, 244, .17);
+    padding: 15px 13px; background: rgba(92, 120, 173, .11);
+    transition: transform .25s ease, border-color .25s ease;
+}
+#main-menu .home-realm:hover { transform: translateY(-3px); border-color: rgba(188, 221, 249, .4); }
+#main-menu .home-realm::after { content: ''; position: absolute; width: 135px; height: 135px; right: -79px; top: -69px; border-radius: 50%; background: currentColor; opacity: .08; }
+#main-menu .home-realm-icon { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: rgba(255, 255, 255, .09); font-size: 1.75rem; }
+#main-menu .home-realm > div:last-child { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+#main-menu .home-realm small { color: #adbce0; font-size: .68rem; font-weight: 750; }
+#main-menu .home-realm strong { color: #eef6ff; font-weight: 800; font-size: .99rem; }
+#main-menu .home-realm span { font-size: .67rem; color: #a5b6d2; }
+#main-menu .home-realm-forest { color: #8ff2c3; background: linear-gradient(125deg, rgba(28, 133, 112, .25), rgba(48, 111, 148, .11)); }
+#main-menu .home-realm-summit { color: #91cafd; background: linear-gradient(125deg, rgba(60, 112, 202, .23), rgba(68, 94, 153, .13)); }
+#main-menu .home-realm-cosmos { color: #bdb4ff; background: linear-gradient(125deg, rgba(111, 80, 190, .26), rgba(68, 74, 139, .11)); }
+#main-menu .home-realm-crown { color: #f7d68d; background: linear-gradient(125deg, rgba(155, 106, 96, .22), rgba(126, 88, 160, .12)); }
+#main-menu .version-info { width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; padding: 21px 0 0; margin-top: auto; color: #7f91b2; font-size: .70rem; text-align: left; }
+
+#main-menu button:focus-visible { outline: 3px solid #bcffcb; outline-offset: 3px; }
+
+@media (max-width: 1050px) {
+    #main-menu .home-hero { column-gap: 24px; grid-template-columns: minmax(0, .93fr) minmax(0, 1.07fr); }
+    #main-menu .game-title h1 { font-size: clamp(3rem, 5.2vw, 4.8rem); }
+    #main-menu .welcome-3d-showcase { padding: 16px 13px 13px; }
+    #main-menu .welcome-3d-characters { gap: 8px; margin-top: 14px; }
+    #main-menu .welcome-character { padding: 8px; }
+    #main-menu .welcome-character-stage { height: clamp(215px, 25vw, 300px); }
+    #main-menu .home-realm { padding: 12px 9px; gap: 9px; }
+}
+@media (max-width: 760px) {
+    #main-menu .menu-content { padding: 18px 18px 24px; }
+    #main-menu .home-topbar { padding-bottom: 15px; }
+    #main-menu .home-worlds-label { display: none; }
+    #main-menu .home-hero { grid-template-columns: minmax(0,1fr); gap: 27px; padding: 33px 0 32px; }
+    #main-menu .home-intro { max-width: none; }
+    #main-menu .home-eyebrow { margin-bottom: 15px; }
+    #main-menu .game-title h1 { font-size: clamp(3.2rem, 9.5vw, 5.4rem); }
+    #main-menu .tagline { max-width: 560px; font-size: 1rem; }
+    #main-menu .menu-buttons { max-width: none; margin-top: 20px; }
+    #main-menu .home-value-note { margin-top: 19px; }
+    #main-menu .welcome-3d-showcase { max-width: 620px; margin: 0 auto; }
+    #main-menu .welcome-character-stage { height: clamp(180px, 36vw, 278px); }
+    #main-menu .home-realms { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    #main-menu .home-pathway-heading > p { display: none; }
+}
+@media (max-width: 420px) {
+    #main-menu .menu-content { padding: 14px 13px 22px; }
+    #main-menu .home-brand-emblem { width: 39px; height: 39px; border-radius: 12px; font-size: 1.55rem; }
+    #main-menu .home-brand-type strong { font-size: 1.12rem; }
+    #main-menu .home-brand-type small { font-size: .51rem; }
+    #main-menu .home-topbar-version { padding: .33rem .55rem; }
+    #main-menu .game-title h1 { font-size: clamp(2.95rem, 11.7vw, 3.7rem); }
+    #main-menu .welcome-3d-showcase { padding: 14px 9px 11px; border-radius: 24px; }
+    #main-menu .welcome-3d-heading { padding: 0 5px; font-size: .65rem; }
+    #main-menu .welcome-scene-badge { font-size: .57rem; padding: .32rem .48rem; }
+    #main-menu .welcome-3d-characters { gap: 7px; margin-top: 11px; }
+    #main-menu .welcome-character { padding: 7px; border-radius: 16px; }
+    #main-menu .home-character-head { gap: 4px; }
+    #main-menu .home-character-head span { font-size: .52rem; }
+    #main-menu .home-character-head h2 { font-size: .54rem; }
+    #main-menu .welcome-character-stage { height: clamp(184px, 51vw, 210px); margin-top: 7px; border-radius: 11px; }
+    #main-menu .home-character-foot { flex-wrap: wrap; margin-top: 7px; gap: 7px; }
+    #main-menu .welcome-character p { font-size: .76rem; }
+    #main-menu .home-character-foot small { font-size: .61rem; }
+    #main-menu .welcome-character .character-gesture { padding: .4rem .55rem; font-size: .7rem; }
+    #main-menu .welcome-3d-help { font-size: .7rem; }
+    #main-menu .home-realm-icon { width: 35px; height: 39px; font-size: 1.42rem; }
+    #main-menu .home-realm { gap: 7px; }
+    #main-menu .home-realm strong { font-size: .88rem; }
+    #main-menu .home-realm span { font-size: .59rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #main-menu .home-starlight, #main-menu .home-realm, #main-menu .menu-buttons .btn-primary, #main-menu .menu-buttons .btn-secondary { animation: none; transition: none; }
+}

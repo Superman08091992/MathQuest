@@ -11,6 +11,9 @@ const UIManager = {
     
     init() {
         this.bindEvents();
+        // The initial screen is visible before any navigation event occurs.
+        this.currentScreen = 'main-menu';
+        this.renderMainMenu();
         const updateCare = () => {
             if (!SaveManager.data) return;
             PetManager.refreshAndSave();
@@ -299,6 +302,32 @@ const UIManager = {
         });
     },
     
+    renderMainMenu() {
+        if (typeof Character3D === 'undefined') return;
+        const profile = SaveManager.getCurrentProfile();
+        const avatarId = Character3D.getDefinition('avatar', profile?.skin) ? profile.skin : 'default';
+        Character3D.render(document.getElementById('welcome-avatar-stage'), {
+            kind: 'avatar', id: avatarId, name: profile?.name || 'Adventurer', emoji: profile?.avatar || '👤'
+        });
+        const pet = profile ? PetManager.getCurrentPet() : null;
+        const petId = Character3D.getDefinition('pet', pet?.id) ? pet.id : 'cat';
+        Character3D.render(document.getElementById('welcome-pet-stage'), {
+            kind: 'pet', id: petId, name: pet?.name || 'Cat', emoji: pet?.emoji || '🐱',
+            happiness: pet?.happiness ?? 80, hunger: pet?.hunger ?? 50
+        });
+        const avatarLabel = document.getElementById('welcome-avatar-caption');
+        if (avatarLabel) avatarLabel.textContent = profile ? `${profile.name} — selected avatar` : 'Adventurer preview';
+        const petLabel = document.getElementById('welcome-pet-caption');
+        if (petLabel) petLabel.textContent = pet ? `${pet.name} — your pet` : 'Cat preview — adopt pets in the Shop';
+        const returning = document.getElementById('home-returning-player');
+        const actionText = document.querySelector('#start-game > span:first-child');
+        if (returning) {
+            returning.hidden = !profile;
+            returning.textContent = profile ? `Welcome back, ${profile.name}. Your adventure is waiting.` : '';
+        }
+        if (actionText) actionText.textContent = profile ? 'Continue Your Quest' : 'Enter the Quest';
+    },
+
     showScreen(screenId) {
         // A WebGL context lives only while its screen is visible. Releasing
         // it prevents background GPU work and mobile context exhaustion.
@@ -311,6 +340,7 @@ const UIManager = {
         this.currentScreen = screenId;
         PetManager.refreshAndSave();
         // Screen-specific renders
+        if (screenId === 'main-menu') this.renderMainMenu();
         if (screenId === 'profiles-screen') this.renderProfiles();
         if (screenId === 'mode-selection') this.renderCategoryFilters();
         if (screenId === 'world-hub') this.renderWorldHub();

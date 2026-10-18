@@ -1,4 +1,4 @@
-# Math Quest 3.2 — Academic Pathway & Persistent Pet Care
+# Math Quest 3.4.0 — K–12 and Interactive 3D Adventure Home
 
 Math Quest is a local-first educational game with 13 grade levels (Kindergarten to Grade 12), adaptive procedural questions, subject selection, games, profiles, pets, achievements, and an optional university application workshop. Grade-specific cumulative assessments and applied assignments are part of the **core K–12 curriculum**.
 
@@ -20,6 +20,10 @@ Game XP provides access for exploration, **not academic mastery**. At each grade
 ## New in 3.2: persistent pet care
 
 Pet hunger rises 2/100 per hour, and happiness drops 1.25/100 per hour even when the application is closed. Once hunger reaches 100, a continuous 36-hour starvation period ends in death; remaining at zero happiness for 48 consecutive hours causes a pet to run away. Feeding, petting, playing, and treats can interrupt those clocks. Each loss is preserved in the player's individual save history, and a new animal can be adopted. Existing pet XP and levels remain intact. Older saves start the care clock when they are first upgraded, rather than losing pets retroactively. See [PET_CARE.md](PET_CARE.md) for timing formulas, examples, and limitations.
+
+## Verify you have the visible 3D release
+
+After updating the repository, run `bash launch-linux.sh --check` from its root. It must report **Math Quest 3.4.0**, the absolute source directory and **3D renderer: present**; when checked out from Git, it also shows the commit. Then run `bash launch-linux.sh`. The new adventure home shows an animated avatar and pet immediately that can be dragged to rotate, before any profile selection. Previously owned models remain available in the Shop and Pet Room. Run the launcher from your local checkout, not an older AppImage or desktop shortcut. Details in [HOME_SCREEN_3.4.md](HOME_SCREEN_3.4.md).
 
 ## Run locally
 

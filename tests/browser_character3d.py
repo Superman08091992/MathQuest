@@ -49,6 +49,17 @@ def run():
         if os.environ.get('CHROMIUM_BINARY'): launch['executable_path']=os.environ['CHROMIUM_BINARY']
         browser=p.chromium.launch(**launch)
         page, errors=open_game(browser)
+        # The first screen must visibly contain real rendered pixels, not
+        # merely a feature label or hidden 3D models.
+        assert page.locator('#welcome-3d-showcase').is_visible()
+        assert page.locator('#welcome-avatar-stage canvas.available').is_visible()
+        assert page.locator('#welcome-pet-stage canvas.available').is_visible()
+        assert signature(page, 'welcome-avatar-stage')['filled'] > 400
+        assert signature(page, 'welcome-pet-stage')['filled'] > 1200
+        assert page.evaluate('Character3D.activeCount') == 2
+        assert page.locator('#welcome-pet-caption').inner_text().startswith('Cat preview')
+        page.locator('[data-character-stage="welcome-pet-stage"][data-character-action="play"]').click()
+        assert page.evaluate("Character3D.getStage(document.getElementById('welcome-pet-stage')).action") == 'play'
         page.locator('#start-game').click()
         page.locator('#new-profile-name').fill('3D scholar')
         page.locator('#create-profile').click()
@@ -140,7 +151,9 @@ def run():
         page.locator('#quit-game').click()
         assert page.evaluate('Character3D.activeCount')==1
         page.locator('#world-hub .btn-back').click()
-        assert page.evaluate('Character3D.activeCount')==0
+        assert page.evaluate('Character3D.activeCount')==2
+        assert page.locator('#welcome-pet-caption').inner_text().endswith('your pet')
+        assert signature(page,'welcome-pet-stage')['id']=='cat'
         assert not errors, errors
         page.close()
 

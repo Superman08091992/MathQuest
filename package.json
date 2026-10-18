@@ -1,6 +1,6 @@
 {
   "name": "math-quest",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "private": true,
   "description": "Math Quest multi-platform educational game",
   "main": "desktop/main.cjs",

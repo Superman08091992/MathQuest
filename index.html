@@ -6,50 +6,102 @@
     <title>🎮 Math Quest - Learn Math Through Adventure!</title>
     <meta name="theme-color" content="#1a1a2e">
     <meta name="application-name" content="Math Quest">
-    <meta name="math-quest-version" content="3.3.0">
+    <meta name="math-quest-version" content="3.4.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="css/style.css?v=3.3.0">
-    <link rel="stylesheet" href="css/icons.css?v=3.3.0">
+    <link rel="stylesheet" href="css/style.css?v=3.4.0">
+    <link rel="stylesheet" href="css/icons.css?v=3.4.0">
+    <link rel="stylesheet" href="css/home.css?v=3.4.0">
 </head>
 <body>
     <div id="save-warning" class="save-warning" role="alert" hidden></div>
     <div id="app-error" class="save-warning" role="alert" hidden></div>
     <!-- Main Container -->
     <div id="game-container">
-        <!-- Main Menu Screen -->
+        <!-- Home Screen: the playable world starts here. All character art is rendered locally. -->
         <div id="main-menu" class="screen active">
+            <div class="home-atmosphere" aria-hidden="true">
+                <span class="home-orbit home-orbit-one"></span>
+                <span class="home-orbit home-orbit-two"></span>
+                <span class="home-starlight home-starlight-a"></span>
+                <span class="home-starlight home-starlight-b"></span>
+                <span class="home-starlight home-starlight-c"></span>
+            </div>
             <div class="menu-content">
-                <div class="game-title">
-                    <h1><i class="fas fa-gamepad"></i> MATH QUEST</h1>
-                    <p class="tagline">Learn Math Through Adventure!</p>
-                </div>
-                
-                <div class="menu-buttons">
-                    <button id="start-game" class="btn-primary btn-large">
-                        <i class="fas fa-play"></i> Start Game
-                    </button>
-                    <button id="install-app" class="btn-secondary" hidden>
-                        <i class="fas fa-download"></i> Install App
-                    </button>
-                    <button id="profiles" class="btn-secondary">
-                        <i class="fas fa-users"></i> Profiles
-                    </button>
-                    <button id="how-to-play" class="btn-secondary">
-                        <i class="fas fa-question-circle"></i> How to Play
-                    </button>
-                    <button id="settings" class="btn-secondary">
-                        <i class="fas fa-cog"></i> Settings
-                    </button>
-                </div>
-                
-                <div class="version-info">
-                    <p>Version 3.3.0</p>
-                    <p class="features">• K–12 Academic Pathway • Cumulative Mastery • Living 3D Pets • 3D Avatars •</p>
-                </div>
+                <header class="home-topbar">
+                    <div class="home-brand" aria-label="Math Quest home">
+                        <span class="home-brand-emblem" aria-hidden="true">✦</span>
+                        <div class="home-brand-type"><strong>MATH<span>QUEST</span></strong><small>THE LEARNING ADVENTURE</small></div>
+                    </div>
+                    <div class="home-topbar-right">
+                        <span class="home-worlds-label"><span aria-hidden="true">✧</span> 13 WORLDS · ONE JOURNEY</span>
+                        <span class="home-topbar-version">v3.4.0</span>
+                    </div>
+                </header>
+
+                <main class="home-hero">
+                    <section class="home-intro" aria-label="Begin your Math Quest adventure">
+                        <span class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span> YOUR ADVENTURE STARTS HERE</span>
+                        <div class="game-title">
+                            <h1>YOUR MIND<br>IS THE <em>MAGIC.</em></h1>
+                            <p class="tagline">Every question opens a door. Discover new worlds, grow your skills, and bring your companions along for the journey.</p>
+                        </div>
+                        <p id="home-returning-player" class="home-returning-player" aria-live="polite" hidden></p>
+                        <div class="menu-buttons">
+                            <button id="start-game" class="btn-primary btn-large"><span>Enter the Quest</span><span class="home-button-arrow" aria-hidden="true">➜</span></button>
+                            <button id="profiles" class="btn-secondary"><span aria-hidden="true">♙</span> Choose Your Hero</button>
+                            <button id="how-to-play" class="btn-secondary"><span aria-hidden="true">◇</span> How to Play</button>
+                            <button id="settings" class="btn-secondary"><span aria-hidden="true">⚙</span> Settings</button>
+                            <button id="install-app" class="btn-secondary" hidden><span aria-hidden="true">⇩</span> Install App</button>
+                        </div>
+                        <div class="home-value-note"><span class="home-note-symbol" aria-hidden="true">✳</span><span>Learn at your pace. Level up by playing.<br><strong>Mastery is earned, never rushed.</strong></span></div>
+                    </section>
+
+                    <section id="welcome-3d-showcase" class="welcome-3d-showcase" aria-label="Interactive 3D companions">
+                        <div class="home-scene-arch" aria-hidden="true"></div>
+                        <header class="welcome-3d-heading">
+                            <span class="welcome-live-indicator" aria-hidden="true"></span>
+                            <span>YOUR ADVENTURE CREW</span>
+                            <span class="welcome-scene-badge">INTERACTIVE 3D</span>
+                        </header>
+                        <div class="welcome-3d-characters">
+                            <article class="welcome-character home-avatar-card">
+                                <div class="home-character-head"><span>01 / HERO</span><h2>YOUR AVATAR</h2></div>
+                                <div id="welcome-avatar-stage" class="character-stage welcome-character-stage" aria-label="Drag to rotate your three-dimensional avatar"></div>
+                                <div class="home-character-foot">
+                                    <div><p id="welcome-avatar-caption">Adventurer preview</p><small>Ready to explore</small></div>
+                                    <button type="button" class="character-gesture" data-character-stage="welcome-avatar-stage" data-character-action="wave" aria-label="Make your avatar wave">Wave ↗</button>
+                                </div>
+                            </article>
+                            <article class="welcome-character home-pet-card">
+                                <div class="home-character-head"><span>02 / COMPANION</span><h2>YOUR PET</h2></div>
+                                <div id="welcome-pet-stage" class="character-stage welcome-character-stage" aria-label="Drag to rotate your three-dimensional pet"></div>
+                                <div class="home-character-foot">
+                                    <div><p id="welcome-pet-caption">Cat preview — adopt pets in the Shop</p><small>Care makes a difference</small></div>
+                                    <button type="button" class="character-gesture" data-character-stage="welcome-pet-stage" data-character-action="play" aria-label="Play with the pet preview">Play ↗</button>
+                                </div>
+                            </article>
+                        </div>
+                        <p class="welcome-3d-help"><span aria-hidden="true">↔</span> Drag the characters to turn them. Tap Wave or Play to see them react.</p>
+                    </section>
+                </main>
+
+                <section class="home-pathway" aria-label="Journey through thirteen grades">
+                    <div class="home-pathway-heading">
+                        <div><span class="home-section-eyebrow">THE ADVENTURE AHEAD</span><h2>13 grades. A world of possibilities.</h2></div>
+                        <p>From first discoveries to advanced challenges.</p>
+                    </div>
+                    <div class="home-realms">
+                        <article class="home-realm home-realm-forest"><div class="home-realm-icon" aria-hidden="true">✿</div><div><small>K — 3</small><strong>Discover</strong><span>Build your foundations</span></div></article>
+                        <article class="home-realm home-realm-summit"><div class="home-realm-icon" aria-hidden="true">△</div><div><small>4 — 6</small><strong>Explore</strong><span>Connect ideas</span></div></article>
+                        <article class="home-realm home-realm-cosmos"><div class="home-realm-icon" aria-hidden="true">✧</div><div><small>7 — 9</small><strong>Challenge</strong><span>Think independently</span></div></article>
+                        <article class="home-realm home-realm-crown"><div class="home-realm-icon" aria-hidden="true">✦</div><div><small>10 — 12</small><strong>Master</strong><span>Prepare for what's next</span></div></article>
+                    </div>
+                </section>
+                <footer class="version-info"><span>Made for curious minds and brave adventurers.</span><span>Version 3.4.0 · Works offline</span></footer>
             </div>
         </div>
 
@@ -778,26 +830,26 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils.js?v=3.3.0"></script>
-    <script src="js/question-templates.js?v=3.3.0"></script>
-    <script src="js/question-templates-advanced.js?v=3.3.0"></script>
-    <script src="js/question-templates-extended-fixed.js?v=3.3.0"></script>
-    <script src="js/college-curriculum.js?v=3.3.0"></script>
-    <script src="js/college-procedural.js?v=3.3.0"></script>
-    <script src="js/question-catalogue.js?v=3.3.0"></script>
-    <script src="js/math-engine.js?v=3.3.0"></script>
-    <script src="js/readiness-lab.js?v=3.3.0"></script>
-    <script src="js/save-manager.js?v=3.3.0"></script>
-    <script src="js/audio.js?v=3.3.0"></script>
-    <script src="js/profile-system.js?v=3.3.0"></script>
-    <script src="js/progression-system.js?v=3.3.0"></script>
-    <script src="js/reward-system.js?v=3.3.0"></script>
-    <script src="js/shop-system.js?v=3.3.0"></script>
-    <script src="js/pet-manager.js?v=3.3.0"></script>
-    <script src="js/character3d.js?v=3.3.0"></script>
-    <script src="js/game-manager.js?v=3.3.0"></script>
-    <script src="js/ui-manager.js?v=3.3.0"></script>
-    <script src="js/main.js?v=3.3.0"></script>
-    <script src="js/pwa.js?v=3.3.0"></script>
+    <script src="js/utils.js?v=3.4.0"></script>
+    <script src="js/question-templates.js?v=3.4.0"></script>
+    <script src="js/question-templates-advanced.js?v=3.4.0"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.4.0"></script>
+    <script src="js/college-curriculum.js?v=3.4.0"></script>
+    <script src="js/college-procedural.js?v=3.4.0"></script>
+    <script src="js/question-catalogue.js?v=3.4.0"></script>
+    <script src="js/math-engine.js?v=3.4.0"></script>
+    <script src="js/readiness-lab.js?v=3.4.0"></script>
+    <script src="js/save-manager.js?v=3.4.0"></script>
+    <script src="js/audio.js?v=3.4.0"></script>
+    <script src="js/profile-system.js?v=3.4.0"></script>
+    <script src="js/progression-system.js?v=3.4.0"></script>
+    <script src="js/reward-system.js?v=3.4.0"></script>
+    <script src="js/shop-system.js?v=3.4.0"></script>
+    <script src="js/pet-manager.js?v=3.4.0"></script>
+    <script src="js/character3d.js?v=3.4.0"></script>
+    <script src="js/game-manager.js?v=3.4.0"></script>
+    <script src="js/ui-manager.js?v=3.4.0"></script>
+    <script src="js/main.js?v=3.4.0"></script>
+    <script src="js/pwa.js?v=3.4.0"></script>
 </body>
 </html>
