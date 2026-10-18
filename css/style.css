@@ -1785,3 +1785,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 @media(max-width:550px){.college-panel{padding:1rem}.college-recommendation{align-items:flex-start;flex-direction:column}.college-recommendation button{width:100%}}
 
 .checkpoint-strip{padding:1rem;background:rgba(255,255,255,.05);border-radius:12px;display:grid;gap:.7rem;margin:.8rem 0}.checkpoint-strip button{width:100%;font-size:.95rem}.checkpoint-strip p{color:#dbeafe;line-height:1.5}
+
+/* Grade-level academic evidence is visually separate from gamified XP. */
+.academic-pathway-summary{font-weight:700;line-height:1.45;margin:.75rem 0;padding:.85rem 1rem;border:1px solid var(--border-color,#888);border-radius:12px}
+.grade-academic-status{font-size:.78rem;font-weight:650;line-height:1.35;margin-top:.45rem;opacity:.9}
+.grade-learning-goals{margin:.75rem auto 1rem;padding:.7rem 1rem;border:1px solid var(--border-color,#888);border-radius:12px;max-width:900px;text-align:left}
+.grade-learning-goals h4{margin:.15rem 0 .5rem}
+.grade-learning-goals ul{margin:.25rem 0 .25rem 1.25rem;padding:0}
+.grade-learning-goals li{margin-bottom:.3rem}
+
+.grade-project-panel textarea{width:100%;min-height:100px;margin:.4rem 0 .65rem;padding:.65rem;box-sizing:border-box;border-radius:8px;font:inherit}
+.grade-project-panel button{display:inline-block;max-width:100%}
+.grade-project-panel p{line-height:1.45}

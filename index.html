@@ -6,14 +6,14 @@
     <title>🎮 Math Quest - Learn Math Through Adventure!</title>
     <meta name="theme-color" content="#1a1a2e">
     <meta name="application-name" content="Math Quest">
-    <meta name="math-quest-version" content="3.0.0">
+    <meta name="math-quest-version" content="3.1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="css/style.css?v=3.0.0">
-    <link rel="stylesheet" href="css/icons.css?v=3.0.0">
+    <link rel="stylesheet" href="css/style.css?v=3.1.0">
+    <link rel="stylesheet" href="css/icons.css?v=3.1.0">
 </head>
 <body>
     <div id="save-warning" class="save-warning" role="alert" hidden></div>
@@ -47,8 +47,8 @@
                 </div>
                 
                 <div class="version-info">
-                    <p>Version 3.0.0</p>
-                    <p class="features">• 13 Grades • College Readiness Lab • Subject Mastery Practice •</p>
+                    <p>Version 3.1.0</p>
+                    <p class="features">• Complete K–12 Academic Pathway • Cumulative Mastery • Subject Practice •</p>
                 </div>
             </div>
         </div>
@@ -90,7 +90,9 @@
             </div>
             
             <div class="hub-content">
-                <h2>Choose Your Grade</h2>
+                <h2>Grades K–12 — the academic pathway</h2>
+                <p id="academic-pathway-summary" class="academic-pathway-summary" aria-live="polite"></p>
+                <p class="topics-hint">XP opens areas to explore; academic completion requires two independent cumulative checkpoints at least seven days apart in each grade. Mastering Grade 12 alone does not substitute for earlier grades.</p>
                 <div id="grade-grid" class="grades-grid">
                     <!-- Grades will be loaded here -->
                 </div>
@@ -106,7 +108,7 @@
                         <i class="fas fa-trophy"></i> Achievements
                     </button>
                     <button id="college-lab-btn" class="hub-btn">
-                        <i class="fas fa-graduation-cap"></i> College Readiness Lab
+                        <i class="fas fa-graduation-cap"></i> Optional Application Workshop
                     </button>
                     <button id="stats-btn" class="hub-btn">
                         <i class="fas fa-chart-bar"></i> Stats
@@ -128,6 +130,10 @@
             <div class="category-filter">
                 <h3 id="topic-selection-title">Step 1: Choose a subject</h3>
                 <p id="available-subjects" class="available-subjects" aria-live="polite">Loading available subjects…</p>
+                <section class="grade-learning-goals" aria-label="Grade learning outcomes">
+                    <h4>What this grade prepares you to do</h4>
+                    <ul id="grade-competencies"></ul>
+                </section>
                 <div class="category-buttons">
                     <button class="category-btn active" data-category="all">All Topics</button>
                     <button class="category-btn" data-category="arithmetic">➕ Arithmetic</button>
@@ -144,9 +150,21 @@
                 </div>
                 <p id="question-coverage" class="question-coverage" aria-live="polite"></p>
                 <div class="checkpoint-strip">
-                    <button id="start-grade-checkpoint" class="btn-secondary">Take academic checkpoint (no hints or rewards)</button>
+                    <button id="start-grade-checkpoint" class="btn-secondary">Take cumulative grade checkpoint (no hints or rewards)</button>
                     <p id="grade-checkpoint-status" aria-live="polite"></p>
                 </div>
+                <section class="grade-learning-goals grade-project-panel" aria-label="Grade applied assignment">
+                    <h4 id="grade-project-title">Apply what you learned</h4>
+                    <p id="grade-project-prompt"></p>
+                    <p>Explain your reasoning in your own words. You can include observations, calculations and references to external evidence. You may need to keep drawings, data or physical artifacts separately.</p>
+                    <ul id="grade-project-rubric"></ul>
+                    <label for="grade-project-response">Your explanation or project record</label>
+                    <textarea id="grade-project-response" rows="5" maxlength="12000" placeholder="Record the question, evidence, reasoning and limitations."></textarea>
+                    <button id="grade-project-save" class="btn-secondary">Save grade assignment</button>
+                    <p id="grade-project-message" aria-live="polite"></p>
+                    <p id="grade-project-status" aria-live="polite"></p>
+                    <p class="topics-hint">Saving your work records a draft. It does not grade the content or constitute independent evaluation.</p>
+                </section>
                 <p class="topics-hint">Only subjects with playable questions at this grade are listed. Each answer has a study explanation in the end-of-game review.</p>
             </div>
             <h3 class="mode-step-heading">Step 2: Choose a game mode</h3>
@@ -516,10 +534,10 @@
         <div id="college-lab" class="screen">
             <div class="screen-header">
                 <button class="btn-back"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2>College Readiness Lab</h2>
+                <h2>Optional University Application Workshop</h2>
             </div>
             <div class="college-content">
-                <p class="college-disclaimer">Independent practice, not a credential or an admissions-probability forecast. Universities assess grades, course prerequisites, academic work, recommendations, examinations where required and other criteria. This game does not replace any of them.</p>
+                <p class="college-disclaimer">This workshop supplements the K–12 grade curriculum; it does not replace it. Independent practice, not a credential or an admissions-probability forecast. Universities assess grades, course prerequisites, academic work, recommendations, examinations where required and other criteria. This game does not replace any of them.</p>
                 <section class="college-panel">
                     <h3>1. Choose an academic pathway</h3>
                     <label for="college-track">Intended field</label>
@@ -533,7 +551,7 @@
                     <div id="college-latest-diagnostic" aria-live="polite"></div>
                 </section>
                 <section class="college-panel">
-                    <h3>3. Practice evidence and next skills</h3>
+                    <h3>3. K–12 academic evidence and next skills</h3>
                     <p>Results count independently answered attempts, unique problems and study days. Strong in-game performance is NOT a verified examination result. Repeat skills on separate days and apply them in unfamiliar problems.</p>
                     <div id="college-recommendations"></div>
                     <div id="college-practice-summary"></div>
@@ -636,7 +654,9 @@
                 <div class="instruction-section">
                     <h3>🏆 Progression System</h3>
                     <p>• Level up by earning XP</p>
-                    <p>• Each level unlocks new grade levels</p>
+                    <p>• XP unlocks grades for practice, but does not certify academic mastery</p>
+                    <p>• Each grade requires two cumulative, no-hint checkpoints separated by at least seven days</p>
+                    <p>• Completing every grade checkpoint is a practice milestone, not an accredited qualification</p>
                     <p>• Complete achievements for bonus rewards</p>
                     <p>• Unlock all 13 grades from K to 12</p>
                 </div>
@@ -701,25 +721,25 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils.js?v=3.0.0"></script>
-    <script src="js/question-templates.js?v=3.0.0"></script>
-    <script src="js/question-templates-advanced.js?v=3.0.0"></script>
-    <script src="js/question-templates-extended-fixed.js?v=3.0.0"></script>
-    <script src="js/college-curriculum.js?v=3.0.0"></script>
-    <script src="js/college-procedural.js?v=3.0.0"></script>
-    <script src="js/question-catalogue.js?v=3.0.0"></script>
-    <script src="js/math-engine.js?v=3.0.0"></script>
-    <script src="js/readiness-lab.js?v=3.0.0"></script>
-    <script src="js/save-manager.js?v=3.0.0"></script>
-    <script src="js/audio.js?v=3.0.0"></script>
-    <script src="js/profile-system.js?v=3.0.0"></script>
-    <script src="js/progression-system.js?v=3.0.0"></script>
-    <script src="js/reward-system.js?v=3.0.0"></script>
-    <script src="js/shop-system.js?v=3.0.0"></script>
-    <script src="js/pet-manager.js?v=3.0.0"></script>
-    <script src="js/game-manager.js?v=3.0.0"></script>
-    <script src="js/ui-manager.js?v=3.0.0"></script>
-    <script src="js/main.js?v=3.0.0"></script>
-    <script src="js/pwa.js?v=3.0.0"></script>
+    <script src="js/utils.js?v=3.1.0"></script>
+    <script src="js/question-templates.js?v=3.1.0"></script>
+    <script src="js/question-templates-advanced.js?v=3.1.0"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.1.0"></script>
+    <script src="js/college-curriculum.js?v=3.1.0"></script>
+    <script src="js/college-procedural.js?v=3.1.0"></script>
+    <script src="js/question-catalogue.js?v=3.1.0"></script>
+    <script src="js/math-engine.js?v=3.1.0"></script>
+    <script src="js/readiness-lab.js?v=3.1.0"></script>
+    <script src="js/save-manager.js?v=3.1.0"></script>
+    <script src="js/audio.js?v=3.1.0"></script>
+    <script src="js/profile-system.js?v=3.1.0"></script>
+    <script src="js/progression-system.js?v=3.1.0"></script>
+    <script src="js/reward-system.js?v=3.1.0"></script>
+    <script src="js/shop-system.js?v=3.1.0"></script>
+    <script src="js/pet-manager.js?v=3.1.0"></script>
+    <script src="js/game-manager.js?v=3.1.0"></script>
+    <script src="js/ui-manager.js?v=3.1.0"></script>
+    <script src="js/main.js?v=3.1.0"></script>
+    <script src="js/pwa.js?v=3.1.0"></script>
 </body>
 </html>
