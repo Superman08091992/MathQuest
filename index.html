@@ -6,14 +6,14 @@
     <title>🎮 Math Quest - Learn Math Through Adventure!</title>
     <meta name="theme-color" content="#1a1a2e">
     <meta name="application-name" content="Math Quest">
-    <meta name="math-quest-version" content="3.2.0">
+    <meta name="math-quest-version" content="3.3.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="css/style.css?v=3.2.0">
-    <link rel="stylesheet" href="css/icons.css?v=3.2.0">
+    <link rel="stylesheet" href="css/style.css?v=3.3.0">
+    <link rel="stylesheet" href="css/icons.css?v=3.3.0">
 </head>
 <body>
     <div id="save-warning" class="save-warning" role="alert" hidden></div>
@@ -47,8 +47,8 @@
                 </div>
                 
                 <div class="version-info">
-                    <p>Version 3.2.0</p>
-                    <p class="features">• K–12 Academic Pathway • Cumulative Mastery • Persistent Pet Care •</p>
+                    <p>Version 3.3.0</p>
+                    <p class="features">• K–12 Academic Pathway • Cumulative Mastery • Living 3D Pets • 3D Avatars •</p>
                 </div>
             </div>
         </div>
@@ -61,6 +61,18 @@
             </div>
             
             <div class="profiles-container">
+                <section id="profile-model-preview" class="profile-model-preview" aria-label="Selected profile avatar in 3D" hidden>
+                    <div>
+                        <div class="showcase-eyebrow">YOUR CHARACTER</div>
+                        <h3 id="profile-model-name">Player</h3>
+                        <p class="character-instructions">Hover or focus a profile to preview its 3D avatar. Choose it to play.</p>
+                        <div class="character-controls">
+                            <button type="button" data-character-stage="profile-model-stage" data-turn="-1">↶ Turn</button>
+                            <button type="button" data-character-stage="profile-model-stage" data-turn="1">Turn ↷</button>
+                        </div>
+                    </div>
+                    <div id="profile-model-stage" class="character-stage profile-model-stage" aria-label="Three dimensional profile avatar"></div>
+                </section>
                 <div id="profiles-list" class="profiles-grid">
                     <!-- Profiles will be loaded here -->
                 </div>
@@ -79,7 +91,11 @@
             <div class="hub-header">
                 <button class="btn-back"><i class="fas fa-home"></i> Menu</button>
                 <div class="player-info">
-                    <span id="player-avatar" class="avatar">👤</span>
+                    <div class="hub-avatar-wrapper">
+                        <div id="hub-avatar-stage" class="character-stage hub-avatar-stage" aria-label="Rotatable 3D player avatar"></div>
+                        <span id="player-avatar" class="avatar" aria-hidden="true">👤</span>
+                        <button type="button" class="character-gesture" data-character-stage="hub-avatar-stage" data-character-action="wave" aria-label="Make your avatar wave">Wave</button>
+                    </div>
                     <span id="player-name">Player</span>
                     <div class="stats">
                         <span class="stat"><i class="fas fa-star"></i> <span id="player-points">0</span></span>
@@ -210,6 +226,13 @@
                 </button>
             </div>
             
+            <div id="study-companion" class="study-companion" hidden aria-label="Your living pet accompanies you while you learn">
+                <div id="study-pet-stage" class="character-stage study-pet-stage" aria-label="Animated 3D study pet"></div>
+                <div><div class="showcase-eyebrow">STUDY COMPANION</div>
+                    <strong id="study-pet-name">Pet</strong>
+                    <p id="study-pet-caption" aria-live="polite">Ready to learn with you!</p>
+                </div>
+            </div>
             <div class="progress-container">
                 <div class="progress-bar">
                     <div id="question-progress" class="progress-fill"></div>
@@ -329,6 +352,20 @@
                     <button class="shop-tab active" data-tab="skins">Avatar Skins</button>
                     <button class="shop-tab" data-tab="pets">Pets</button>
                 </div>
+                <section class="showcase-panel" aria-labelledby="shop-model-heading">
+                    <div class="showcase-copy">
+                        <div class="showcase-eyebrow">CHARACTER STUDIO</div>
+                        <h3 id="shop-model-heading">Your 3D avatar</h3>
+                        <p id="shop-model-description">Choose a character below to see it in 3D before buying or equipping.</p>
+                        <p class="character-instructions">Drag the model, or use the turn buttons to see every side. Previewing costs nothing.</p>
+                        <div class="character-controls" aria-label="3D character controls">
+                            <button type="button" data-character-stage="shop-model-stage" data-turn="-1" aria-label="Rotate preview left">↶ Turn</button>
+                            <button type="button" data-character-stage="shop-model-stage" data-turn="1" aria-label="Rotate preview right">Turn ↷</button>
+                            <button type="button" data-character-stage="shop-model-stage" data-character-action="wave">Animate</button>
+                        </div>
+                    </div>
+                    <div id="shop-model-stage" class="character-stage shop-model-stage" aria-label="Interactive 3D character preview"></div>
+                </section>
                 
                 <div id="skins-tab" class="shop-items active">
                     <h3>Regular Skins</h3>
@@ -377,7 +414,16 @@
                             <div class="cloud cloud2">☁️</div>
                             <div class="cloud cloud3">☁️</div>
                         </div>
-                        <div id="pet-character" class="pet-character" aria-live="polite"></div>
+                        <div id="pet-model-stage" class="character-stage pet-model-stage" aria-label="Interactive 3D living pet"></div>
+                        <div id="pet-character" class="pet-character" aria-hidden="true" hidden></div>
+                        <div class="pet-scene-hud">
+                            <span id="pet-mood-indicator" class="pet-mood-indicator" aria-live="polite">Happy</span>
+                            <span class="character-instructions">Drag to rotate • Pet reacts to feeding and play</span>
+                            <div class="character-controls" aria-label="3D pet controls">
+                                <button type="button" data-character-stage="pet-model-stage" data-turn="-1" aria-label="Rotate pet left">↶</button>
+                                <button type="button" data-character-stage="pet-model-stage" data-turn="1" aria-label="Rotate pet right">↷</button>
+                            </div>
+                        </div>
                         <div class="pet-toys">
                             <button type="button" class="toy" data-toy="ball" aria-label="Play with ball (15 points)">⚽</button>
                             <button type="button" class="toy" data-toy="bone" aria-label="Play with bone (15 points)">🦴</button>
@@ -732,25 +778,26 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils.js?v=3.2.0"></script>
-    <script src="js/question-templates.js?v=3.2.0"></script>
-    <script src="js/question-templates-advanced.js?v=3.2.0"></script>
-    <script src="js/question-templates-extended-fixed.js?v=3.2.0"></script>
-    <script src="js/college-curriculum.js?v=3.2.0"></script>
-    <script src="js/college-procedural.js?v=3.2.0"></script>
-    <script src="js/question-catalogue.js?v=3.2.0"></script>
-    <script src="js/math-engine.js?v=3.2.0"></script>
-    <script src="js/readiness-lab.js?v=3.2.0"></script>
-    <script src="js/save-manager.js?v=3.2.0"></script>
-    <script src="js/audio.js?v=3.2.0"></script>
-    <script src="js/profile-system.js?v=3.2.0"></script>
-    <script src="js/progression-system.js?v=3.2.0"></script>
-    <script src="js/reward-system.js?v=3.2.0"></script>
-    <script src="js/shop-system.js?v=3.2.0"></script>
-    <script src="js/pet-manager.js?v=3.2.0"></script>
-    <script src="js/game-manager.js?v=3.2.0"></script>
-    <script src="js/ui-manager.js?v=3.2.0"></script>
-    <script src="js/main.js?v=3.2.0"></script>
-    <script src="js/pwa.js?v=3.2.0"></script>
+    <script src="js/utils.js?v=3.3.0"></script>
+    <script src="js/question-templates.js?v=3.3.0"></script>
+    <script src="js/question-templates-advanced.js?v=3.3.0"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.3.0"></script>
+    <script src="js/college-curriculum.js?v=3.3.0"></script>
+    <script src="js/college-procedural.js?v=3.3.0"></script>
+    <script src="js/question-catalogue.js?v=3.3.0"></script>
+    <script src="js/math-engine.js?v=3.3.0"></script>
+    <script src="js/readiness-lab.js?v=3.3.0"></script>
+    <script src="js/save-manager.js?v=3.3.0"></script>
+    <script src="js/audio.js?v=3.3.0"></script>
+    <script src="js/profile-system.js?v=3.3.0"></script>
+    <script src="js/progression-system.js?v=3.3.0"></script>
+    <script src="js/reward-system.js?v=3.3.0"></script>
+    <script src="js/shop-system.js?v=3.3.0"></script>
+    <script src="js/pet-manager.js?v=3.3.0"></script>
+    <script src="js/character3d.js?v=3.3.0"></script>
+    <script src="js/game-manager.js?v=3.3.0"></script>
+    <script src="js/ui-manager.js?v=3.3.0"></script>
+    <script src="js/main.js?v=3.3.0"></script>
+    <script src="js/pwa.js?v=3.3.0"></script>
 </body>
 </html>

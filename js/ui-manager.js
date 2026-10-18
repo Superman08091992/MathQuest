@@ -7,6 +7,7 @@ const UIManager = {
     currentScreen: null,
     lastGameMode: 'relaxed',
     achievementFilter: 'all',
+    shopPreview: null,
     
     init() {
         this.bindEvents();
@@ -16,6 +17,7 @@ const UIManager = {
             if (this.currentScreen === 'pet-room') this.renderPetRoom();
             else if (this.currentScreen === 'world-hub') this.renderPetCareAlert();
             else if (this.currentScreen === 'shop') this.renderShop();
+            else if (this.currentScreen === 'gameplay') this.renderStudyCompanion();
         };
         // Browser background timers may be throttled. Recompute from real elapsed
         // time on resume/focus, in addition to updating the active room each minute.
@@ -262,6 +264,18 @@ const UIManager = {
                 AudioSystem.playCorrect();
                 if (result.levelUp) AudioSystem.playLevelUp();
                 this.renderPetRoom();
+                if (typeof Character3D !== 'undefined') Character3D.react(document.getElementById('pet-model-stage'), 'play');
+            });
+        });
+
+        // 3D viewer rotation and actions are visual only; pet care still uses
+        // the existing priced, persisted PetManager interactions.
+        document.querySelectorAll('[data-character-stage]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (typeof Character3D === 'undefined') return;
+                const stage = document.getElementById(btn.dataset.characterStage);
+                if (btn.hasAttribute('data-turn')) Character3D.rotate(stage, Number(btn.dataset.turn));
+                if (btn.dataset.characterAction) Character3D.react(stage, btn.dataset.characterAction);
             });
         });
 
@@ -277,6 +291,7 @@ const UIManager = {
                         alert(`Pet leveled up to ${result.newLevel}!`);
                     }
                     this.renderPetRoom();
+                    if (typeof Character3D !== 'undefined') Character3D.react(document.getElementById('pet-model-stage'), action);
                 } else {
                     alert(result.error);
                 }
@@ -285,6 +300,10 @@ const UIManager = {
     },
     
     showScreen(screenId) {
+        // A WebGL context lives only while its screen is visible. Releasing
+        // it prevents background GPU work and mobile context exhaustion.
+        if (this.currentScreen !== screenId && typeof Character3D !== 'undefined') Character3D.releaseAll();
+        if (this.currentScreen !== screenId && screenId === 'shop') this.shopPreview = null;
         this.screens.forEach(id => {
             document.getElementById(id)?.classList.remove('active');
         });
@@ -297,6 +316,7 @@ const UIManager = {
         if (screenId === 'world-hub') this.renderWorldHub();
         if (screenId === 'shop') this.renderShop();
         if (screenId === 'pet-room') this.renderPetRoom();
+        if (screenId === 'gameplay') this.renderStudyCompanion();
         if (screenId === 'achievements') this.renderAchievements();
         if (screenId === 'stats') this.renderStats();
         if (screenId === 'settings') this.renderSettings();
@@ -304,8 +324,41 @@ const UIManager = {
     },
     
     activateShopTab(tabId) {
+        if (!['skins', 'pets'].includes(tabId)) return;
+        const current = document.querySelector('.shop-tab.active')?.dataset.tab;
         document.querySelectorAll('.shop-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === tabId));
         document.querySelectorAll('.shop-items').forEach(item => item.classList.toggle('active', item.id === tabId + '-tab'));
+        if (current !== tabId) this.shopPreview = null;
+        if (this.currentScreen === 'shop') this.renderShopPreview();
+    },
+
+    previewShopItem(kind, id) {
+        if (!['pet', 'avatar'].includes(kind)) return;
+        if (typeof Character3D === 'undefined' || !Character3D.getDefinition(kind, id)) return;
+        this.shopPreview = { kind, id };
+        this.renderShopPreview();
+    },
+
+    renderShopPreview() {
+        if (this.currentScreen !== 'shop' || typeof Character3D === 'undefined') return;
+        const profile = ProfileSystem.getCurrentProfile();
+        if (!profile) return;
+        const stage = document.getElementById('shop-model-stage');
+        const tab = document.querySelector('.shop-tab.active')?.dataset.tab || 'skins';
+        const kind = tab === 'pets' ? 'pet' : 'avatar';
+        const id = this.shopPreview?.kind === kind ? this.shopPreview.id :
+            (kind === 'pet' ? profile.selectedPet || 'cat' : profile.skin || 'default');
+        const catalogue = SaveManager.getShopItems();
+        const item = [...catalogue.regularSkins, ...catalogue.legendarySkins, ...catalogue.pets]
+            .find(x => x.id === id);
+        if (!item) return;
+        const ownedPet = profile.pets.find(p => p.id === id);
+        const name = item.name;
+        const status = item.owned ? (item.equipped ? 'Currently selected' : 'Owned') : 'Not owned';
+        document.getElementById('shop-model-heading').textContent = name + ' — 3D preview';
+        document.getElementById('shop-model-description').textContent = `${status}. Drag the model to examine the character from every angle. Previewing is free and does not change your selection.`;
+        Character3D.render(stage, { kind, id, name, emoji: item.emoji,
+            happiness: ownedPet?.happiness ?? 80, hunger: ownedPet?.hunger ?? 50 });
     },
 
     renderCategoryFilters() {
@@ -427,11 +480,22 @@ const UIManager = {
         container.innerHTML = '';
         const profiles = SaveManager.getProfiles();
         
+        const preview = document.getElementById('profile-model-preview');
+        if (preview) preview.hidden = profiles.length === 0;
         if (profiles.length === 0) {
             container.innerHTML = '<p style="text-align:center;color:#888;">No profiles yet. Create one!</p>';
+            if (typeof Character3D !== 'undefined') Character3D.release(document.getElementById('profile-model-stage'));
             return;
         }
-        
+        const showProfileModel = candidate => {
+            if (typeof Character3D === 'undefined') return;
+            document.getElementById('profile-model-name').textContent = candidate.name;
+            Character3D.render(document.getElementById('profile-model-stage'), {
+                kind: 'avatar', id: candidate.skin || 'default', name: candidate.name, emoji: candidate.avatar
+            });
+        };
+        showProfileModel(profiles.find(p => p.id === SaveManager.data.currentProfileId) || profiles[0]);
+
         profiles.forEach(profile => {
             const card = document.createElement('div');
             card.className = 'profile-card' + (profile.id === SaveManager.data.currentProfileId ? ' active' : '');
@@ -442,6 +506,8 @@ const UIManager = {
                 <button class="delete-btn" aria-label="Delete profile" type="button"><i class="fas fa-trash"></i></button>
             `;
             
+            card.addEventListener('mouseenter', () => showProfileModel(profile));
+            card.addEventListener('focusin', () => showProfileModel(profile));
             card.addEventListener('click', () => {
                 ProfileSystem.selectProfile(profile.id);
                 this.showScreen('world-hub');
@@ -465,6 +531,11 @@ const UIManager = {
         
         document.getElementById('player-name').textContent = profile.name;
         document.getElementById('player-avatar').textContent = profile.avatar;
+        if (typeof Character3D !== 'undefined') {
+            Character3D.render(document.getElementById('hub-avatar-stage'), {
+                kind: 'avatar', id: profile.skin || 'default', name: profile.name, emoji: profile.avatar
+            });
+        }
         document.getElementById('player-points').textContent = Utils.formatCompact(profile.stats.points);
         document.getElementById('player-crystals').textContent = profile.stats.crystals;
         document.getElementById('player-level').textContent = profile.stats.level;
@@ -577,9 +648,16 @@ const UIManager = {
                     if (!result.success) { alert(result.error); return; }
                     AudioSystem.playLevelUp();
                 }
+                this.shopPreview = { kind: isPet ? 'pet' : 'avatar', id: item.id };
                 this.renderShop();
             });
-            div.appendChild(button);
+            const preview = document.createElement('button');
+            preview.type = 'button';
+            preview.className = 'shop-preview-button';
+            preview.textContent = 'View in 3D';
+            preview.setAttribute('aria-label', `Preview ${item.name} in 3D`);
+            preview.addEventListener('click', () => this.previewShopItem(isPet ? 'pet' : 'avatar', item.id));
+            div.append(button, preview);
             return div;
         };
 
@@ -595,6 +673,23 @@ const UIManager = {
         const petsContainer = document.getElementById('pets-items');
         petsContainer.innerHTML = '';
         shop.pets.forEach(item => petsContainer.appendChild(makeShopCard(item, 'pets')));
+        this.renderShopPreview();
+    },
+
+    renderStudyCompanion() {
+        const wrap = document.getElementById('study-companion');
+        const stage = document.getElementById('study-pet-stage');
+        const pet = PetManager.getCurrentPet();
+        if (!wrap || !stage) return;
+        wrap.hidden = !pet;
+        if (!pet || typeof Character3D === 'undefined') {
+            if (typeof Character3D !== 'undefined') Character3D.release(stage);
+            return;
+        }
+        document.getElementById('study-pet-name').textContent = pet.name;
+        document.getElementById('study-pet-caption').textContent = 'Ready to learn with you!';
+        Character3D.render(stage, {kind:'pet',id:pet.id,name:pet.name,emoji:pet.emoji,
+            hunger:pet.hunger,happiness:pet.happiness});
     },
 
     renderPetRoom() {
@@ -620,6 +715,22 @@ const UIManager = {
         status.textContent = pet ? PetManager.getPetStatus(pet).text : '';
         status.className = 'pet-status ' + (pet ? PetManager.getPetStatus(pet).class : '');
         document.getElementById('pet-character').textContent = pet ? PetManager.getPetEmoji(pet) : '';
+        const petStage = document.getElementById('pet-model-stage');
+        if (typeof Character3D !== 'undefined') {
+            if (pet) Character3D.render(petStage, {
+                kind: 'pet', id: pet.id, name: pet.name, emoji: pet.emoji,
+                happiness: pet.happiness, hunger: pet.hunger
+            });
+            else Character3D.release(petStage);
+        }
+        const mood = document.getElementById('pet-mood-indicator');
+        if (mood) {
+            const state = pet ? PetManager.getPetStatus(pet) : null;
+            mood.textContent = !pet ? 'No active pet' : pet.hunger >= 100 ? 'Starving' :
+                pet.happiness <= 0 ? 'Extremely unhappy' : pet.hunger >= 75 ? 'Hungry' :
+                pet.happiness <= 25 ? 'Lonely' : pet.happiness >= 75 && pet.hunger < 35 ? 'Thriving' : 'Content';
+            mood.className = `pet-mood-indicator ${state?.class === 'critical' ? 'critical' : state?.class === 'warning' ? 'warning' : ''}`;
+        }
         for (const [barId, valueId, value] of [
             ['happiness-bar', 'happiness-value', pet?.happiness],
             ['hunger-bar', 'hunger-value', pet?.hunger]
@@ -931,7 +1042,15 @@ const UIManager = {
         } else {
             AudioSystem.playIncorrect();
         }
-        
+        // A study companion reacts to actual answers, not to a fake static
+        // reward animation. This never changes welfare or awards extra XP.
+        if (typeof Character3D !== 'undefined' && PetManager.getCurrentPet()) {
+            const stage = document.getElementById('study-pet-stage');
+            Character3D.react(stage, result.correct ? 'play' : 'incorrect');
+            document.getElementById('study-pet-caption').textContent = result.correct ?
+                'Nice work!' : 'Keep trying!';
+        }
+
         if (result.isLastQuestion) {
             this.showResults();
             GameManager.quit();

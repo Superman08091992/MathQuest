@@ -20,7 +20,7 @@ def make_page_source():
     scripts = ['utils', 'question-templates', 'question-templates-advanced',
                'question-templates-extended-fixed', 'college-curriculum', 'college-procedural', 'question-catalogue', 'math-engine', 'readiness-lab', 'save-manager',
                'audio', 'profile-system', 'progression-system', 'reward-system',
-               'shop-system', 'pet-manager', 'game-manager', 'ui-manager', 'main']
+               'shop-system', 'pet-manager', 'character3d', 'game-manager', 'ui-manager', 'main']
     source = '\n'.join('<script>' + (ROOT / 'js' / (name + '.js')).read_text() + '</script>'
                        for name in scripts)
     return html.replace('</body>', source + '</body>')

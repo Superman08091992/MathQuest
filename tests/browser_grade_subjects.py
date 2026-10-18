@@ -2,6 +2,7 @@
 Usage: CHROMIUM_BINARY=/usr/bin/chromium python tests/browser_grade_subjects.py
 """
 import os
+import json
 import re
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -37,7 +38,7 @@ def run():
                                'question-templates-extended-fixed', 'college-curriculum', 'college-procedural', 'question-catalogue',
                                'math-engine', 'readiness-lab', 'save-manager', 'audio', 'profile-system',
                                'progression-system', 'reward-system', 'shop-system',
-                               'pet-manager', 'game-manager', 'ui-manager', 'main']
+                               'pet-manager', 'character3d', 'game-manager', 'ui-manager', 'main']
                     html = html.replace('</body>', '\n'.join('<script>' +
                         (home/'js'/f'{name}.js').read_text() + '</script>' for name in scripts) + '</body>')
                     page.evaluate("""() => {
@@ -51,7 +52,7 @@ def run():
                     page.set_content(html, wait_until='load')
                     page.add_style_tag(content='*{animation:none!important;transition:none!important}')
                     page.wait_for_function("typeof UIManager !== 'undefined' && typeof QuestionCatalogue !== 'undefined'")
-                    assert page.locator('.version-info').inner_text().startswith('Version 3.2.0')
+                    assert page.locator('.version-info').inner_text().startswith('Version ' + json.loads((ROOT / 'package.json').read_text())['version'])
                     assert page.locator('#app-error').is_hidden()
                     assert page.evaluate('QuestionCatalogue.getQuestionsForGrade(4).length') >= 70
                     page.locator('#start-game').click()

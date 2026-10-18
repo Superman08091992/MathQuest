@@ -1,15 +1,15 @@
 /* Cache Math Quest's own static game files; offline play, no account or network. */
-const CACHE_NAME = 'math-quest-v3.2.0';
+const CACHE_NAME = 'math-quest-v3.3.0';
 const PRECACHE = [
     './', './index.html', './manifest.webmanifest',
-    './css/style.css?v=3.2.0', './css/icons.css?v=3.2.0',
+    './css/style.css?v=3.3.0', './css/icons.css?v=3.3.0',
     './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png',
-    './js/utils.js?v=3.2.0', './js/question-templates.js?v=3.2.0', './js/question-templates-advanced.js?v=3.2.0',
-    './js/question-templates-extended-fixed.js?v=3.2.0', './js/college-curriculum.js?v=3.2.0', './js/college-procedural.js?v=3.2.0', './js/question-catalogue.js?v=3.2.0', './js/math-engine.js?v=3.2.0',
-    './js/readiness-lab.js?v=3.2.0', './js/save-manager.js?v=3.2.0', './js/audio.js?v=3.2.0', './js/profile-system.js?v=3.2.0',
-    './js/progression-system.js?v=3.2.0', './js/reward-system.js?v=3.2.0', './js/shop-system.js?v=3.2.0',
-    './js/pet-manager.js?v=3.2.0', './js/game-manager.js?v=3.2.0', './js/ui-manager.js?v=3.2.0',
-    './js/main.js?v=3.2.0', './js/pwa.js?v=3.2.0'
+    './js/utils.js?v=3.3.0', './js/question-templates.js?v=3.3.0', './js/question-templates-advanced.js?v=3.3.0',
+    './js/question-templates-extended-fixed.js?v=3.3.0', './js/college-curriculum.js?v=3.3.0', './js/college-procedural.js?v=3.3.0', './js/question-catalogue.js?v=3.3.0', './js/math-engine.js?v=3.3.0',
+    './js/readiness-lab.js?v=3.3.0', './js/save-manager.js?v=3.3.0', './js/audio.js?v=3.3.0', './js/profile-system.js?v=3.3.0',
+    './js/progression-system.js?v=3.3.0', './js/reward-system.js?v=3.3.0', './js/shop-system.js?v=3.3.0',
+    './js/pet-manager.js?v=3.3.0', './js/character3d.js?v=3.3.0', './js/game-manager.js?v=3.3.0', './js/ui-manager.js?v=3.3.0',
+    './js/main.js?v=3.3.0', './js/pwa.js?v=3.3.0'
 ];
 self.addEventListener('install', event => {
     event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE))
