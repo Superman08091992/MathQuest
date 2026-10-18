@@ -72,6 +72,13 @@ const UIManager = {
             try{this.startGame('checkpoint');}
             catch(error){alert('Could not start checkpoint: '+error.message);}
         });
+        document.getElementById('grade-project-save')?.addEventListener('click',()=>{
+            const profile=ProfileSystem.getCurrentProfile(),grade=MathEngine.currentGrade;
+            const result=ReadinessLab.submitGradeProject(profile,grade,document.getElementById('grade-project-response').value);
+            document.getElementById('grade-project-message').textContent=result.success?
+                'Project draft saved with your profile (not independently graded).':result.error;
+            if(result.success){this.renderGradeProject(grade);SaveManager.save();}
+        });
         document.getElementById('college-start-diagnostic')?.addEventListener('click', () => {
             try { this.startGame('diagnostic'); }
             catch(error){alert('Could not start diagnostic: '+error.message);}
@@ -346,15 +353,41 @@ const UIManager = {
         document.querySelectorAll('.btn-select-mode').forEach(btn => {
             btn.disabled = templates.length === 0;
         });
+        const goals=document.getElementById('grade-competencies');
+        if(goals){goals.replaceChildren(); for(const goal of ReadinessLab.GRADE_GOALS[grade]){
+            const li=document.createElement('li');li.textContent=goal;goals.appendChild(li);
+        }}
+        this.renderGradeProject(grade);
         const learner=ProfileSystem.getCurrentProfile();
         document.getElementById('grade-checkpoint-status').textContent=learner?
-            ReadinessLab.gradeStatus(learner,grade).status:'Create a profile to attempt a checkpoint.';
+            `${ReadinessLab.gradeStatus(learner,grade).status}. This checkpoint also reviews earlier grades (when applicable).` :
+            'Create a profile to attempt a checkpoint.';
         const label = document.getElementById('question-coverage');
         const selected = MathEngine.getAvailableTemplates();
         const fixedOnly = selected.length > 0 && selected.every(t => t.isFixed);
         label.textContent = `${selected.length} question ${selected.length === 1 ? 'type' : 'types'} selected. ` +
             (fixedOnly ? 'These are fixed questions; a quiz may be shorter to avoid repeats.' :
                 'Procedural types can generate different problems.');
+    },
+
+    renderGradeProject(grade){
+        const assignment=ReadinessLab.GRADE_PROJECTS[grade];
+        const profile=ProfileSystem.getCurrentProfile();
+        if(!assignment||!profile)return;
+        document.getElementById('grade-project-title').textContent=`Grade assignment: ${assignment.title}`;
+        document.getElementById('grade-project-prompt').textContent=assignment.prompt;
+        const rubric=document.getElementById('grade-project-rubric');rubric.replaceChildren();
+        for(const criterion of assignment.rubric){const li=document.createElement('li');li.textContent=criterion;rubric.appendChild(li);}
+        const status=ReadinessLab.gradeProjectStatus(profile,grade);
+        document.getElementById('grade-project-status').textContent=
+            `${status.status}. Minimum ${assignment.minimum} characters; work is kept in your exportable local save.`;
+        const answer=document.getElementById('grade-project-response');
+        // Restore the student's own latest draft on every grade visit.
+        if(answer.dataset.grade!==`${profile.id}:${grade}`){
+            answer.value=status.latest?.text||'';
+            answer.dataset.grade=`${profile.id}:${grade}`;
+            document.getElementById('grade-project-message').textContent='';
+        }
     },
 
     goBack() {
@@ -421,6 +454,9 @@ const UIManager = {
         document.getElementById('player-points').textContent = Utils.formatCompact(profile.stats.points);
         document.getElementById('player-crystals').textContent = profile.stats.crystals;
         document.getElementById('player-level').textContent = profile.stats.level;
+        const pathway=ReadinessLab.pathwayReport(profile);
+        const pathwayText=document.getElementById('academic-pathway-summary');
+        if(pathwayText){pathwayText.textContent=pathway.label+(pathway.complete?'. Academic work still requires independent grading and verification.':'.');}
         
         const grid = document.getElementById('grade-grid');
         grid.innerHTML = '';
@@ -432,7 +468,12 @@ const UIManager = {
             const unlocked = ProfileSystem.isGradeUnlocked(grade);
             const bank = MathEngine.getAvailableTemplates(grade, 'all');
             const subjectCount = new Set(bank.map(t => t.category)).size;
+            const status=pathway.grades[grade];
+            const statusLabel=status.complete&&status.project.submitted?'Academic practice complete':
+                status.complete?'Checkpoint passed; project needed':status.passes?'Retest due after 7 days':
+                status.grade===pathway.next?'Next academic focus':'Not mastered';
             const coverageSummary = `<div class="grade-coverage">${subjectCount} subjects · ${bank.length} question types</div>`;
+            const statusNode=document.createElement('div');statusNode.className='grade-academic-status';statusNode.textContent=statusLabel;
             
             const card = document.createElement('div');
             card.className = 'grade-card' + (unlocked ? '' : ' locked');
@@ -448,6 +489,7 @@ const UIManager = {
                 ${coverageSummary}
             `;
             
+            card.appendChild(statusNode);
             if (unlocked) {
                 card.addEventListener('click', () => {
                     AudioSystem.playClick();
@@ -714,11 +756,11 @@ const UIManager = {
             const p=document.createElement('p');p.textContent=`${Utils.getCategoryName(entry.category)}: ${entry.independentAccuracy??'—'}% independently correct, ${entry.unique} unique items, ${entry.days} days — ${entry.status}`;breakdown.appendChild(p);
         }
         const route=document.getElementById('college-route');route.replaceChildren();
-        const routeTitle=document.createElement('h4');routeTitle.textContent='K–12 practice checkpoint record';route.appendChild(routeTitle);
-        const completed=Array.from({length:13},(_,g)=>ReadinessLab.gradeStatus(profile,g));
-        const progress=document.createElement('p');progress.textContent=`${completed.filter(x=>x.complete).length}/13 grade checkpoints have repeated passing evidence. Each requires two ≥90% no-hint assessments at least 7 days apart with 20+ distinct keyed problems across the pair. All results are unproctored practice, not qualifications.`;route.appendChild(progress);
+        const routeTitle=document.createElement('h4');routeTitle.textContent='Grades K–12: foundational academic pathway';route.appendChild(routeTitle);
+        const pathway=ReadinessLab.pathwayReport(profile);
+        const progress=document.createElement('p');progress.textContent=`${pathway.mastered}/13 grade checkpoints have repeated passing evidence and ${pathway.submitted}/13 applied assignments have drafts recorded. Each checkpoint needs two no-hint cumulative assessments ≥90% overall and in current-grade material, with review of previous grades and at least seven days between passes. Submitted writing is not automatically assessed. XP remains separate, and these unproctored practice results are not qualifications.`;route.appendChild(progress);
         for(let grade=0;grade<13;grade++){
-            const line=document.createElement('p');line.textContent=`${Utils.getGradeName(grade)}: ${completed[grade].status}`;route.appendChild(line);
+            const line=document.createElement('p');line.textContent=`${Utils.getGradeName(grade)}: ${pathway.grades[grade].status}; ${pathway.grades[grade].project.status}`;route.appendChild(line);
         }
         const assignment=document.getElementById('college-assignment');
         if(!assignment.options.length){

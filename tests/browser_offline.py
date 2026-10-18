@@ -26,7 +26,7 @@ def run():
             page.on('pageerror', lambda error: errors.append(str(error)))
             page.goto(f'http://127.0.0.1:{server.server_address[1]}/', wait_until='networkidle')
             page.evaluate('navigator.serviceWorker.ready')
-            page.wait_for_function("async () => !!(await caches.keys()).find(x => x === 'math-quest-v3.0.0')")
+            page.wait_for_function("async () => !!(await caches.keys()).find(x => x === 'math-quest-v3.1.0')")
             page.locator('#start-game').click()
             page.locator('#new-profile-name').fill('Offline Player')
             page.locator('#create-profile').click()

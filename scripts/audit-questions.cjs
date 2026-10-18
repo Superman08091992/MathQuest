@@ -27,7 +27,7 @@ for(let grade=0;grade<=12;grade++) {
     fixedTypes:templates.filter(t=>t.isFixed).length,categories:[...new Set(templates.map(t=>t.category))].sort(),
     sampled:5000,distinctObserved:seen.size});
 }
-const audit={version:'3.0.0',method:'Seeded independent sampling: 5000 generated questions per grade (65000 total)',
+const audit={version:'3.1.0',method:'Seeded independent sampling: 5000 generated questions per grade (65000 total)',
   caution:'Distinct observed is only a sampling lower bound, not total available questions or a proof of mathematical/curricular correctness.',
   originalProceduralTemplates:29,addedProceduralTemplates:QuestionTemplatesAdvanced.count, collegeProceduralTemplates:CollegeProcedural.count, newFixedQuestions:CollegeCurriculum.count,
   curatedFixedQuestions:QuestionCatalogue.staticCount,

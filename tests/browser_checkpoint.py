@@ -23,8 +23,19 @@ def main():
                 page.locator('#new-profile-name').fill('Practice student')
                 page.locator('#create-profile').click()
                 page.evaluate('ProfileSystem.getCurrentProfile().stats.level=11;SaveManager.save();UIManager.renderWorldHub()')
+                assert '0/13 cumulative grade checkpoints' in page.locator('#academic-pathway-summary').inner_text()
+                assert page.locator('.grade-academic-status').count()==13
                 page.locator('.grade-card').nth(4).click()
-                assert 'No qualifying checkpoint' in page.locator('#grade-checkpoint-status').inner_text()
+                assert page.locator('#grade-competencies li').count()==3
+                assert 'community' in page.locator('#grade-project-prompt').inner_text().lower()
+                project_text='I want to study a local creek. My first source is a public monitoring report, while my second is an independent field observation. I would measure temperature on several days with the same instrument and location, then compare the results and discuss weather as a confounding factor.'
+                page.locator('#grade-project-response').fill(project_text)
+                page.locator('#grade-project-save').click()
+                assert 'Project draft saved' in page.locator('#grade-project-message').inner_text()
+                assert 'not independently evaluated' in page.locator('#grade-project-status').inner_text()
+                assert page.evaluate('ReadinessLab.pathwayReport(ProfileSystem.getCurrentProfile()).submitted')==1
+                assert project_text in page.evaluate('SaveManager.export()')
+                assert 'Not assessed' in page.locator('#grade-checkpoint-status').inner_text()
                 page.locator('#start-grade-checkpoint').click()
                 assert page.locator('.screen.active').get_attribute('id')=='gameplay'
                 assert page.evaluate('GameManager.currentGame.mode')=='checkpoint'
@@ -33,6 +44,7 @@ def main():
                 assert page.locator('#hint-btn').is_hidden()
                 assert page.locator('.timer-container').is_hidden()
                 assert len(page.evaluate('Array.from(new Set(GameManager.currentGame.questions.map(q=>q.category)))'))>=6
+                assert page.evaluate('GameManager.currentGame.questions.filter(q=>q.grade<4).length')==8
                 for i in range(total):
                     answer=page.evaluate('GameManager.currentGame.questions[GameManager.currentGame.currentQuestionIndex].answer')
                     pick=page.locator('#answers-grid .answer-btn').filter(has_text=re.compile('^'+re.escape(str(answer))+'$'))
@@ -46,6 +58,7 @@ def main():
                 assert page.evaluate('ProfileSystem.getCurrentProfile().stats.gamesPlayed')==0
                 assert page.evaluate('ProfileSystem.getCurrentProfile().readiness.checkpoints.length')==1
                 page.locator('#back-to-hub').click()
+                assert '0/13 cumulative grade checkpoints' in page.locator('#academic-pathway-summary').inner_text()
                 page.locator('.grade-card').nth(4).click()
                 assert 'repeat after 7 days' in page.locator('#grade-checkpoint-status').inner_text()
                 page.locator('#mode-selection .btn-back').click()
