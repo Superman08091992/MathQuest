@@ -10,6 +10,20 @@ const UIManager = {
     
     init() {
         this.bindEvents();
+        const updateCare = () => {
+            if (!SaveManager.data) return;
+            PetManager.refreshAndSave();
+            if (this.currentScreen === 'pet-room') this.renderPetRoom();
+            else if (this.currentScreen === 'world-hub') this.renderPetCareAlert();
+            else if (this.currentScreen === 'shop') this.renderShop();
+        };
+        // Browser background timers may be throttled. Recompute from real elapsed
+        // time on resume/focus, in addition to updating the active room each minute.
+        window.addEventListener('focus', updateCare);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) updateCare();
+        });
+        setInterval(updateCare, 60_000);
     },
     
     bindEvents() {
@@ -276,7 +290,7 @@ const UIManager = {
         });
         document.getElementById(screenId)?.classList.add('active');
         this.currentScreen = screenId;
-        
+        PetManager.refreshAndSave();
         // Screen-specific renders
         if (screenId === 'profiles-screen') this.renderProfiles();
         if (screenId === 'mode-selection') this.renderCategoryFilters();
@@ -454,6 +468,7 @@ const UIManager = {
         document.getElementById('player-points').textContent = Utils.formatCompact(profile.stats.points);
         document.getElementById('player-crystals').textContent = profile.stats.crystals;
         document.getElementById('player-level').textContent = profile.stats.level;
+        this.renderPetCareAlert();
         const pathway=ReadinessLab.pathwayReport(profile);
         const pathwayText=document.getElementById('academic-pathway-summary');
         if(pathwayText){pathwayText.textContent=pathway.label+(pathway.complete?'. Academic work still requires independent grading and verification.':'.');}
@@ -506,6 +521,20 @@ const UIManager = {
         }
     },
     
+    renderPetCareAlert() {
+        const alert = document.getElementById('pet-care-alert');
+        if (!alert) return;
+        const profile = ProfileSystem.getCurrentProfile();
+        if (!profile) { alert.hidden = true; return; }
+        const atRisk = profile.pets.filter(p =>
+            p.hunger >= 75 || p.happiness <= 25);
+        const lost = profile.petHistory?.length || 0;
+        alert.hidden = atRisk.length === 0 && lost === 0;
+        alert.textContent = atRisk.length ?
+            `Care needed: ${atRisk.length} pet${atRisk.length === 1 ? '' : 's'}` :
+            `${lost} pet${lost === 1 ? '' : 's'} lost`;
+    },
+
     renderShop() {
         const profile = ProfileSystem.getCurrentProfile();
         if (!profile) return;
@@ -569,33 +598,38 @@ const UIManager = {
     },
 
     renderPetRoom() {
+        const refresh = PetManager.refreshAndSave();
         const profile = ProfileSystem.getCurrentProfile();
         if (!profile) return;
         const pet = PetManager.getCurrentPet();
         document.getElementById('current-pet-name').textContent = pet ? pet.name : 'No Pet Selected';
         const empty = document.getElementById('pet-empty-state');
         empty.hidden = Boolean(pet);
-        empty.querySelector('h3').textContent = profile.pets.length ? 'Choose a pet' : 'No pet adopted yet';
+        empty.querySelector('h3').textContent = profile.pets.length ? 'Choose a living pet' : 'No living pet selected';
         empty.querySelector('p').textContent = profile.pets.length ?
             'Select one of your pets below to interact with it.' :
-            'Earn points from math questions, then adopt a pet from the shop.';
+            (profile.petHistory?.length ?
+                'Your previous pet is no longer here. See its history below, or adopt another pet.' :
+                'Earn points from questions, then adopt a pet from the shop.');
         document.getElementById('adopt-pet-btn').hidden = profile.pets.length > 0;
         document.getElementById('pet-display-area').hidden = !pet;
         document.getElementById('pet-stats').hidden = !pet;
         document.getElementById('pet-interactions').hidden = !pet;
-        document.getElementById('pet-status').hidden = !pet;
+        const status = document.getElementById('pet-status');
+        status.hidden = !pet;
+        status.textContent = pet ? PetManager.getPetStatus(pet).text : '';
+        status.className = 'pet-status ' + (pet ? PetManager.getPetStatus(pet).class : '');
         document.getElementById('pet-character').textContent = pet ? PetManager.getPetEmoji(pet) : '';
         for (const [barId, valueId, value] of [
             ['happiness-bar', 'happiness-value', pet?.happiness],
             ['hunger-bar', 'hunger-value', pet?.hunger]
         ]) {
             document.getElementById(barId).style.width = `${value ?? 0}%`;
-            document.getElementById(valueId).textContent = pet ? `${value}/100` : '—';
+            document.getElementById(valueId).textContent = pet ? `${Math.round(value)}/100` : '—';
         }
         const xpNeeded = pet ? pet.level * 50 : 0;
         document.getElementById('xp-bar').style.width = pet ? `${Math.min(100, pet.xp / xpNeeded * 100)}%` : '0%';
         document.getElementById('level-display').textContent = pet ? `Lv${pet.level} (${pet.xp}/${xpNeeded})` : '—';
-        document.getElementById('pet-status').textContent = pet ? PetManager.getPetStatus(pet).text : '';
         document.querySelectorAll('.interaction-btn').forEach(btn => {
             const cost = PetManager.INTERACTION_COSTS[btn.dataset.action];
             const balance = btn.dataset.action === 'treat' ? profile.stats.crystals : profile.stats.points;
@@ -605,13 +639,12 @@ const UIManager = {
             btn.disabled = !pet || profile.stats.points < PetManager.INTERACTION_COSTS.play;
         });
 
-        // Always render the owned list, including when selectedPet is missing.
         const petsList = document.getElementById('pets-list');
-        petsList.innerHTML = '';
+        petsList.replaceChildren();
         if (profile.pets.length === 0) {
             const note = document.createElement('p');
             note.className = 'empty-note';
-            note.textContent = 'No pets owned. Visit the shop to adopt your first pet.';
+            note.textContent = (profile.petHistory?.length ? 'No living pets. ' : 'No pets owned. ') + 'Visit the shop to adopt a new pet.';
             petsList.appendChild(note);
         }
         profile.pets.forEach(ownedPet => {
@@ -626,13 +659,37 @@ const UIManager = {
             const level = document.createElement('div');
             level.className = 'pet-level';
             level.textContent = `${ownedPet.name} · Lv${ownedPet.level}`;
-            btn.append(emoji, level);
+            const care = document.createElement('div');
+            care.className = 'pet-care-state';
+            const state = PetManager.getPetStatus(ownedPet);
+            care.textContent = state.class === 'critical' ? 'Critical care' :
+                state.class === 'warning' ? 'Needs care' : 'Safe';
+            btn.append(emoji, level, care);
             btn.addEventListener('click', () => {
-                ShopSystem.selectPet(ownedPet.id);
+                if (!ShopSystem.selectPet(ownedPet.id)) return;
                 this.renderPetRoom();
             });
             petsList.appendChild(btn);
         });
+
+        const history = document.getElementById('pet-history');
+        const historyList = document.getElementById('pet-history-list');
+        historyList.replaceChildren();
+        history.hidden = !(profile.petHistory?.length);
+        for (const record of (profile.petHistory || []).slice(-10).reverse()) {
+            const entry = document.createElement('p');
+            entry.className = 'pet-loss-record';
+            const when = new Date(record.lostAt);
+            entry.textContent = `${record.emoji || '🐾'} ${PetManager.getLossMessage(record)} ` +
+                `(level ${record.level || 1}; ${Number.isNaN(when.getTime()) ? 'time unknown' : when.toLocaleString()})`;
+            historyList.appendChild(entry);
+        }
+        if (refresh.error) {
+            const warning = document.getElementById('save-warning');
+            warning.textContent = refresh.error;
+            warning.hidden = false;
+        }
+        this.renderPetCareAlert();
     },
 
     renderAchievements() {

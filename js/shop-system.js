@@ -8,6 +8,7 @@ const ShopSystem = {
     },
 
     getShopItems() {
+        PetManager.refreshAndSave();
         const profile = SaveManager.getCurrentProfile();
         const shop = SaveManager.getShopItems();
         const withOwnership = items => items.map(item => ({
@@ -22,6 +23,8 @@ const ShopSystem = {
     },
 
     purchaseItem(itemId) {
+        const refresh = PetManager.refreshAndSave();
+        if (refresh.error) return { success: false, error: refresh.error };
         const profile = SaveManager.getCurrentProfile();
         if (!profile) return { success: false, error: 'No profile selected' };
         const catalogue = SaveManager.getShopItems();
@@ -39,8 +42,9 @@ const ShopSystem = {
         const isPet = catalogue.pets.some(p => p.id === itemId);
         if (isPet) {
             profile.pets.push({ id: item.id, name: item.name, emoji: item.emoji,
-                adoptedAt: Date.now(), level: 1, xp: 0, happiness: 80,
-                hunger: 50, interactions: 0 });
+                adoptedAt: Date.now(), careUpdatedAt: Date.now(),
+                starvingSince: null, unhappySince: null, level: 1, xp: 0,
+                happiness: 80, hunger: 50, interactions: 0 });
             profile.selectedPet = item.id;
         } else {
             profile.skin = item.id;
@@ -67,6 +71,8 @@ const ShopSystem = {
     },
 
     selectPet(petId) {
+        const refresh = PetManager.refreshAndSave();
+        if (refresh.error) return false;
         const profile = SaveManager.getCurrentProfile();
         if (!profile || !profile.pets.some(p => p.id === petId)) return false;
         profile.selectedPet = petId;
@@ -77,13 +83,17 @@ const ShopSystem = {
     getPetStats(petId) { return SaveManager.getCurrentProfile()?.pets?.find(p => p.id === petId) || null; },
 
     updatePet(petId, updates) {
+        // Names are editable; welfare stats may ONLY change through paid care
+        // actions and elapsed time, not via arbitrary shop updates.
+        const refresh = PetManager.refreshAndSave();
+        if (refresh.error) return false;
         const pet = this.getPetStats(petId);
-        if (!pet || !updates || typeof updates !== 'object') return false;
-        if (typeof updates.name === 'string' && updates.name.length <= 50) pet.name = updates.name;
-        for (const key of ['happiness', 'hunger']) {
-            if (Number.isFinite(updates[key])) pet[key] = Utils.clamp(updates[key], 0, 100);
-        }
-        SaveManager.save();
+        if (!pet || !updates || typeof updates.name !== 'string' ||
+            !updates.name.trim() || updates.name.length > 50 ||
+            Object.keys(updates).some(key => key !== 'name')) return false;
+        const previous = pet.name;
+        pet.name = updates.name.trim();
+        if (!SaveManager.save()) { pet.name = previous; return false; }
         return true;
     }
 };

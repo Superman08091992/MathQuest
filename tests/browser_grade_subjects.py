@@ -51,7 +51,7 @@ def run():
                     page.set_content(html, wait_until='load')
                     page.add_style_tag(content='*{animation:none!important;transition:none!important}')
                     page.wait_for_function("typeof UIManager !== 'undefined' && typeof QuestionCatalogue !== 'undefined'")
-                    assert page.locator('.version-info').inner_text().startswith('Version 3.1.0')
+                    assert page.locator('.version-info').inner_text().startswith('Version 3.2.0')
                     assert page.locator('#app-error').is_hidden()
                     assert page.evaluate('QuestionCatalogue.getQuestionsForGrade(4).length') >= 70
                     page.locator('#start-game').click()

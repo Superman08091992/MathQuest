@@ -1797,3 +1797,37 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .grade-project-panel textarea{width:100%;min-height:100px;margin:.4rem 0 .65rem;padding:.65rem;box-sizing:border-box;border-radius:8px;font:inherit}
 .grade-project-panel button{display:inline-block;max-width:100%}
 .grade-project-panel p{line-height:1.45}
+
+/* v3.2 pet care: visible consequences and persistent loss history. */
+.pet-care-policy {
+    background: var(--bg-medium);
+    border-left: 4px solid #f59e0b;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+}
+.pet-status.warning { color: #fbbf24; font-weight: 600; }
+.pet-status.critical { color: #fca5a5; font-weight: 700; }
+.pet-care-alert {
+    display: block;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: #78350f;
+    color: #fff;
+    margin-top: 0.35rem;
+}
+.pet-care-state { margin-top: 0.35rem; font-size: 0.75rem; color: var(--text-secondary); }
+.pet-history {
+    margin-top: 1.1rem;
+    padding: 1.1rem;
+    border: 1px solid #6b7280;
+    border-radius: var(--radius-lg);
+    background: var(--bg-medium);
+}
+.pet-history h3 { margin-bottom: 0.5rem; }
+.pet-history > p { color: var(--text-secondary); margin-bottom: 0.75rem; }
+.pet-loss-record { padding: 0.65rem 0; border-bottom: 1px solid var(--border-color); }
+.pet-loss-record:last-child { border-bottom: none; }

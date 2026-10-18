@@ -1,4 +1,4 @@
-# Math Quest 3.1 — Grades K–12 Academic Pathway
+# Math Quest 3.2 — Academic Pathway & Persistent Pet Care
 
 Math Quest is a local-first educational game with 13 grade levels (Kindergarten to Grade 12), adaptive procedural questions, subject selection, games, profiles, pets, achievements, and an optional university application workshop. Grade-specific cumulative assessments and applied assignments are part of the **core K–12 curriculum**.
 
@@ -9,13 +9,17 @@ Math Quest is a local-first educational game with 13 grade levels (Kindergarten 
 
 Game XP provides access for exploration, **not academic mastery**. At each grade, learners can view target competencies, take a cumulative no-hint checkpoint revisiting earlier grades, and submit an open-ended applied assignment. Two qualifying checkpoints at least seven days apart and a submitted grade project are recorded as in-app evidence. The K–12 pathway is not complete until **all 13 grades** have both forms of evidence; reported results remain unproctored and assignments ungraded. See [ACADEMIC_PATHWAY_3.1.md](ACADEMIC_PATHWAY_3.1.md).
 
-## Included in 3.1
+## Included in 3.1 and 3.2
 
 - 526 registered question definitions across all 13 grades, including 233 newly authored fixed questions and 94 new procedural generators (at the current checkout).
 - Expanded reading, writing, science, mathematics, economics, history, government, statistics, computing, research, and logic coverage. The [actual curriculum map](K12_CURRICULUM_MAP.json) records available definitions per grade and marks small subject banks (all grades still have some underrepresented categories).
 - Optional application workshop: balanced 40-question diagnostic, five preparatory tracks, category-level practice summaries, grade-level 20-plus-question checkpoints, retesting after seven days, portfolio assignments and manual review notes.
 - Practice diagnostics and checkpoints are scored in-game without granting XP or currency; no deceptive academic certification.
 - Offline-first web/PWA source, Android/Capacitor and Linux/Electron build configurations.
+
+## New in 3.2: persistent pet care
+
+Pet hunger rises 2/100 per hour, and happiness drops 1.25/100 per hour even when the application is closed. Once hunger reaches 100, a continuous 36-hour starvation period ends in death; remaining at zero happiness for 48 consecutive hours causes a pet to run away. Feeding, petting, playing, and treats can interrupt those clocks. Each loss is preserved in the player's individual save history, and a new animal can be adopted. Existing pet XP and levels remain intact. Older saves start the care clock when they are first upgraded, rather than losing pets retroactively. See [PET_CARE.md](PET_CARE.md) for timing formulas, examples, and limitations.
 
 ## Run locally
 

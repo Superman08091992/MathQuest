@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
         RewardSystem.init();
         AudioSystem.init();
         UIManager.init();
-        console.log('Math Quest 3.1.0 initialized with academic readiness curriculum.');
+        console.log('Math Quest 3.2.0 initialized with academic readiness curriculum.');
     } catch (error) {
         console.error('Math Quest could not start:', error);
         const warning = document.getElementById('app-error');
         if (warning) {
-            warning.textContent = 'Math Quest could not load all its subjects. Reinstall the complete 3.1.0 application. Details: ' + error.message;
+            warning.textContent = 'Math Quest could not load all its subjects. Reinstall the complete 3.2.0 application. Details: ' + error.message;
             warning.hidden = false;
         }
         document.getElementById('start-game')?.setAttribute('disabled', '');

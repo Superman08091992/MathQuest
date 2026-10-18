@@ -351,3 +351,217 @@ test('short fixed-content games never pad repeated questions or award farmable p
   assert.equal(p.recentQuestionKeys.length,1);
   assert.equal(setup(JSON.parse(storage.get('mathQuestData'))).g.ProfileSystem.getCurrentProfile().recentQuestionKeys.length,1);
 });
+
+const PET_HOUR = 60 * 60 * 1000;
+
+test('pet hunger and happiness decay by elapsed wall time and persist without player interaction', () => {
+  const {g,storage,advance}=setup();
+  g.ProfileSystem.createProfile('Offline care');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=500;
+  assert.equal(g.ShopSystem.purchaseItem('cat').success,true);
+  const adoptedAt=g.PetManager.getCurrentPet().careUpdatedAt;
+  advance(12*PET_HOUR);
+  assert.equal(g.SaveManager.save(),true);
+  const pet=g.PetManager.getCurrentPet();
+  assert.equal(pet.hunger,74);
+  assert.equal(pet.happiness,65);
+  assert.equal(pet.careUpdatedAt,adoptedAt+12*PET_HOUR);
+  assert.equal(pet.xp,0);
+  g.SaveManager.save(); // Idempotent at the same instant.
+  assert.equal(pet.hunger,74);
+  assert.equal(pet.happiness,65);
+  const persisted=JSON.parse(storage.get('mathQuestData'));
+  const loaded=setup(persisted).g.PetManager.getCurrentPet();
+  assert.equal(loaded.hunger,74);
+  assert.equal(loaded.happiness,65);
+  assert.equal(loaded.level,1);
+});
+
+test('pet dies only after continuous starvation grace; loss persists, cannot be selected and species can be adopted again', () => {
+  const {g,storage,advance}=setup();
+  g.ProfileSystem.createProfile('Starvation');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=1000;
+  assert.equal(g.ShopSystem.purchaseItem('cat').success,true);
+  const pet=g.PetManager.getCurrentPet();pet.level=5;pet.xp=22;
+  advance(60*PET_HOUR);
+  g.SaveManager.save();
+  assert.equal(pet.hunger,100);
+  assert.equal(profile.petHistory.length,0);
+  assert.match(g.PetManager.getPetStatus(pet).text,/Starving/);
+  advance(2*PET_HOUR);
+  g.SaveManager.save();
+  assert.equal(g.PetManager.getCurrentPet(),null);
+  assert.equal(profile.pets.length,0);
+  assert.equal(profile.selectedPet,null);
+  assert.equal(profile.petHistory.length,1);
+  assert.equal(profile.petHistory[0].fate,'died');
+  assert.equal(profile.petHistory[0].reason,'starvation');
+  assert.equal(profile.petHistory[0].level,5);
+  assert.equal(profile.petHistory[0].xp,22);
+  assert.equal(g.ShopSystem.selectPet('cat'),false);
+  assert.equal(g.PetManager.interact('feed').success,false);
+  assert.equal(g.ShopSystem.getShopItems().pets.find(p=>p.id==='cat').owned,false);
+  assert.equal(profile.ownedItems.includes('cat'),false);
+  const saved=JSON.parse(storage.get('mathQuestData'));
+  saved.profiles[0].ownedItems.push('cat'); // Simulate an old stale ownership record.
+  const restored=setup(saved).g;
+  assert.equal(restored.ProfileSystem.getCurrentProfile().pets.length,0);
+  assert.equal(restored.ProfileSystem.getCurrentProfile().petHistory.length,1);
+  assert.equal(restored.ShopSystem.getShopItems().pets.find(p=>p.id==='cat').owned,false);
+  assert.equal(restored.ShopSystem.purchaseItem('cat').success,true);
+  assert.equal(restored.PetManager.getCurrentPet().level,1);
+  assert.equal(restored.ProfileSystem.getCurrentProfile().petHistory.length,1);
+});
+
+test('regular feeding prevents starvation but prolonged sadness leads to running away', () => {
+  const {g,advance}=setup();
+  g.ProfileSystem.createProfile('Feed only');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=2500;
+  assert.equal(g.ShopSystem.purchaseItem('dog').success,true);
+  const adoptedAt=g.PetManager.getCurrentPet().careUpdatedAt;
+  for(let i=0;i<11;i++) {
+    advance(10*PET_HOUR);
+    assert.equal(g.PetManager.interact('feed').success,true);
+  }
+  assert.equal(profile.pets.length,1);
+  assert.equal(g.PetManager.getCurrentPet().happiness,0);
+  assert.equal(g.PetManager.getCurrentPet().hunger,50);
+  assert.match(g.PetManager.getPetStatus(g.PetManager.getCurrentPet()).text,/run away/);
+  advance(3*PET_HOUR);
+  g.SaveManager.save();
+  assert.equal(profile.pets.length,0);
+  assert.equal(profile.petHistory.length,1);
+  assert.equal(profile.petHistory[0].fate,'ran_away');
+  assert.equal(profile.petHistory[0].reason,'neglect');
+  assert.ok(Math.abs(profile.petHistory[0].lostAt - (adoptedAt + 112*PET_HOUR)) < 2);
+  assert.equal(profile.petHistory[0].id,'dog');
+});
+
+test('feeding a starving pet clears its death clock, and attention clears its runaway clock', () => {
+  const {g,advance}=setup();
+  g.ProfileSystem.createProfile('Recovery');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=1000;
+  g.ShopSystem.purchaseItem('rabbit');
+  advance(30*PET_HOUR);g.SaveManager.save();
+  const pet=g.PetManager.getCurrentPet();
+  assert.equal(pet.hunger,100);
+  assert.ok(pet.starvingSince);
+  assert.equal(g.PetManager.interact('feed').success,true);
+  assert.equal(pet.hunger,80);
+  assert.equal(pet.starvingSince,null);
+  // At t=61h the pet would have died without care; it is still alive.
+  advance(31*PET_HOUR);g.SaveManager.save();
+  assert.ok(g.PetManager.getCurrentPet());
+  assert.equal(profile.petHistory.length,0);
+  // Petting a miserable animal interrupts its separate departure countdown.
+  const hourAfter=g.PetManager.getCurrentPet();
+  advance(5*PET_HOUR);g.SaveManager.save();
+  assert.equal(hourAfter.happiness,0);
+  assert.ok(hourAfter.unhappySince);
+  assert.equal(g.PetManager.interact('pet').success,true);
+  assert.equal(hourAfter.unhappySince,null);
+  assert.equal(hourAfter.happiness,10);
+});
+
+test('all profiles age independently even while another profile is selected', () => {
+  const {g,advance}=setup();
+  g.ProfileSystem.createProfile('First');
+  const first=g.ProfileSystem.getCurrentProfile();first.stats.points=200;
+  g.ShopSystem.purchaseItem('cat');
+  g.ProfileSystem.createProfile('Second');
+  const second=g.ProfileSystem.getCurrentProfile();
+  advance(65*PET_HOUR);
+  g.SaveManager.save();
+  assert.equal(first.petHistory.length,1);
+  assert.equal(first.petHistory[0].fate,'died');
+  assert.equal(first.pets.length,0);
+  assert.equal(second.pets.length,0);
+  assert.equal(second.petHistory.length,0);
+  assert.equal(g.ProfileSystem.selectProfile(first.id),true);
+  assert.equal(g.PetManager.getCurrentPet(),null);
+});
+
+test('legacy pets keep actual levels and start decay on upgrade; backward clocks do not reverse decay', () => {
+  const oldDate=Date.now()-2*365*24*PET_HOUR;
+  const older={version:'3.1.0',currentProfileId:'p',profiles:[{
+    id:'p',name:'Previous player',stats:{points:200},ownedItems:['cat','default'],
+    pets:[{id:'cat',name:'Cat',emoji:'🐱',adoptedAt:oldDate,level:7,xp:19,hunger:99,happiness:1}],
+    selectedPet:'cat'
+  }]};
+  const {g,advance}=setup(older);
+  const pet=g.PetManager.getCurrentPet();
+  assert.equal(pet.level,7);
+  assert.equal(pet.xp,19);
+  assert.equal(pet.hunger,99);
+  assert.equal(pet.happiness,1);
+  const initial=pet.careUpdatedAt;
+  assert.ok(initial>oldDate);
+  advance(2*PET_HOUR);g.SaveManager.save();
+  assert.equal(pet.hunger,100);
+  assert.ok(pet.happiness>=0);
+  const atTwoHours=pet.careUpdatedAt;
+  advance(-6*PET_HOUR);g.SaveManager.save();
+  assert.equal(pet.careUpdatedAt,atTwoHours);
+  assert.equal(pet.hunger,100);
+  advance(7*PET_HOUR);g.SaveManager.save();
+  assert.equal(pet.careUpdatedAt,initial+3*PET_HOUR);
+  assert.equal(g.ProfileSystem.getCurrentProfile().petHistory.length,0);
+});
+
+test('pet care cannot be bypassed via arbitrary shop stat updates', () => {
+  const {g}=setup();g.ProfileSystem.createProfile('No cheats');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=500;
+  g.ShopSystem.purchaseItem('cat');
+  assert.equal(g.ShopSystem.updatePet('cat',{hunger:0,happiness:100}),false);
+  assert.equal(g.PetManager.getCurrentPet().hunger,50);
+  assert.equal(g.ShopSystem.updatePet('cat',{name:'Mittens'}),true);
+  assert.equal(g.PetManager.getCurrentPet().name,'Mittens');
+});
+
+test('large offline jumps and hourly updates produce the same chronological death instant', () => {
+  const {g}=setup();
+  const start=Date.now();
+  const pet={id:'cat',hunger:50,happiness:80,careUpdatedAt:start,starvingSince:null,unhappySince:null};
+  const huge=JSON.parse(JSON.stringify(pet));
+  const one=g.PetManager.advancePet(huge,start+80*PET_HOUR);
+  assert.equal(one.loss.fate,'died');
+  const gradual=JSON.parse(JSON.stringify(pet));
+  let loss;
+  for(let hour=1;hour<=80;hour++) {
+    const res=g.PetManager.advancePet(gradual,start+hour*PET_HOUR);
+    if(res.loss) { loss=res.loss;break; }
+  }
+  assert.equal(loss.fate,'died');
+  assert.ok(Math.abs(loss.lostAt-one.loss.lostAt)<3);
+  assert.equal(huge.hunger,100);
+  assert.equal(gradual.hunger,100);
+});
+
+test('when one pet dies, the selected pet switches to a surviving animal', () => {
+  const {g,advance}=setup();
+  g.ProfileSystem.createProfile('Multiple pets');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=1000;
+  g.ShopSystem.purchaseItem('cat');
+  advance(40*PET_HOUR);g.SaveManager.save();
+  g.ShopSystem.purchaseItem('dog');
+  g.ShopSystem.selectPet('cat');
+  advance(25*PET_HOUR);g.SaveManager.save();
+  assert.equal(profile.petHistory.length,1);
+  assert.equal(profile.petHistory[0].id,'cat');
+  assert.equal(profile.pets.length,1);
+  assert.equal(profile.selectedPet,'dog');
+  assert.equal(g.PetManager.getCurrentPet().id,'dog');
+});
+
+test('v3.2 saved pet age is honored on import, unlike older untimed saves', () => {
+  const {g,storage}=setup();
+  g.ProfileSystem.createProfile('Import aging');
+  const profile=g.ProfileSystem.getCurrentProfile();profile.stats.points=200;
+  g.ShopSystem.purchaseItem('cat');
+  const saved=JSON.parse(storage.get('mathQuestData'));
+  saved.profiles[0].pets[0].careUpdatedAt -= 90*PET_HOUR;
+  const restored=setup(saved).g.ProfileSystem.getCurrentProfile();
+  assert.equal(restored.pets.length,0);
+  assert.equal(restored.petHistory.length,1);
+  assert.equal(restored.petHistory[0].fate,'died');
+});

@@ -6,14 +6,14 @@
     <title>🎮 Math Quest - Learn Math Through Adventure!</title>
     <meta name="theme-color" content="#1a1a2e">
     <meta name="application-name" content="Math Quest">
-    <meta name="math-quest-version" content="3.1.0">
+    <meta name="math-quest-version" content="3.2.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="css/style.css?v=3.1.0">
-    <link rel="stylesheet" href="css/icons.css?v=3.1.0">
+    <link rel="stylesheet" href="css/style.css?v=3.2.0">
+    <link rel="stylesheet" href="css/icons.css?v=3.2.0">
 </head>
 <body>
     <div id="save-warning" class="save-warning" role="alert" hidden></div>
@@ -47,8 +47,8 @@
                 </div>
                 
                 <div class="version-info">
-                    <p>Version 3.1.0</p>
-                    <p class="features">• Complete K–12 Academic Pathway • Cumulative Mastery • Subject Practice •</p>
+                    <p>Version 3.2.0</p>
+                    <p class="features">• K–12 Academic Pathway • Cumulative Mastery • Persistent Pet Care •</p>
                 </div>
             </div>
         </div>
@@ -100,6 +100,7 @@
                 <div class="hub-navigation">
                     <button id="pet-room-btn" class="hub-btn">
                         <i class="fas fa-paw"></i> Pet Room
+                        <span id="pet-care-alert" class="pet-care-alert" hidden></span>
                     </button>
                     <button id="shop-btn" class="hub-btn">
                         <i class="fas fa-store"></i> Shop
@@ -359,6 +360,11 @@
             </div>
             
             <div class="pet-room-content">
+                <p id="pet-care-policy" class="pet-care-policy">
+                    Pet care continues while the game is closed. Hunger rises 2 points/hour;
+                    happiness falls 1.25 points/hour. After 36 hours starving, a pet dies;
+                    after 48 hours at zero happiness, a pet runs away. Feed and play to protect them.
+                </p>
                 <div id="pet-empty-state" class="pet-empty-state" hidden>
                     <h3>No pet adopted yet</h3>
                     <p>Earn points from math questions, then adopt a pet from the shop.</p>
@@ -406,7 +412,7 @@
                     </div>
                 </div>
                 
-                <p id="pet-status" class="pet-status" hidden></p>
+                <p id="pet-status" class="pet-status" role="status" aria-live="polite" hidden></p>
                 <div class="pet-interactions" id="pet-interactions" hidden>
                     <h3>Interact with Your Pet:</h3>
                     <div class="interaction-buttons">
@@ -430,10 +436,15 @@
                 
                 <div class="my-pets">
                     <h3>My Pets:</h3>
-                    <div id="pets-list" class="pets-list" aria-label="Select an owned pet">
-                        <!-- Pets will be listed here -->
+                    <div id="pets-list" class="pets-list" aria-label="Select a living pet">
+                        <!-- Living pets only; losses appear in the care history below. -->
                     </div>
                 </div>
+                <section id="pet-history" class="pet-history" aria-label="Pet care history" hidden>
+                    <h3>Pets lost</h3>
+                    <p>Death and departures cannot be undone through normal play. You can adopt a new pet.</p>
+                    <div id="pet-history-list" class="pet-history-list"></div>
+                </section>
             </div>
         </div>
 
@@ -721,25 +732,25 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils.js?v=3.1.0"></script>
-    <script src="js/question-templates.js?v=3.1.0"></script>
-    <script src="js/question-templates-advanced.js?v=3.1.0"></script>
-    <script src="js/question-templates-extended-fixed.js?v=3.1.0"></script>
-    <script src="js/college-curriculum.js?v=3.1.0"></script>
-    <script src="js/college-procedural.js?v=3.1.0"></script>
-    <script src="js/question-catalogue.js?v=3.1.0"></script>
-    <script src="js/math-engine.js?v=3.1.0"></script>
-    <script src="js/readiness-lab.js?v=3.1.0"></script>
-    <script src="js/save-manager.js?v=3.1.0"></script>
-    <script src="js/audio.js?v=3.1.0"></script>
-    <script src="js/profile-system.js?v=3.1.0"></script>
-    <script src="js/progression-system.js?v=3.1.0"></script>
-    <script src="js/reward-system.js?v=3.1.0"></script>
-    <script src="js/shop-system.js?v=3.1.0"></script>
-    <script src="js/pet-manager.js?v=3.1.0"></script>
-    <script src="js/game-manager.js?v=3.1.0"></script>
-    <script src="js/ui-manager.js?v=3.1.0"></script>
-    <script src="js/main.js?v=3.1.0"></script>
-    <script src="js/pwa.js?v=3.1.0"></script>
+    <script src="js/utils.js?v=3.2.0"></script>
+    <script src="js/question-templates.js?v=3.2.0"></script>
+    <script src="js/question-templates-advanced.js?v=3.2.0"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.2.0"></script>
+    <script src="js/college-curriculum.js?v=3.2.0"></script>
+    <script src="js/college-procedural.js?v=3.2.0"></script>
+    <script src="js/question-catalogue.js?v=3.2.0"></script>
+    <script src="js/math-engine.js?v=3.2.0"></script>
+    <script src="js/readiness-lab.js?v=3.2.0"></script>
+    <script src="js/save-manager.js?v=3.2.0"></script>
+    <script src="js/audio.js?v=3.2.0"></script>
+    <script src="js/profile-system.js?v=3.2.0"></script>
+    <script src="js/progression-system.js?v=3.2.0"></script>
+    <script src="js/reward-system.js?v=3.2.0"></script>
+    <script src="js/shop-system.js?v=3.2.0"></script>
+    <script src="js/pet-manager.js?v=3.2.0"></script>
+    <script src="js/game-manager.js?v=3.2.0"></script>
+    <script src="js/ui-manager.js?v=3.2.0"></script>
+    <script src="js/main.js?v=3.2.0"></script>
+    <script src="js/pwa.js?v=3.2.0"></script>
 </body>
 </html>

@@ -35,3 +35,6 @@ jobs:
           cmp js/college-curriculum.js www/js/college-curriculum.js
           cmp js/readiness-lab.js www/js/readiness-lab.js
           cmp js/college-procedural.js www/js/college-procedural.js
+          cmp js/pet-manager.js www/js/pet-manager.js
+          cmp js/save-manager.js www/js/save-manager.js
+          grep -q 'Pet care continues while the game is closed' www/index.html

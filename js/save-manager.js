@@ -4,7 +4,7 @@
  */
 const SaveManager = {
     STORAGE_KEY: 'mathQuestData',
-    VERSION: '3.1.0',
+    VERSION: '3.2.0',
     data: null,
     lastSaveError: null,
 
@@ -155,6 +155,17 @@ const SaveManager = {
             profile.recentQuestionKeys = Array.isArray(profile.recentQuestionKeys) ?
                 profile.recentQuestionKeys.filter(k => typeof k === 'string' && /^q[0-9a-f]{8}$/.test(k)).slice(-250) : [];
             profile.pets = Array.isArray(profile.pets) ? profile.pets.filter(p => p && typeof p === 'object' && typeof p.id === 'string' && p.id.length > 0) : [];
+            // Permanently lost animals are kept as history, not as adoptable pets.
+            profile.petHistory = Array.isArray(profile.petHistory) ? profile.petHistory.filter(p =>
+                p && typeof p === 'object' && typeof p.id === 'string' &&
+                ['died', 'ran_away'].includes(p.fate) && Number.isFinite(p.lostAt)).slice(-500) : [];
+            const stillActive = [];
+            for (const pet of profile.pets) {
+                if (pet.fate === 'died' || pet.fate === 'ran_away') {
+                    profile.petHistory.push({ ...pet, lostAt: Number.isFinite(pet.lostAt) ? pet.lostAt : Date.now() });
+                } else stillActive.push(pet);
+            }
+            profile.pets = stillActive;
             // Old versions stored ownership in a shared catalogue. Retain every recorded
             // owned item when adopting that version's profile data.
             if (!Array.isArray(profile.ownedItems)) {
@@ -175,6 +186,15 @@ const SaveManager = {
                 pet.happiness = Utils.clamp(this.nonnegative(pet.happiness, 80), 0, 100);
                 pet.hunger = Utils.clamp(this.nonnegative(pet.hunger, 50), 0, 100);
                 pet.interactions = Math.floor(this.nonnegative(pet.interactions));
+                // On upgrading an old save, start care timing now. Adoption dates
+                // may be years old and must not cause immediate retroactive death.
+                if (!Number.isFinite(pet.careUpdatedAt) || pet.careUpdatedAt <= 0) pet.careUpdatedAt = Date.now();
+                pet.starvingSince = pet.hunger >= 100 && Number.isFinite(pet.starvingSince) &&
+                    pet.starvingSince > 0 && pet.starvingSince <= pet.careUpdatedAt ? pet.starvingSince :
+                    (pet.hunger >= 100 ? pet.careUpdatedAt : null);
+                pet.unhappySince = pet.happiness <= 0 && Number.isFinite(pet.unhappySince) &&
+                    pet.unhappySince > 0 && pet.unhappySince <= pet.careUpdatedAt ? pet.unhappySince :
+                    (pet.happiness <= 0 ? pet.careUpdatedAt : null);
                 if (!profile.ownedItems.includes(pet.id)) profile.ownedItems.push(pet.id);
             }
             // If legacy data recorded a purchased pet without its pet object, restore
@@ -182,13 +202,20 @@ const SaveManager = {
             // be recreated, so use level 1 instead of inventing past progression.
             for (const cataloguePet of this.CATALOGUE.pets) {
                 if (profile.ownedItems.includes(cataloguePet.id) &&
-                    !profile.pets.some(p => p.id === cataloguePet.id)) {
+                    !profile.pets.some(p => p.id === cataloguePet.id) &&
+                    !profile.petHistory.some(p => p.id === cataloguePet.id)) {
                     profile.pets.push({ id: cataloguePet.id, name: cataloguePet.name,
                         emoji: cataloguePet.emoji, adoptedAt: null,
-                        level: 1, xp: 0, happiness: 80, hunger: 50, interactions: 0 });
+                        level: 1, xp: 0, happiness: 80, hunger: 50, interactions: 0,
+                        careUpdatedAt: Date.now(), starvingSince: null, unhappySince: null });
                 }
             }
             profile.pets = profile.pets.filter((p, i, pets) => pets.findIndex(t => t.id === p.id) === i);
+            // Old ownership ledgers must not magically recreate dead/runaway pets.
+            profile.ownedItems = profile.ownedItems.filter(id =>
+                !this.CATALOGUE.pets.some(p => p.id === id) ||
+                profile.pets.some(p => p.id === id));
+            profile.petHistory = profile.petHistory.slice(-500);
             const oldSelection = typeof profile.selectedPet === 'object' ? profile.selectedPet?.id : profile.selectedPet;
             profile.selectedPet = profile.pets.some(p => p.id === oldSelection) ? oldSelection : (profile.pets[0]?.id || null);
             profile.skin = typeof profile.skin === 'string' && profile.ownedItems.includes(profile.skin) ? profile.skin : 'default';
@@ -206,6 +233,9 @@ const SaveManager = {
 
     save() {
         try {
+            // Update every profile before saving, even when the player is
+            // studying instead of visiting the pet room.
+            if (typeof PetManager !== 'undefined') PetManager.refreshAll(Date.now());
             this.data.lastSaved = Date.now();
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
             this.lastSaveError = null;
@@ -229,7 +259,7 @@ const SaveManager = {
         const profile = {
             id: Utils.generateId(), name: name.trim(), avatar: '👤', skin: 'default',
             stats: this.defaultStats(), unlockedGrades: [0, 1, 2], ownedItems: ['default'],
-            achievements: [], pets: [], selectedPet: null, categoryStats: {}, recentQuestionKeys: [],
+            achievements: [], pets: [], petHistory: [], selectedPet: null, categoryStats: {}, recentQuestionKeys: [],
             economyTrackingSince: Date.now(), readiness: {track:'balanced',sessions:[],portfolio:[],diagnosticResults:[],checkpoints:[]}
         };
         this.data.profiles.push(profile);
