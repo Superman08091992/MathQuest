@@ -4,7 +4,7 @@
  */
 const SaveManager = {
     STORAGE_KEY: 'mathQuestData',
-    VERSION: '3.0.0',
+    VERSION: '3.1.0',
     data: null,
     lastSaveError: null,
 
