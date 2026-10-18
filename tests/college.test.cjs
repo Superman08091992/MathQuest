@@ -124,7 +124,9 @@ test('Every grade builds a distinct, category-spanning 20–60 question practice
         assert.ok(questions.length>=20&&questions.length<=60,`grade ${grade} size ${questions.length}`);
         assert.equal(new Set(questions.map(q=>s.MathEngine.questionKey(q))).size,questions.length,`grade ${grade}`);
         assert.ok(new Set(questions.map(q=>q.category)).size>=6,`grade ${grade} category coverage`);
-        assert.ok(questions.every(q=>q.grade===grade&&q.answers.length===4&&q.explanation),`grade ${grade} question metadata`);
+        assert.ok(questions.every(q=>q.grade<=grade&&q.grade>=0&&q.answers.length===4&&q.explanation),`grade ${grade} question metadata`);
+        assert.ok(questions.filter(q=>q.grade===grade).length>=20,`grade ${grade} current skills`);
+        assert.equal(questions.filter(q=>q.grade<grade).length,grade===0?0:8,`grade ${grade} cumulative review`);
         assert.equal(s.MathEngine.currentGrade,savedGrade);assert.equal(s.MathEngine.currentCategory,savedCategory);
     }
 });
@@ -150,4 +152,136 @@ test('Checkpoint grades need two qualifying passes separated by seven days and n
     assert.match(s.ReadinessLab.gradeStatus(profile,4).status,/unverified/);
     assert.equal(JSON.parse(store.get('mathQuestData')).profiles[0].readiness.checkpoints.length,2);
     assert.equal(s.ReadinessLab.gradeStatus(profile,5).complete,false);
+});
+
+test('The K–12 pathway is the academic progression, never the XP counter or a standalone diagnostic',()=>{
+    const {s}=setup();s.ProfileSystem.createProfile('School learner');
+    const p=s.ProfileSystem.getCurrentProfile();p.stats.level=40;p.stats.xp=999;
+    const pathway=s.ReadinessLab.pathwayReport(p);
+    assert.equal(pathway.mastered,0);
+    assert.equal(pathway.next,0);
+    assert.equal(pathway.complete,false);
+    assert.equal(pathway.grades.length,13);
+    assert.equal(s.ReadinessLab.GRADE_GOALS.length,13);
+    for(let grade=0;grade<=12;grade++){
+        assert.ok(s.ReadinessLab.GRADE_GOALS[grade].length>=3);
+        assert.ok(s.ReadinessLab.GRADE_GOALS[grade].every(x=>typeof x==='string'&&x.length>20));
+    }
+    // A diagnostic assesses current performance, not graduation.
+    s.ReadinessLab.ensure(p).diagnosticResults.push({time:Date.now(),total:40,correct:40,domains:{}});
+    assert.equal(s.ReadinessLab.pathwayReport(p).complete,false);
+});
+
+test('Every grade must independently meet repeated cumulative checkpoints for K–12 practice completion',()=>{
+    const {s}=setup();s.ProfileSystem.createProfile('Year-by-year');
+    const p=s.ProfileSystem.getCurrentProfile(),state=s.ReadinessLab.ensure(p);
+    const now=Date.now();
+    function record(grade,time){
+        state.checkpoints.push({grade,time,total:grade===0?24:32,correct:grade===0?24:32,
+            gradeTotal:24,gradeCorrect:24,reviewTotal:grade===0?0:8,reviewCorrect:grade===0?0:8,
+            hinted:0,categories:['reading','writing','arithmetic','science','history','logic'],
+            keys:Array.from({length:grade===0?24:32},(_,i)=>`q${grade}_${time===now?'b':'a'}_${i}`)});
+    }
+    // Passing Grade 12 alone, even with excellent scores, cannot skip the first 12 grades.
+    record(12,now-8*86400000);record(12,now);
+    assert.equal(s.ReadinessLab.gradeStatus(p,12).complete,true);
+    assert.equal(s.ReadinessLab.pathwayReport(p).mastered,1);
+    assert.equal(s.ReadinessLab.pathwayReport(p).next,0);
+    for(let grade=0;grade<12;grade++){
+        record(grade,now-8*86400000);record(grade,now);
+    }
+    const final=s.ReadinessLab.pathwayReport(p);
+    assert.equal(final.mastered,13);
+    assert.equal(final.submitted,0);
+    assert.equal(final.complete,false);
+    assert.equal(final.next,0);
+    // Applied work is required alongside multiple-choice practice evidence.
+    for(let grade=0;grade<=12;grade++){
+        const threshold=s.ReadinessLab.GRADE_PROJECTS[grade].minimum;
+        assert.equal(s.ReadinessLab.submitGradeProject(p,grade,'E'.repeat(threshold)).success,true);
+    }
+    const completed=s.ReadinessLab.pathwayReport(p);
+    assert.equal(completed.submitted,13);
+    assert.equal(completed.next,null);
+    assert.equal(completed.complete,true);
+    assert.match(completed.label,/independent evaluation required/);
+});
+
+test('Checkpoint evidence rejects missing grade breakdowns, hinted attempts and weak earlier-grade review',()=>{
+    const {s}=setup();s.ProfileSystem.createProfile('Audit');
+    const p=s.ProfileSystem.getCurrentProfile(),state=s.ReadinessLab.ensure(p);
+    const ts=Date.now();
+    const valid={grade:5,time:ts-8*86400000,total:32,correct:30,gradeTotal:24,gradeCorrect:23,
+        reviewTotal:8,reviewCorrect:7,hinted:0,keys:Array.from({length:32},(_,i)=>`old_${i}`),
+        categories:['reading','writing','arithmetic','history','science','statistics']};
+    state.checkpoints.push({...valid});
+    state.checkpoints.push({...valid,time:ts,keys:valid.keys.map(x=>'new_'+x)});
+    assert.equal(s.ReadinessLab.gradeStatus(p,5).complete,true);
+    state.checkpoints[0].hinted=1;
+    assert.equal(s.ReadinessLab.gradeStatus(p,5).complete,false);
+    state.checkpoints[0].hinted=0;state.checkpoints[0].reviewCorrect=4;
+    assert.equal(s.ReadinessLab.gradeStatus(p,5).complete,false);
+    state.checkpoints[0].reviewCorrect=7;state.checkpoints[1].gradeTotal=null;
+    assert.equal(s.ReadinessLab.gradeStatus(p,5).complete,false);
+});
+
+test('Checkpoint question identity preserves grade zero as prior-grade evidence and never awards XP',()=>{
+    const {s}=setup();s.ProfileSystem.createProfile('Cumulative');
+    s.MathEngine.init(4,'all');
+    const qs=s.ReadinessLab.buildCheckpoint(4);
+    assert.equal(qs.filter(x=>x.grade===0).length>0,true);
+    s.GameManager.initCheckpoint(4,qs);s.GameManager.startGame();
+    for(const q of qs)assert.equal(s.GameManager.submitAnswer(q.answer).correct,true);
+    s.GameManager.endGame();
+    const profile=s.ProfileSystem.getCurrentProfile();
+    const snapshot=profile.readiness.checkpoints.at(-1);
+    assert.equal(snapshot.gradeTotal,qs.filter(x=>x.grade===4).length);
+    assert.equal(snapshot.reviewTotal,8);
+    assert.equal(snapshot.gradeCorrect,snapshot.gradeTotal);
+    assert.equal(snapshot.reviewCorrect,8);
+    assert.equal(snapshot.hinted,0);
+    assert.equal(profile.stats.level,1);
+    assert.equal(profile.stats.xp,0);
+});
+
+test('Grade-specific applied assignments are genuinely saved, exportable, bounded and never auto-graded',()=>{
+    const {s,store}=setup();s.ProfileSystem.createProfile('Applied learner');
+    const p=s.ProfileSystem.getCurrentProfile();
+    for(let grade=0;grade<=12;grade++){
+        const project=s.ReadinessLab.GRADE_PROJECTS[grade];
+        assert.equal(project.grade,grade);
+        assert.ok(project.rubric.length>=3);
+        assert.equal(s.ReadinessLab.submitGradeProject(p,grade,'x'.repeat(project.minimum-1)).success,false);
+        const result=s.ReadinessLab.submitGradeProject(p,grade,'a'.repeat(project.minimum));
+        assert.equal(result.success,true,`grade ${grade}: ${result.error}`);
+        const status=s.ReadinessLab.gradeProjectStatus(p,grade);
+        assert.equal(status.submitted,true);
+        assert.match(status.status,/not independently evaluated/);
+    }
+    assert.equal(s.ReadinessLab.submitGradeProject(p,12,'a'.repeat(12001)).success,false);
+    assert.equal(s.ReadinessLab.submitGradeProject(p,13,'a'.repeat(1000)).success,false);
+    assert.equal(s.ReadinessLab.pathwayReport(p).submitted,13);
+    assert.equal(s.ReadinessLab.pathwayReport(p).complete,false);
+    const persisted=JSON.parse(store.get('mathQuestData'));
+    assert.equal(persisted.profiles[0].readiness.gradeProjects.length,13);
+    assert.equal(s.SaveManager.export().includes('a'.repeat(800)),true);
+    const restored=setup();
+    assert.equal(restored.s.SaveManager.import(JSON.stringify(persisted)).success,true);
+    assert.equal(restored.s.ReadinessLab.pathwayReport(restored.s.ProfileSystem.getCurrentProfile()).submitted,13);
+});
+
+test('Curriculum audit maps every grade to actual playable definitions and shows thin subject banks',()=>{
+    const {s}=setup();
+    const audit=JSON.parse(fs.readFileSync(path.join(root,'K12_CURRICULUM_MAP.json'),'utf8'));
+    assert.equal(audit.version,JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version);
+    assert.equal(audit.grades.length,13);
+    for(const entry of audit.grades){
+        const templates=s.QuestionCatalogue.getQuestionsForGrade(entry.grade);
+        assert.equal(entry.definitionCount,templates.length);
+        assert.equal(entry.subjectCount,new Set(templates.map(t=>t.category)).size);
+        assert.deepEqual(entry.goals,asJSON(s.ReadinessLab.GRADE_GOALS[entry.grade]));
+        assert.equal(entry.appliedAssignment.title,s.ReadinessLab.GRADE_PROJECTS[entry.grade].title);
+        assert.equal(Object.values(entry.categories).reduce((a,b)=>a+b.definitions,0),entry.definitionCount);
+        assert.equal(entry.underrepresentedSubjects.length>0,true,`Curriculum map should expose thin areas in grade ${entry.grade}`);
+    }
 });
