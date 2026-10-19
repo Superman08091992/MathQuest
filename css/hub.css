@@ -1,0 +1,214 @@
+/* The authenticated player's game home — a visual hub, not the title screen.
+   Local, responsive artwork. No downloaded textures or network dependencies. */
+#world-hub.screen {
+    position: relative; isolation: isolate; overflow: hidden;
+    padding: 0; min-height: 100vh;
+    background: radial-gradient(ellipse 67% 47% at 84% -6%, rgba(88, 129, 201, .35), transparent 78%),
+                radial-gradient(ellipse 59% 65% at -17% 57%, rgba(36, 168, 145, .17), transparent 82%),
+                linear-gradient(160deg, #0b1b35 0%, #101a36 60%, #10162f 100%);
+}
+#world-hub .hub-ambient { position: absolute; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+#world-hub .hub-ambient::before { content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(181, 235, 248, .75) 1px, transparent 2px), radial-gradient(circle, rgba(232, 255, 211, .7) 1px, transparent 2px);
+    background-size: 187px 173px, 309px 263px; background-position: 33px 22px, 126px 114px; opacity: .15;
+}
+#world-hub .hub-ambient-orbit { position: absolute; display: block; border: 1px solid rgba(160, 221, 244, .07); border-radius: 50%; }
+#world-hub .hub-ambient-orbit-a { width: 830px; height: 830px; right: -575px; top: 400px; }
+#world-hub .hub-ambient-orbit-b { width: 490px; height: 490px; left: -280px; top: 880px; }
+#world-hub .hub-shell { max-width: 1540px; padding: 0 clamp(16px, 3.9vw, 60px) 22px; margin: 0 auto; }
+#world-hub .hub-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; margin: 0; padding: 14px 0 16px; border-bottom: 1px solid rgba(188, 222, 253, .14); }
+#world-hub .hub-back { justify-self: start; color: #c4d7ed; border: 1px solid rgba(192, 221, 255, .22); padding: 9px 14px; border-radius: 13px; background: rgba(45, 68, 115, .35); font-size: .8rem; font-weight: 750; cursor: pointer; }
+#world-hub .hub-back:hover { color: #fff; border-color: #a1e5dd; background: #24446a; }
+#world-hub .hub-brand { display: flex; align-items: center; gap: 11px; font-weight: 900; font-size: 1.38rem; color: #f5f7ff; line-height: 1.05; letter-spacing: -.035em; }
+#world-hub .hub-brand-gem { font-size: 1.7rem; width: 41px; height: 41px; background: linear-gradient(150deg, #e6fc9f, #6fe3c9); display: grid; place-items: center; border-radius: 12px; color: #12404b; transform: rotate(-8deg); box-shadow: 0 0 26px rgba(130, 255, 192, .18); }
+#world-hub .hub-brand-highlight { color: #b09aff; }
+#world-hub .hub-brand small { display: block; font-size: .52rem; margin-top: 5px; color: #9db1d4; letter-spacing: .17em; }
+#world-hub .hub-header .player-info { background: transparent; border: 0; border-radius: 0; padding: 0; justify-self: end; gap: 12px; display: flex; flex-wrap: nowrap; align-items: center; }
+#world-hub .hub-player-identity { display: flex; gap: 8px; align-items: center; font-weight: 800; color: #e9f4ff; font-size: .89rem; }
+#world-hub .hub-player-identity .avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; font-size: 1.1rem; background: rgba(102, 162, 217, .17); border: 1px solid rgba(187, 214, 252, .18); }
+#world-hub .hub-player-identity small { font-size: .64rem; white-space: nowrap; color: #a9f4d9; border: 1px solid rgba(132, 241, 201, .22); border-radius: 999px; padding: 4px 6px; }
+#world-hub .player-info .stats { margin: 0; display: flex; align-items: center; gap: 8px; }
+#world-hub .player-info .stat { background: rgba(70, 110, 171, .18); border: 1px solid rgba(165, 213, 248, .15); border-radius: 999px; padding: 7px 9px; color: #e8edff; font-weight: 750; font-size: .77rem; }
+
+/* Hero — substantial visual composition, two live 3D characters and layered landscape. */
+#world-hub .hub-hero { position: relative; display: grid; grid-template-columns: minmax(0, .79fr) minmax(0, 1.21fr); gap: clamp(6px,2vw,35px); align-items: stretch;
+    min-height: 435px; margin-top: 22px; overflow: hidden; border-radius: 31px;
+    border: 1px solid rgba(151, 225, 225, .27); background: linear-gradient(121deg, #193451 0%, #1c4768 35%, #39688a 78%, #456b8c 100%);
+    box-shadow: 0 27px 62px rgba(2, 5, 23, .27), inset 0 1px 0 rgba(210, 255, 232, .16);
+}
+#world-hub .hub-hero-glow { position: absolute; inset: 0; pointer-events:none; background: radial-gradient(ellipse 40% 60% at 20% 75%, rgba(101, 242, 175, .1), transparent 85%), linear-gradient(90deg, rgba(5, 19, 41, .31) 0%, rgba(6,22,40,.02) 70%); }
+#world-hub .hub-hero-copy { position: relative; z-index: 2; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(24px,3.3vw,48px) 0 clamp(26px,3.4vw,48px) clamp(24px,4vw,56px); }
+#world-hub .hub-eyebrow { font-size: .7rem; color: #c7ffdd; font-weight: 850; letter-spacing: .15em; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+#world-hub .hub-eyebrow-dot { display: inline-block; width: 7px; height: 7px; background: #b8ffbd; border-radius: 50%; box-shadow: 0 0 0 5px rgba(193, 255, 176, .1); }
+#world-hub .hub-hero-copy h1 { font-size: clamp(2.45rem,4.05vw,4.7rem); line-height: 1.02; letter-spacing: -.056em; font-weight: 930; color: #f8fff3; margin: 0 0 19px; }
+#world-hub .hub-hero-copy h1 em { font-style: normal; background: linear-gradient(94deg, #c5ff99 10%, #80efd4 67%, #9cf7ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
+#world-hub .hub-hero-description { font-size: .95rem; line-height: 1.57; color: #d8e9f7; max-width: 430px; margin: 0 0 22px; }
+#world-hub .hub-next-quest { padding: 12px 15px; width: min(100%,420px); border: 1px solid rgba(184, 249, 221, .23); border-radius: 16px; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(7, 25, 47, .34); box-shadow: inset 0 1px 0 rgba(213,255,233,.09); }
+#world-hub .hub-next-quest>div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+#world-hub .hub-next-label { color: #bffddf; letter-spacing: .12em; font-size: .61rem; font-weight: 900; }
+#world-hub #hub-next-grade { color: #fff; font-weight: 850; font-size: 1.08rem; }
+#world-hub #hub-next-note { font-size: .72rem; color: #afc9df; }
+#world-hub .hub-next-arrow { color: #b6ffda; font-size: 1.8rem; }
+#world-hub .hub-hero-actions { display: flex; gap: 10px; flex-wrap: wrap; width: min(100%,430px); margin-top: 15px; }
+#world-hub .hub-primary-action, #world-hub .hub-secondary-action { border-radius: 13px; padding: 13px 18px; border: 0; font-weight: 850; cursor: pointer; line-height: 1.15; font-size: .88rem; transition: transform .2s, filter .2s, border-color .2s; }
+#world-hub .hub-primary-action { display:flex; gap:18px; align-items:center; justify-content:space-between; flex: 1 1 195px; background: linear-gradient(107deg,#dcfc91,#7af2ca); color:#143947; box-shadow: 0 8px 25px rgba(69, 246, 183, .13); }
+#world-hub .hub-secondary-action { flex: 1 1 135px; border: 1px solid rgba(206, 254, 244, .34); color: #e9faff; background: rgba(15, 36, 66, .54); }
+#world-hub .hub-primary-action:hover,#world-hub .hub-secondary-action:hover { transform: translateY(-2px); filter: brightness(1.06); }
+#world-hub .hub-primary-action:disabled { cursor: not-allowed; opacity: .5; }
+#world-hub .hub-diorama { position: relative; overflow: hidden; min-width: 0; min-height: 410px; isolation: isolate; }
+#world-hub .hub-scene-sky { position: absolute; inset: 0; overflow: hidden; z-index: -1;
+    background: radial-gradient(ellipse at 66% 22%, rgba(230, 255, 197, .12), transparent 59%), linear-gradient(162deg,rgba(163, 211, 227, .12),rgba(24, 75, 108, .03) 52%,rgba(20, 45, 74, .1) 78%); }
+#world-hub .hub-scene-sun { position: absolute; width: 175px; height: 175px; border-radius: 50%; left: 54%; top: 6%; background: radial-gradient(circle at 38% 35%, #faffc5, #e5fd93 45%, #d9fa9e 68%, transparent 71%); filter: blur(1px); opacity: .82; box-shadow: 0 0 85px 35px rgba(232, 253, 158, .18); }
+#world-hub .hub-scene-cloud { position: absolute; width: 190px; height: 40px; border-radius: 50%; background: rgba(211, 249, 246, .17); filter: blur(12px); animation: hub-cloud-drift 21s ease-in-out infinite alternate; }
+#world-hub .hub-scene-cloud-one { top: 25%; left: 8%; } #world-hub .hub-scene-cloud-two { top: 12%; right: -7%; animation-delay: -9s; }
+#world-hub .hub-scene-mountain { position: absolute; width: 120%; height: 270px; left: -10%; bottom: 0; clip-path: polygon(0 78%, 15% 26%, 23% 51%, 41% 5%, 52% 43%, 67% 15%, 80% 48%, 90% 10%, 100% 46%, 100% 100%,0 100%); }
+#world-hub .hub-scene-mountain-back { background: linear-gradient(#5f96ad,#3b7193); bottom: 35px; opacity: .72; }
+#world-hub .hub-scene-mountain-front { background: linear-gradient(#357e94,#1a5475); bottom: -75px; transform: scaleX(-1); opacity: .83; }
+#world-hub .hub-scene-ground { position: absolute; width: 140%; height: 155px; bottom: -85px; left: -15%; background: linear-gradient(180deg,#7dc49d,#3c987e); border-radius: 50%; box-shadow: 0 -12px 35px rgba(125, 239, 166, .07); }
+#world-hub .hub-scene-forest { position: absolute; bottom: 35px; width: 145px; height: 205px; background: linear-gradient(180deg,#186f78,#0f565c); clip-path: polygon(12% 87%, 29% 56%, 20% 56%, 40% 27%, 30% 27%, 53% 0, 74% 27%, 64% 27%, 85% 58%, 74% 58%, 98% 90%, 57% 90%, 57% 100%, 48% 100%, 48% 90%); opacity: .8; }
+#world-hub .hub-scene-forest-left { left: -18px; transform: scale(.95); } #world-hub .hub-scene-forest-right { right: -30px; transform: scale(.78) rotate(-7deg); }
+#world-hub .hub-stage-platform { position: absolute; z-index: 0; height: 37px; background: linear-gradient(#dcffde 0%,#94e2bb 45%,#3eaa92 50%,#2e7b88); border-radius: 50%; box-shadow: 0 13px 20px rgba(16, 37, 57, .3); }
+#world-hub .hub-stage-platform-hero { left: 8%; width: 48%; bottom: 35px; }
+#world-hub .hub-stage-platform-pet { right: 3%; width: 37%; bottom: 41px; }
+#world-hub .hub-avatar-stage { position: absolute; left: 3%; bottom: 22px; width: 56%; height: 360px; z-index: 3; border: 0; border-radius: 15px; background: transparent; }
+#world-hub .hub-pet-stage { position: absolute; right: 2%; bottom: 37px; width: 41%; height: 260px; z-index: 4; border: 0; border-radius: 15px; background: transparent; }
+#world-hub .hub-character-plaque { position: absolute; z-index: 6; left: 11%; right: 8%; bottom: 8px; display: flex; justify-content: center; align-items: center; gap: 7px; text-align: center; font-size: .7rem; font-weight: 850; color: #fff; text-shadow: 0 1px 7px rgba(14, 46, 55, .8); white-space: normal; }
+#world-hub .hub-character-plaque > span:first-child { color: #d5ff9c; }
+#world-hub .hub-character-divider { color: #bfffe8; }
+#world-hub .hub-gesture { position: absolute; z-index: 6; top: 18px; right: 18px; border: 1px solid rgba(220,255,230,.58); background: rgba(13, 58, 80, .45); border-radius: 999px; padding: 8px 14px; font-weight: 780; font-size: .75rem; color: #f2fffa; cursor:pointer; }
+#world-hub .hub-gesture:hover { background: rgba(17, 77, 97, .86); }
+#world-hub .hub-diorama-tip { position: absolute; top: 53px; right: 11px; bottom: auto; font-size: .62rem; color: #d1ffef; opacity: .9; background: rgba(12, 51, 69, .35); border-radius: 999px; padding: 5px 9px; }
+@keyframes hub-cloud-drift { 0% { transform: translateX(-15px); opacity: .5; } 100% { transform: translateX(32px); opacity: .85; } }
+
+#world-hub .hub-pathway-strip { margin-top: 18px; padding: 19px 24px; border: 1px solid rgba(149, 195, 237, .18); border-radius: 20px; background: linear-gradient(110deg,rgba(45,83,129,.27),rgba(23,60,78,.16)); display: flex; gap: 25px; align-items: center; justify-content: space-between; }
+#world-hub .hub-section-kicker { font-size: .65rem; font-weight: 880; color: #9afbd4; letter-spacing: .13em; }
+#world-hub .hub-pathway-strip h2 { text-align: left; font-size: clamp(1rem,1.7vw,1.45rem); line-height: 1.2; font-weight: 900; color: #f3f9ff; letter-spacing: -.02em; margin: 5px 0 3px; }
+#world-hub .hub-pathway-strip .academic-pathway-summary { font-weight: 500; margin: 0; padding: 0; border:0; background:transparent; font-size: .75rem; line-height: 1.5; color: #adbed8; }
+#world-hub .hub-pathway-stats { display: flex; flex-direction: column; align-items: flex-end; min-width: 180px; gap: 4px; }
+#world-hub #hub-pathway-count { color: #e6ffe4; font-size: 1.65rem; font-weight: 900; letter-spacing: -.02em; }
+#world-hub .hub-pathway-caption { font-size: .61rem; color: #aec3d5; text-align: right; }
+#world-hub #hub-pathway-progress { height: 8px; width: 100%; border: 0; border-radius: 50px; overflow:hidden; margin-top: 5px; background: #163453; }
+#world-hub #hub-pathway-progress::-webkit-progress-bar { background: #163453; }
+#world-hub #hub-pathway-progress::-webkit-progress-value { background: linear-gradient(90deg,#cafa89,#6bf3cd); border-radius: 100px; }
+#world-hub #hub-pathway-progress::-moz-progress-bar { background: #79ecc4; }
+
+/* Real world selection; 13 stage cards, not a token count or decorative illustration. */
+#world-hub .hub-dashboard { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, .32fr); align-items:start; gap: 24px; margin-top: 32px; }
+#world-hub .hub-map-section { min-width:0; }
+#world-hub .hub-map-heading { display:flex; align-items:end; justify-content:space-between; gap:12px; margin-bottom: 15px; }
+#world-hub .hub-map-heading h2 { font-size: clamp(1.5rem,2.5vw,2rem); line-height:1.1; text-align:left; font-weight:900; letter-spacing:-.035em; color:#f7fdff; margin: 5px 0 0; }
+#world-hub .hub-worlds-available { border:1px solid rgba(164,233,216,.22); border-radius:999px; background:rgba(93,173,160,.13); color:#cbffe6; font-size:.72rem; white-space:nowrap; font-weight:700; padding:8px 12px; }
+#world-hub .hub-region-key { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:17px; }
+#world-hub .hub-region-key span { font-size:.66rem; color:#b0c9df; border:1px solid rgba(146,172,208,.18); padding:5px 8px; border-radius:999px; }
+#world-hub .grades-grid.hub-worlds-grid { display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 13px; margin:0; }
+#world-hub .hub-world-card { appearance:none; color:#eaf5ff; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; text-align:left; padding:13px 14px 15px; min-height:177px; border:1px solid rgba(166,207,235,.26); border-radius:18px;
+    background:radial-gradient(ellipse at 87% 20%,rgba(170,246,203,.11),transparent 43%),linear-gradient(145deg,rgba(33,86,97,.70),rgba(20,56,81,.66));
+    box-shadow:inset 0 1px 0 rgba(193,255,238,.13),0 8px 22px rgba(4,10,26,.12); transition: transform .22s,border-color .22s,box-shadow .22s; position:relative; overflow:hidden; cursor:pointer; font-family:inherit; }
+#world-hub .hub-world-card::before { content:''; position:absolute; top:auto; right:-26px; bottom:-38px; left:auto; width:135px; height:135px; border-radius:50%; border:22px solid rgba(180,246,212,.055); background:transparent; opacity:1; }
+#world-hub .hub-world-card[data-region="valley"] { background:radial-gradient(ellipse at 95% 10%,rgba(141,212,255,.16),transparent 50%),linear-gradient(145deg,rgba(31,74,130,.74),rgba(20,41,93,.68)); }
+#world-hub .hub-world-card[data-region="cosmos"] { background:radial-gradient(ellipse at 95% 10%,rgba(201,155,252,.15),transparent 50%),linear-gradient(145deg,rgba(73,58,130,.77),rgba(32,40,99,.70)); }
+#world-hub .hub-world-card[data-region="summit"] { background:radial-gradient(ellipse at 95% 10%,rgba(255,210,153,.15),transparent 50%),linear-gradient(145deg,rgba(115,69,106,.76),rgba(65,40,84,.70)); }
+#world-hub .hub-world-card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; position:relative; z-index:1; }
+#world-hub .hub-world-number { font-weight:900; font-size:.61rem; letter-spacing:.15em; color:#b5efd9; }
+#world-hub .hub-world-status-symbol { color:#d4fce1; font-size:1.03rem; font-weight:900; }
+#world-hub .hub-world-card .grade-icon { font-size:2.05rem; line-height:1.1; margin: 9px 0 6px; filter:drop-shadow(0 5px 10px rgba(14,36,62,.34)); }
+#world-hub .hub-world-card .grade-name { font-size:1.02rem; font-weight:900; color:#fff; line-height:1.15; margin:0 0 2px; }
+#world-hub .hub-world-card .grade-realm { font-size:.69rem; color:#c3d6e8; margin:0 0 9px; min-height:15px; }
+#world-hub .hub-world-card .grade-coverage { font-size:.63rem; font-weight:680; color:#c8e9dc; margin: auto 0 0; padding-top:5px; }
+#world-hub .hub-world-card .grade-academic-status { font-size:.61rem; color:#abbdd5; margin-top:4px; line-height:1.22; }
+#world-hub .hub-world-card:not(.locked):hover { transform:translateY(-5px); border-color:rgba(169,255,205,.72); box-shadow:0 18px 28px rgba(4,10,26,.30); }
+#world-hub .hub-world-card.hub-world-featured { outline:2px solid #a4f6bd; outline-offset:-3px; box-shadow:0 0 0 3px rgba(116,248,180,.1),0 11px 30px rgba(28,219,165,.12); }
+#world-hub .hub-world-card.hub-world-complete .hub-world-status-symbol { color:#b5ffa1; }
+#world-hub .hub-world-card.locked { opacity:.47; filter:saturate(.58); cursor:not-allowed; }
+#world-hub .hub-world-card.locked:hover { transform:none; box-shadow:inset 0 1px 0 rgba(193,255,238,.13); border-color:rgba(166,207,235,.26); }
+#world-hub .hub-map-note { color:#9cafce; font-size:.72rem; margin-top:16px; line-height:1.55; max-width:770px; }
+
+#world-hub .hub-destinations { min-width:0; padding:17px; border:1px solid rgba(151,192,229,.18); border-radius:22px; background:linear-gradient(142deg,rgba(48,74,118,.25),rgba(28,54,83,.17)); }
+#world-hub .hub-destination-heading { padding:2px 5px 13px; }
+#world-hub .hub-destination-heading h2 { margin:4px 0 7px; font-size:1.23rem; color:#f3f9ff; text-align:left; font-weight:900; letter-spacing:-.02em; }
+#world-hub .hub-destination-heading p { color:#a9c2dd; font-size:.76rem; line-height:1.4; }
+#world-hub .hub-navigation { display:flex; flex-direction:column; gap:8px; align-items:stretch; justify-content:flex-start; }
+#world-hub .hub-btn { display:flex; flex-direction:row; align-items:center; justify-content:stretch; text-align:left; gap:10px; width:100%; max-width:none; padding:11px 10px; background:rgba(25,49,79,.6); border:1px solid rgba(158,196,230,.19); border-radius:13px; box-shadow:inset 0 1px 0 rgba(210,245,255,.03); }
+#world-hub .hub-btn:hover { transform:translateX(3px); background:rgba(44,82,116,.69); border-color:rgba(169,253,214,.55); }
+#world-hub .hub-action-symbol { flex:0 0 39px; height:39px; display:grid; place-items:center; border-radius:12px; background:rgba(91,174,195,.14); color:#dcfff4; font-size:1.31rem; }
+#world-hub .hub-action-copy { display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
+#world-hub .hub-action-copy strong { font-size:.84rem; line-height:1.25; font-weight:850; color:#eef7ff; }
+#world-hub .hub-action-copy small { color:#a7bbd4; font-size:.67rem; line-height:1.3; }
+#world-hub .hub-action-chevron { font-size:1.35rem; color:#9bb7ce; }
+#world-hub .pet-care-alert { display:block; font-size:.61rem; font-weight:800; color:#ffdeac; line-height:1.2; }
+#world-hub .pet-care-alert[hidden] { display:none; }
+#world-hub .hub-action-pets .hub-action-symbol { background:rgba(122,227,169,.15); }
+#world-hub .hub-action-shop .hub-action-symbol { background:rgba(255,227,131,.16); }
+#world-hub .hub-action-achieve .hub-action-symbol { background:rgba(247,201,137,.17); }
+#world-hub .hub-action-stats .hub-action-symbol { background:rgba(123,182,245,.16); }
+#world-hub .hub-action-lab .hub-action-symbol { background:rgba(181,153,242,.15); }
+#world-hub .hub-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:26px; padding:14px 3px 0; border-top:1px solid rgba(170,208,243,.08); font-size:.62rem; letter-spacing:.06em; color:#809bb9; }
+#world-hub :is(button,a):focus-visible { outline:3px solid #b6ffcf; outline-offset:3px; }
+@media (max-width: 1170px) {
+    #world-hub .hub-hero { grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr); }
+    #world-hub .hub-dashboard { grid-template-columns:minmax(0,1fr) 250px; gap:15px; }
+    #world-hub .grades-grid.hub-worlds-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    #world-hub .hub-world-card { min-height:160px; }
+}
+@media (max-width: 850px) {
+    #world-hub .hub-header { grid-template-columns:1fr auto; }
+    #world-hub .hub-brand { order:-1; }
+    #world-hub .hub-back { order:0; justify-self:end; }
+    #world-hub .hub-header .player-info { grid-column:1/-1; justify-self:start; }
+    #world-hub .hub-hero { grid-template-columns:1fr; }
+    #world-hub .hub-hero-copy { padding:28px 28px 4px; }
+    #world-hub .hub-hero-copy h1 { font-size:clamp(2.2rem,6vw,4rem); }
+    #world-hub .hub-hero-description { max-width:600px; }
+    #world-hub .hub-diorama { min-height:355px; }
+    #world-hub .hub-avatar-stage { height:305px; }
+    #world-hub .hub-pet-stage { height:230px; }
+    #world-hub .hub-dashboard { grid-template-columns:1fr; }
+    #world-hub .hub-destinations { margin-top:8px; }
+    #world-hub .hub-navigation { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+}
+@media (max-width: 540px) {
+    #world-hub .hub-shell { padding:0 12px 20px; }
+    #world-hub .hub-header { padding:11px 2px 13px; }
+    #world-hub .hub-brand { font-size:1.15rem; }
+    #world-hub .hub-brand small { font-size:.48rem; }
+    #world-hub .hub-brand-gem { width:36px; height:36px; }
+    #world-hub .hub-back { padding:7px 10px; font-size:.72rem; }
+    #world-hub .hub-hero { border-radius:22px; margin-top:13px; }
+    #world-hub .hub-hero-copy { padding:25px 19px 0; }
+    #world-hub .hub-eyebrow { font-size:.6rem; margin-bottom:12px; }
+    #world-hub .hub-hero-copy h1 { font-size:clamp(2rem,8.5vw,3.4rem); margin-bottom:12px; }
+    #world-hub .hub-hero-description { font-size:.83rem; margin-bottom:17px; }
+    #world-hub .hub-next-quest { padding:10px 12px; }
+    #world-hub .hub-hero-actions { margin-top:11px; }
+    #world-hub .hub-primary-action, #world-hub .hub-secondary-action { font-size:.81rem; padding:12px 12px; }
+    #world-hub .hub-diorama { min-height:283px; }
+    #world-hub .hub-avatar-stage { height:250px; width:56%; bottom:16px; }
+    #world-hub .hub-pet-stage { height:187px; bottom:28px; }
+    #world-hub .hub-scene-mountain { height:200px; }
+    #world-hub .hub-stage-platform-hero { bottom:25px; }
+    #world-hub .hub-stage-platform-pet { bottom:30px; }
+    #world-hub .hub-character-plaque { font-size:.62rem; bottom:4px; }
+    #world-hub .hub-diorama-tip { top:43px; bottom:auto; font-size:.56rem; }
+    #world-hub .hub-gesture { font-size:.68rem; top:10px; right:10px; }
+    #world-hub .hub-pathway-strip { margin-top:12px; padding:15px; flex-direction:column; align-items:stretch; gap:9px; }
+    #world-hub .hub-pathway-stats { align-items:stretch; min-width:0; display:grid; grid-template-columns:auto 1fr; }
+    #world-hub #hub-pathway-count { font-size:1.3rem; }
+    #world-hub .hub-pathway-caption { text-align:left; align-self:center; }
+    #world-hub #hub-pathway-progress { grid-column:1/-1; }
+    #world-hub .hub-dashboard { margin-top:24px; }
+    #world-hub .hub-map-heading h2 { font-size:1.4rem; }
+    #world-hub .hub-worlds-available { font-size:.61rem; white-space:normal; text-align:center; }
+    #world-hub .grades-grid.hub-worlds-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+    #world-hub .hub-world-card { padding:11px; min-height:161px; border-radius:15px; }
+    #world-hub .hub-world-card .grade-icon { font-size:1.65rem; margin-top:7px; }
+    #world-hub .hub-world-card .grade-name { font-size:.89rem; }
+    #world-hub .hub-world-card .grade-coverage { font-size:.59rem; }
+    #world-hub .hub-world-card .grade-academic-status { font-size:.56rem; }
+    #world-hub .hub-navigation { grid-template-columns:1fr; }
+    #world-hub .hub-footer span { display:none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #world-hub .hub-scene-cloud { animation:none; }
+    #world-hub .hub-world-card, #world-hub .hub-btn, #world-hub .hub-primary-action, #world-hub .hub-secondary-action { transition:none; }
+}

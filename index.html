@@ -6,15 +6,16 @@
     <title>🎮 Math Quest - Learn Math Through Adventure!</title>
     <meta name="theme-color" content="#1a1a2e">
     <meta name="application-name" content="Math Quest">
-    <meta name="math-quest-version" content="3.4.0">
+    <meta name="math-quest-version" content="3.5.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="css/style.css?v=3.4.0">
-    <link rel="stylesheet" href="css/icons.css?v=3.4.0">
-    <link rel="stylesheet" href="css/home.css?v=3.4.0">
+    <link rel="stylesheet" href="css/style.css?v=3.5.0">
+    <link rel="stylesheet" href="css/icons.css?v=3.5.0">
+    <link rel="stylesheet" href="css/home.css?v=3.5.0">
+    <link rel="stylesheet" href="css/hub.css?v=3.5.0">
 </head>
 <body>
     <div id="save-warning" class="save-warning" role="alert" hidden></div>
@@ -38,7 +39,7 @@
                     </div>
                     <div class="home-topbar-right">
                         <span class="home-worlds-label"><span aria-hidden="true">✧</span> 13 WORLDS · ONE JOURNEY</span>
-                        <span class="home-topbar-version">v3.4.0</span>
+                        <span class="home-topbar-version">v3.5.0</span>
                     </div>
                 </header>
 
@@ -101,7 +102,7 @@
                         <article class="home-realm home-realm-crown"><div class="home-realm-icon" aria-hidden="true">✦</div><div><small>10 — 12</small><strong>Master</strong><span>Prepare for what's next</span></div></article>
                     </div>
                 </section>
-                <footer class="version-info"><span>Made for curious minds and brave adventurers.</span><span>Version 3.4.0 · Works offline</span></footer>
+                <footer class="version-info"><span>Made for curious minds and brave adventurers.</span><span>Version 3.5.0 · Works offline</span></footer>
             </div>
         </div>
 
@@ -138,54 +139,83 @@
             </div>
         </div>
 
-        <!-- World Hub Screen -->
+        <!-- Player Home Base: the actual home screen after selecting a profile -->
         <div id="world-hub" class="screen">
-            <div class="hub-header">
-                <button class="btn-back"><i class="fas fa-home"></i> Menu</button>
-                <div class="player-info">
-                    <div class="hub-avatar-wrapper">
-                        <div id="hub-avatar-stage" class="character-stage hub-avatar-stage" aria-label="Rotatable 3D player avatar"></div>
-                        <span id="player-avatar" class="avatar" aria-hidden="true">👤</span>
-                        <button type="button" class="character-gesture" data-character-stage="hub-avatar-stage" data-character-action="wave" aria-label="Make your avatar wave">Wave</button>
-                    </div>
-                    <span id="player-name">Player</span>
-                    <div class="stats">
-                        <span class="stat"><i class="fas fa-star"></i> <span id="player-points">0</span></span>
-                        <span class="stat"><i class="fas fa-gem"></i> <span id="player-crystals">0</span></span>
-                        <span class="stat">Lvl <span id="player-level">1</span></span>
-                    </div>
-                </div>
+            <div class="hub-ambient" aria-hidden="true">
+                <span class="hub-ambient-orbit hub-ambient-orbit-a"></span>
+                <span class="hub-ambient-orbit hub-ambient-orbit-b"></span>
             </div>
-            
-            <div class="hub-content">
-                <h2>Grades K–12 — the academic pathway</h2>
-                <p id="academic-pathway-summary" class="academic-pathway-summary" aria-live="polite"></p>
-                <p class="topics-hint">XP opens areas to explore; academic completion requires two independent cumulative checkpoints at least seven days apart in each grade. Mastering Grade 12 alone does not substitute for earlier grades.</p>
-                <div id="grade-grid" class="grades-grid">
-                    <!-- Grades will be loaded here -->
+            <div class="hub-shell">
+                <header class="hub-header">
+                    <button class="btn-back hub-back" type="button"><span aria-hidden="true">←</span> Title screen</button>
+                    <div class="hub-brand"><span class="hub-brand-gem" aria-hidden="true">✦</span><span>MATH<span class="hub-brand-highlight">QUEST</span><small>ADVENTURE HOME BASE</small></span></div>
+                    <div class="player-info" aria-label="Player summary">
+                        <div class="hub-player-identity"><span id="player-avatar" class="avatar" aria-hidden="true">👤</span><span id="player-name">Player</span><small>LV <span id="player-level">1</span></small></div>
+                        <div class="stats">
+                            <span class="stat" title="Points"><i class="fas fa-star" aria-hidden="true"></i><span id="player-points">0</span></span>
+                            <span class="stat" title="Crystals"><i class="fas fa-gem" aria-hidden="true"></i><span id="player-crystals">0</span></span>
+                        </div>
+                    </div>
+                </header>
+
+                <section class="hub-hero" aria-label="Your interactive home base">
+                    <div class="hub-hero-glow" aria-hidden="true"></div>
+                    <div class="hub-hero-copy">
+                        <span class="hub-eyebrow"><span class="hub-eyebrow-dot" aria-hidden="true"></span> YOUR ADVENTURE IS WAITING</span>
+                        <h1>Ready for your<br><em>next discovery?</em></h1>
+                        <p class="hub-hero-description">Explore new subjects, grow stronger every day, and bring your living companion along for the journey.</p>
+                        <div class="hub-next-quest" aria-live="polite">
+                            <div><span class="hub-next-label">YOUR NEXT DESTINATION</span><strong id="hub-next-grade">Kindergarten</strong><span id="hub-next-note">Start with what you know.</span></div>
+                            <span class="hub-next-arrow" aria-hidden="true">↗</span>
+                        </div>
+                        <div class="hub-hero-actions">
+                            <button id="hub-continue" type="button" class="hub-primary-action"><span>Continue Learning</span><span aria-hidden="true">➜</span></button>
+                            <button id="hub-companion-action" type="button" class="hub-secondary-action">Visit Pet Room</button>
+                        </div>
+                    </div>
+                    <div class="hub-diorama" aria-label="Animated avatar and companion in a fantasy landscape">
+                        <div class="hub-scene-sky" aria-hidden="true">
+                            <span class="hub-scene-sun"></span><span class="hub-scene-cloud hub-scene-cloud-one"></span><span class="hub-scene-cloud hub-scene-cloud-two"></span>
+                            <span class="hub-scene-mountain hub-scene-mountain-back"></span><span class="hub-scene-mountain hub-scene-mountain-front"></span>
+                            <span class="hub-scene-forest hub-scene-forest-left"></span><span class="hub-scene-forest hub-scene-forest-right"></span>
+                            <span class="hub-scene-ground"></span>
+                        </div>
+                        <div class="hub-stage-platform hub-stage-platform-hero" aria-hidden="true"></div>
+                        <div class="hub-stage-platform hub-stage-platform-pet" aria-hidden="true"></div>
+                        <div id="hub-avatar-stage" class="character-stage hub-avatar-stage" aria-label="Rotatable animated 3D player avatar"></div>
+                        <div id="hub-pet-stage" class="character-stage hub-pet-stage" aria-label="Rotatable 3D companion"></div>
+                        <div class="hub-character-plaque"><span aria-hidden="true">✧</span> <span id="hub-character-name">Your hero</span> <span class="hub-character-divider">&</span> <span id="hub-pet-name">Pet preview</span></div>
+                        <button type="button" class="hub-gesture" data-character-stage="hub-avatar-stage" data-character-action="wave" aria-label="Make your hero wave">Wave <span aria-hidden="true">↗</span></button>
+                        <p class="hub-diorama-tip">Drag a character to turn it</p>
+                    </div>
+                </section>
+
+                <section class="hub-pathway-strip" aria-label="Academic pathway overview">
+                    <div class="hub-pathway-copy"><span class="hub-section-kicker">THE BIG JOURNEY</span><h2>Thirteen grades. One incredible adventure.</h2><p id="academic-pathway-summary" class="academic-pathway-summary" aria-live="polite"></p></div>
+                    <div class="hub-pathway-stats"><span id="hub-pathway-count">0 / 13</span><span class="hub-pathway-caption">practice milestones recorded</span><progress id="hub-pathway-progress" value="0" max="13" aria-label="Recorded grade practice milestones"></progress></div>
+                </section>
+
+                <div class="hub-dashboard">
+                    <section class="hub-map-section" aria-label="Choose a grade world">
+                        <header class="hub-map-heading"><div><span class="hub-section-kicker">EXPLORE THE MAP</span><h2>Choose your next world</h2></div><span id="hub-available-grades" class="hub-worlds-available">Your unlocked worlds</span></header>
+                        <div class="hub-region-key" aria-hidden="true"><span>✿ Foundations</span><span>◈ Discovery</span><span>✦ Exploration</span><span>✧ Mastery</span></div>
+                        <div id="grade-grid" class="grades-grid hub-worlds-grid"><!-- Filled by grade progression --></div>
+                        <p class="hub-map-note">Explore unlocked grades through play. Academic completion requires cumulative checkpoints and applied work; XP alone never certifies mastery.</p>
+                    </section>
+
+                    <aside class="hub-destinations" aria-label="Your other destinations">
+                        <div class="hub-destination-heading"><span class="hub-section-kicker">AROUND YOUR WORLD</span><h2>Adventure stops</h2><p>Your companions, rewards and progress all live here.</p></div>
+                        <div class="hub-navigation">
+                            <button id="pet-room-btn" class="hub-btn hub-action-pets" type="button"><span class="hub-action-symbol" aria-hidden="true">🐾</span><span class="hub-action-copy"><strong>Pet Room</strong><small>Keep your companion healthy</small><span id="pet-care-alert" class="pet-care-alert" hidden></span></span><span class="hub-action-chevron" aria-hidden="true">›</span></button>
+                            <button id="shop-btn" class="hub-btn hub-action-shop" type="button"><span class="hub-action-symbol" aria-hidden="true">✦</span><span class="hub-action-copy"><strong>Shop</strong><small>Meet new pets and unlock looks</small></span><span class="hub-action-chevron" aria-hidden="true">›</span></button>
+                            <button id="achievements-btn" class="hub-btn hub-action-achieve" type="button"><span class="hub-action-symbol" aria-hidden="true">🏆</span><span class="hub-action-copy"><strong>Achievements</strong><small>Your accomplishments</small></span><span class="hub-action-chevron" aria-hidden="true">›</span></button>
+                            <button id="stats-btn" class="hub-btn hub-action-stats" type="button"><span class="hub-action-symbol" aria-hidden="true">◇</span><span class="hub-action-copy"><strong>Statistics</strong><small>Review your learning history</small></span><span class="hub-action-chevron" aria-hidden="true">›</span></button>
+                            <button id="college-lab-btn" class="hub-btn hub-action-lab" type="button"><span class="hub-action-symbol" aria-hidden="true">♜</span><span class="hub-action-copy"><strong>Optional Application Workshop</strong><small>Advanced independent projects</small></span><span class="hub-action-chevron" aria-hidden="true">›</span></button>
+                            <button id="switch-profile-btn" class="hub-btn hub-action-switch" type="button"><span class="hub-action-symbol" aria-hidden="true">↔</span><span class="hub-action-copy"><strong>Switch Profile</strong><small>Change your adventurer</small></span><span class="hub-action-chevron" aria-hidden="true">›</span></button>
+                        </div>
+                    </aside>
                 </div>
-                
-                <div class="hub-navigation">
-                    <button id="pet-room-btn" class="hub-btn">
-                        <i class="fas fa-paw"></i> Pet Room
-                        <span id="pet-care-alert" class="pet-care-alert" hidden></span>
-                    </button>
-                    <button id="shop-btn" class="hub-btn">
-                        <i class="fas fa-store"></i> Shop
-                    </button>
-                    <button id="achievements-btn" class="hub-btn">
-                        <i class="fas fa-trophy"></i> Achievements
-                    </button>
-                    <button id="college-lab-btn" class="hub-btn">
-                        <i class="fas fa-graduation-cap"></i> Optional Application Workshop
-                    </button>
-                    <button id="stats-btn" class="hub-btn">
-                        <i class="fas fa-chart-bar"></i> Stats
-                    </button>
-                    <button id="switch-profile-btn" class="hub-btn">
-                        <i class="fas fa-exchange-alt"></i> Switch Profile
-                    </button>
-                </div>
+                <footer class="hub-footer">MATH QUEST · WORLD HUB 3.5.0 <span>YOUR LEARNING ADVENTURE CONTINUES</span></footer>
             </div>
         </div>
 
@@ -830,26 +860,26 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils.js?v=3.4.0"></script>
-    <script src="js/question-templates.js?v=3.4.0"></script>
-    <script src="js/question-templates-advanced.js?v=3.4.0"></script>
-    <script src="js/question-templates-extended-fixed.js?v=3.4.0"></script>
-    <script src="js/college-curriculum.js?v=3.4.0"></script>
-    <script src="js/college-procedural.js?v=3.4.0"></script>
-    <script src="js/question-catalogue.js?v=3.4.0"></script>
-    <script src="js/math-engine.js?v=3.4.0"></script>
-    <script src="js/readiness-lab.js?v=3.4.0"></script>
-    <script src="js/save-manager.js?v=3.4.0"></script>
-    <script src="js/audio.js?v=3.4.0"></script>
-    <script src="js/profile-system.js?v=3.4.0"></script>
-    <script src="js/progression-system.js?v=3.4.0"></script>
-    <script src="js/reward-system.js?v=3.4.0"></script>
-    <script src="js/shop-system.js?v=3.4.0"></script>
-    <script src="js/pet-manager.js?v=3.4.0"></script>
-    <script src="js/character3d.js?v=3.4.0"></script>
-    <script src="js/game-manager.js?v=3.4.0"></script>
-    <script src="js/ui-manager.js?v=3.4.0"></script>
-    <script src="js/main.js?v=3.4.0"></script>
-    <script src="js/pwa.js?v=3.4.0"></script>
+    <script src="js/utils.js?v=3.5.0"></script>
+    <script src="js/question-templates.js?v=3.5.0"></script>
+    <script src="js/question-templates-advanced.js?v=3.5.0"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.5.0"></script>
+    <script src="js/college-curriculum.js?v=3.5.0"></script>
+    <script src="js/college-procedural.js?v=3.5.0"></script>
+    <script src="js/question-catalogue.js?v=3.5.0"></script>
+    <script src="js/math-engine.js?v=3.5.0"></script>
+    <script src="js/readiness-lab.js?v=3.5.0"></script>
+    <script src="js/save-manager.js?v=3.5.0"></script>
+    <script src="js/audio.js?v=3.5.0"></script>
+    <script src="js/profile-system.js?v=3.5.0"></script>
+    <script src="js/progression-system.js?v=3.5.0"></script>
+    <script src="js/reward-system.js?v=3.5.0"></script>
+    <script src="js/shop-system.js?v=3.5.0"></script>
+    <script src="js/pet-manager.js?v=3.5.0"></script>
+    <script src="js/character3d.js?v=3.5.0"></script>
+    <script src="js/game-manager.js?v=3.5.0"></script>
+    <script src="js/ui-manager.js?v=3.5.0"></script>
+    <script src="js/main.js?v=3.5.0"></script>
+    <script src="js/pwa.js?v=3.5.0"></script>
 </body>
 </html>

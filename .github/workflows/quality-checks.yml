@@ -31,11 +31,14 @@ jobs:
           test -s www/index.html
           test -s www/js/college-curriculum.js
           test -s www/js/readiness-lab.js
+          test -s www/css/hub.css
           test -s www/js/character3d.js
           test -s www/js/college-procedural.js
           cmp js/college-curriculum.js www/js/college-curriculum.js
           cmp js/readiness-lab.js www/js/readiness-lab.js
           cmp js/character3d.js www/js/character3d.js
+          cmp css/hub.css www/css/hub.css
+          grep -q 'id="hub-continue"' www/index.html
           cmp js/college-procedural.js www/js/college-procedural.js
           cmp js/pet-manager.js www/js/pet-manager.js
           cmp js/save-manager.js www/js/save-manager.js

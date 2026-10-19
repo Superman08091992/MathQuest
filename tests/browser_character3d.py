@@ -66,7 +66,8 @@ def run():
         assert page.locator('#world-hub').is_visible()
         hub=signature(page,'hub-avatar-stage')
         assert hub['id']=='default' and hub['kind']=='avatar' and hub['filled']>400
-        assert page.evaluate('Character3D.activeCount') == 1
+        assert page.evaluate('Character3D.activeCount') == 2
+        assert signature(page,'hub-pet-stage')['filled']>1200
         # Check both on-screen controls and mouse/key rotation move true 3D vertices.
         start_angle=page.evaluate("Character3D.getStage(document.getElementById('hub-avatar-stage')).yaw")
         page.locator('[data-character-stage="hub-avatar-stage"]').click()
@@ -79,7 +80,7 @@ def run():
         assert profile_avatar['filled']>300
         page.locator('#profiles-screen .btn-back').click()
         page.locator('#start-game').click()
-        assert page.evaluate('Character3D.activeCount') == 1
+        assert page.evaluate('Character3D.activeCount') == 2
         page.evaluate('ProfileSystem.getCurrentProfile().stats.points=2000;SaveManager.save();')
         page.locator('#shop-btn').click()
         assert page.evaluate('Character3D.activeCount') == 1
@@ -138,7 +139,7 @@ def run():
         assert page.evaluate("Character3D.getStage(document.getElementById('pet-model-stage')).action")=='feed'
         assert signature(page,'pet-model-stage')['filled']>2000
         page.locator('#pet-room .btn-back').click()
-        assert page.evaluate('Character3D.activeCount')==1
+        assert page.evaluate('Character3D.activeCount')==2
         page.locator('.grade-card:not(.locked)').first.click()
         page.locator('.mode-card[data-mode="relaxed"] button').click()
         assert page.locator('#study-companion').is_visible()
@@ -149,7 +150,7 @@ def run():
         assert page.evaluate("Character3D.getStage(document.getElementById('study-pet-stage')).action")=='play'
         page.locator('#pause-game').click()
         page.locator('#quit-game').click()
-        assert page.evaluate('Character3D.activeCount')==1
+        assert page.evaluate('Character3D.activeCount')==2
         page.locator('#world-hub .btn-back').click()
         assert page.evaluate('Character3D.activeCount')==2
         assert page.locator('#welcome-pet-caption').inner_text().endswith('your pet')

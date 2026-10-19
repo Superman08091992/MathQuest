@@ -32,7 +32,7 @@ def run():
                     html = path.read_text()
                     html = re.sub(r'<script src="js/[^"]+"\s*></script>', '', html)
                     html = re.sub(r'<link rel="stylesheet" href="css/[^"]+">', '', html)
-                    css = (home/'css/style.css').read_text() + (home/'css/icons.css').read_text()
+                    css = ''.join((home/'css'/name).read_text() for name in ('style.css','icons.css','home.css','hub.css'))
                     html = html.replace('</head>', '<style>' + css + '</style></head>')
                     scripts = ['utils', 'question-templates', 'question-templates-advanced',
                                'question-templates-extended-fixed', 'college-curriculum', 'college-procedural', 'question-catalogue',
@@ -52,7 +52,7 @@ def run():
                     page.set_content(html, wait_until='load')
                     page.add_style_tag(content='*{animation:none!important;transition:none!important}')
                     page.wait_for_function("typeof UIManager !== 'undefined' && typeof QuestionCatalogue !== 'undefined'")
-                    assert page.locator('.version-info').inner_text().startswith('Version ' + json.loads((ROOT / 'package.json').read_text())['version'])
+                    assert 'Version ' + json.loads((ROOT / 'package.json').read_text())['version'] in page.locator('.version-info').inner_text()
                     assert page.locator('#app-error').is_hidden()
                     assert page.evaluate('QuestionCatalogue.getQuestionsForGrade(4).length') >= 70
                     page.locator('#start-game').click()

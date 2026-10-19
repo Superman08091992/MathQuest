@@ -15,7 +15,7 @@ def make_page_source():
     html = (ROOT / 'index.html').read_text()
     html = re.sub(r'<script src="js/[^"]+"\s*></script>', '', html)
     html = re.sub(r'<link rel="stylesheet" href="css/[^"]+">', '', html)
-    css = (ROOT / 'css/style.css').read_text() + (ROOT / 'css/icons.css').read_text() + (ROOT / 'css/home.css').read_text()
+    css = (ROOT / 'css/style.css').read_text() + (ROOT / 'css/icons.css').read_text() + (ROOT / 'css/home.css').read_text() + (ROOT / 'css/hub.css').read_text()
     html = html.replace('</head>', '<style>' + css + '</style></head>')
     scripts = ['utils', 'question-templates', 'question-templates-advanced',
                'question-templates-extended-fixed', 'college-curriculum', 'college-procedural', 'question-catalogue', 'math-engine', 'readiness-lab', 'save-manager',

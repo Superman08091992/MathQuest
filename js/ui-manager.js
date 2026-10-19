@@ -14,6 +14,12 @@ const UIManager = {
         // The initial screen is visible before any navigation event occurs.
         this.currentScreen = 'main-menu';
         this.renderMainMenu();
+        // The Linux launcher can open the actual player's home directly.
+        // Never skip the title screen unless a saved profile already exists.
+        if (new URLSearchParams(window.location.search).get('screen') === 'world-hub' &&
+            ProfileSystem.getCurrentProfile()) {
+            this.showScreen('world-hub');
+        }
         const updateCare = () => {
             if (!SaveManager.data) return;
             PetManager.refreshAndSave();
@@ -43,6 +49,11 @@ const UIManager = {
             }
         });
         
+        document.getElementById('hub-companion-action')?.addEventListener('click', () => {
+            AudioSystem.playClick();
+            this.showScreen(PetManager.getCurrentPet() ? 'pet-room' : 'shop');
+        });
+
         document.getElementById('profiles')?.addEventListener('click', () => {
             AudioSystem.playClick();
             this.showScreen('profiles-screen');
@@ -555,28 +566,80 @@ const UIManager = {
         });
     },
     
+    openGrade(grade) {
+        if (!Number.isInteger(grade) || grade < 0 || grade > 12 || !ProfileSystem.isGradeUnlocked(grade)) return false;
+        AudioSystem.playClick();
+        MathEngine.setGrade(grade);
+        // Every grade opens with all available subjects; no stale arithmetic filter.
+        MathEngine.setCategory('all');
+        document.getElementById('grade-title').textContent = `${Utils.getGradeName(grade)} - ${Utils.getRealmName(grade)}`;
+        this.showScreen('mode-selection');
+        return true;
+    },
+
     renderWorldHub() {
         const profile = ProfileSystem.getCurrentProfile();
         if (!profile) return;
-        
+
         document.getElementById('player-name').textContent = profile.name;
         document.getElementById('player-avatar').textContent = profile.avatar;
+        document.getElementById('player-points').textContent = Utils.formatCompact(profile.stats.points);
+        document.getElementById('player-crystals').textContent = profile.stats.crystals;
+        document.getElementById('player-level').textContent = profile.stats.level;
+        const heroName = document.getElementById('hub-character-name');
+        if (heroName) heroName.textContent = profile.name;
+
+        // Keep the real profile's avatar/pet rather than creating fictional ownership.
         if (typeof Character3D !== 'undefined') {
             Character3D.render(document.getElementById('hub-avatar-stage'), {
                 kind: 'avatar', id: profile.skin || 'default', name: profile.name, emoji: profile.avatar
             });
+            const pet = PetManager.getCurrentPet();
+            const candidate = pet && Character3D.getDefinition('pet', pet.id) ? pet.id : 'cat';
+            Character3D.render(document.getElementById('hub-pet-stage'), {
+                kind: 'pet', id: candidate, name: pet?.name || 'Cat preview',
+                emoji: pet?.emoji || '🐱', happiness: pet?.happiness ?? 80, hunger: pet?.hunger ?? 50
+            });
+            const petName = document.getElementById('hub-pet-name');
+            if (petName) petName.textContent = pet ? pet.name : 'Pet preview';
+            const petAction = document.getElementById('hub-companion-action');
+            if (petAction) petAction.textContent = pet ? 'Care for Your Pet' : 'Adopt a Pet';
         }
-        document.getElementById('player-points').textContent = Utils.formatCompact(profile.stats.points);
-        document.getElementById('player-crystals').textContent = profile.stats.crystals;
-        document.getElementById('player-level').textContent = profile.stats.level;
         this.renderPetCareAlert();
-        const pathway=ReadinessLab.pathwayReport(profile);
-        const pathwayText=document.getElementById('academic-pathway-summary');
-        if(pathwayText){pathwayText.textContent=pathway.label+(pathway.complete?'. Academic work still requires independent grading and verification.':'.');}
-        
+
+        const pathway = ReadinessLab.pathwayReport(profile);
+        const summary = document.getElementById('academic-pathway-summary');
+        if (summary) summary.textContent = pathway.label + (pathway.complete ?
+            '. Completed practice still requires independent assessment.' : '.');
+
+        const recorded = pathway.grades.filter(g => g.complete && g.project?.submitted).length;
+        const count = document.getElementById('hub-pathway-count');
+        if (count) count.textContent = `${recorded} / 13`;
+        const progress = document.getElementById('hub-pathway-progress');
+        if (progress) progress.value = recorded;
+
         const grid = document.getElementById('grade-grid');
-        grid.innerHTML = '';
-        
+        grid.replaceChildren();
+        const focusGrade = Number.isInteger(pathway.next) ? pathway.next : 12;
+        const unlockedGrades = Array.from({ length: 13 }, (_, g) => g).filter(g => ProfileSystem.isGradeUnlocked(g));
+        const available = document.getElementById('hub-available-grades');
+        if (available) available.textContent = `${unlockedGrades.length} of 13 worlds available`;
+        // A future academic focus can be locked by XP. Continue takes players to
+        // the most advanced accessible grade at or below that focus.
+        const nextPlayable = unlockedGrades.filter(g => g <= focusGrade).at(-1) ?? unlockedGrades[0] ?? 0;
+        const nextName = document.getElementById('hub-next-grade');
+        if (nextName) nextName.textContent = Utils.getGradeName(nextPlayable);
+        const nextNote = document.getElementById('hub-next-note');
+        if (nextNote) nextNote.textContent = nextPlayable < focusGrade ?
+            `Keep exploring to unlock ${Utils.getGradeName(focusGrade)}.` :
+            pathway.grades[nextPlayable]?.complete ? 'Keep practicing and expanding your skills.' : 'New things are waiting to be discovered.';
+        const continueBtn = document.getElementById('hub-continue');
+        if (continueBtn) {
+            continueBtn.disabled = !ProfileSystem.isGradeUnlocked(nextPlayable);
+            continueBtn.onclick = () => this.openGrade(nextPlayable);
+        }
+
+        const regions = ['forest', 'forest', 'forest', 'forest', 'valley', 'valley', 'valley', 'cosmos', 'cosmos', 'cosmos', 'summit', 'summit', 'summit'];
         for (let grade = 0; grade <= 12; grade++) {
             const name = Utils.getGradeName(grade);
             const realm = Utils.getRealmName(grade);
@@ -584,44 +647,34 @@ const UIManager = {
             const unlocked = ProfileSystem.isGradeUnlocked(grade);
             const bank = MathEngine.getAvailableTemplates(grade, 'all');
             const subjectCount = new Set(bank.map(t => t.category)).size;
-            const status=pathway.grades[grade];
-            const statusLabel=status.complete&&status.project.submitted?'Academic practice complete':
-                status.complete?'Checkpoint passed; project needed':status.passes?'Retest due after 7 days':
-                status.grade===pathway.next?'Next academic focus':'Not mastered';
-            const coverageSummary = `<div class="grade-coverage">${subjectCount} subjects · ${bank.length} question types</div>`;
-            const statusNode=document.createElement('div');statusNode.className='grade-academic-status';statusNode.textContent=statusLabel;
-            
-            const card = document.createElement('div');
-            card.className = 'grade-card' + (unlocked ? '' : ' locked');
-            card.innerHTML = unlocked ? `
-                <div class="grade-icon">${icon}</div>
+            const status = pathway.grades[grade];
+            const completed = Boolean(status.complete && status.project?.submitted);
+            const statusLabel = completed ? 'Practice milestone recorded' :
+                status.complete ? 'Project work needed' : status.passes ? 'Return for the next checkpoint' :
+                grade === pathway.next ? 'Current learning goal' : 'Continue exploring';
+
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'grade-card hub-world-card' + (unlocked ? '' : ' locked') +
+                (completed ? ' hub-world-complete' : '') + (grade === nextPlayable && unlocked ? ' hub-world-featured' : '');
+            card.dataset.grade = String(grade);
+            card.dataset.region = regions[grade];
+            card.disabled = !unlocked;
+            card.setAttribute('aria-label', `${name}, ${subjectCount} subjects, ${unlocked ? statusLabel : 'locked'}`);
+            // The title/icon/realm are local, fixed curriculum labels, not user content.
+            card.innerHTML = `
+                <div class="hub-world-card-top"><span class="hub-world-number">WORLD ${String(grade + 1).padStart(2,'0')}</span><span class="hub-world-status-symbol" aria-hidden="true">${completed ? '✓' : unlocked ? '➜' : '🔒'}</span></div>
+                <div class="grade-icon" aria-hidden="true">${icon}</div>
                 <div class="grade-name">${name}</div>
-                <div class="grade-realm">${realm}</div>
-                ${coverageSummary}
-            ` : `
-                <div class="grade-icon">${icon}</div>
-                <div class="lock-icon"><i class="fas fa-lock"></i></div>
-                <div class="grade-name">${name}</div>
-                ${coverageSummary}
+                <div class="grade-realm">${unlocked ? realm : 'Unlock by exploring'}</div>
+                <div class="grade-coverage">${subjectCount} subjects · ${bank.length} question types</div>
+                <div class="grade-academic-status">${unlocked ? statusLabel : 'Locked'}</div>
             `;
-            
-            card.appendChild(statusNode);
-            if (unlocked) {
-                card.addEventListener('click', () => {
-                    AudioSystem.playClick();
-                    MathEngine.setGrade(grade);
-                    // A previously selected Arithmetic filter must not silently
-                    // hide other subjects when the learner enters a new grade.
-                    MathEngine.setCategory('all');
-                    document.getElementById('grade-title').textContent = `${name} - ${realm}`;
-                    this.showScreen('mode-selection');
-                });
-            }
-            
+            if (unlocked) card.addEventListener('click', () => this.openGrade(grade));
             grid.appendChild(card);
         }
     },
-    
+
     renderPetCareAlert() {
         const alert = document.getElementById('pet-care-alert');
         if (!alert) return;

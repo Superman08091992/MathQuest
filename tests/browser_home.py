@@ -41,7 +41,7 @@ def run():
             assert page.locator('#start-game').is_visible()
             assert page.locator('#welcome-3d-showcase').is_visible()
             assert page.locator('.home-realm').count() == 4
-            assert page.locator('.home-topbar-version').inner_text() == 'v3.4.0'
+            assert page.locator('.home-topbar-version').inner_text() == 'v' + __import__('json').loads((Path(__file__).resolve().parents[1] / 'package.json').read_text())['version']
             assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'),f'overflow at {width}'
             assert page.evaluate('''() => {
                 const stage=Character3D.getStage(document.getElementById('welcome-avatar-stage'));

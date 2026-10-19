@@ -1,7 +1,7 @@
 {
   "name": "Math Quest - Learn Through Adventure",
   "short_name": "Math Quest",
-  "description": "Math Quest 3.4.0: grade-specific multi-subject educational game",
+  "description": "Math Quest 3.5.0: grade-specific multi-subject educational game",
   "id": "./",
   "start_url": "./",
   "scope": "./",
