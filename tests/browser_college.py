@@ -66,6 +66,7 @@ def main():
                     assert pick.count()==1,f'{k}, {answer}: {buttons.all_inner_texts()}'
                     if k<35: pick.click()
                     else: buttons.filter(has_not_text=re.compile('^'+re.escape(str(answer))+'$')).first.click()
+                    page.locator('#answer-continue').click()
                 assert page.locator('.screen.active').get_attribute('id')=='results'
                 assert page.locator('#correct-count').inner_text()=='35'
                 assert page.locator('#incorrect-count').inner_text()=='5'

@@ -1996,3 +1996,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
     #main-menu .game-title h1 { font-size: 2.7rem; }
     #main-menu .menu-buttons .btn-primary, #main-menu .menu-buttons .btn-secondary { font-size: .91rem; }
 }
+
+/* 3.5.1 — explicit grading evidence before advancement. */
+.answer-feedback[hidden] { display: none; }
+.answer-feedback { margin: 1rem 0; padding: 1rem; border: 1px solid #94a3b8; border-radius: 14px; background: #243650; color: #f8fafc; display: grid; gap: .7rem; }
+.answer-feedback.correct { border-color: #34d399; background: #123c38; }
+.answer-feedback.timed-out { border-color: #fbbf24; background: #473921; }
+.answer-feedback strong { font-size: 1.15rem; line-height: 1.4; }
+.answer-feedback p { color: #e2e8f0; line-height: 1.5; }
+#answer-continue { min-height: 48px; width: 100%; }
+.answer-btn.answer-correct { border: 2px solid #34d399; background: #135c49; color: #fff; opacity: 1; }
+.answer-btn.answer-incorrect { border: 2px solid #f87171; background: #642b36; color: #fff; opacity: 1; }
+#answers-grid .answer-btn:disabled { cursor: default; }

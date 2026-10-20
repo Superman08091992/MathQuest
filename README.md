@@ -1,4 +1,4 @@
-# Math Quest 3.5.0 — K–12 and Interactive 3D Adventure Home
+# Math Quest 3.5.1 — K–12 and Interactive 3D Adventure Home
 
 Math Quest is a local-first educational game with 13 grade levels (Kindergarten to Grade 12), adaptive procedural questions, subject selection, games, profiles, pets, achievements, and an optional university application workshop. Grade-specific cumulative assessments and applied assignments are part of the **core K–12 curriculum**.
 
@@ -8,6 +8,10 @@ Math Quest is a local-first educational game with 13 grade levels (Kindergarten 
 ### Academic versus game progression
 
 Game XP provides access for exploration, **not academic mastery**. At each grade, learners can view target competencies, take a cumulative no-hint checkpoint revisiting earlier grades, and submit an open-ended applied assignment. Two qualifying checkpoints at least seven days apart and a submitted grade project are recorded as in-app evidence. The K–12 pathway is not complete until **all 13 grades** have both forms of evidence; reported results remain unproctored and assignments ungraded. See [ACADEMIC_PATHWAY_3.1.md](ACADEMIC_PATHWAY_3.1.md).
+
+## Answer integrity and review (3.5.1)
+
+Each answer button is bound to the question it displays. An input arriving after the question changes cannot be scored against a different question. After each answer, the original question remains visible with a verified answer, explanation, and explicit **Next question** control. Timed questions display **Time expired** rather than calling a mathematically correct late response wrong, and the next timer starts only when the learner continues. The completed-game review includes any timed-out attempts. See [ANSWER_INTEGRITY_3.5.1.md](ANSWER_INTEGRITY_3.5.1.md).
 
 ## Included in 3.1 and 3.2
 
@@ -23,7 +27,7 @@ Pet hunger rises 2/100 per hour, and happiness drops 1.25/100 per hour even when
 
 ## Verify you have the actual redesigned player home
 
-After updating the repository, run `bash launch-linux.sh --check` from its root. It must report **Math Quest 3.5.0**, the absolute source directory and **3D renderer: present**; when checked out from Git, it also shows the commit. Then run `bash launch-linux.sh`. The 3.4 title screen is still available, but version **3.5 redesigns the actual World Hub** after selecting a profile. That page now has both live 3D characters in a landscape, grade worlds, a next-lesson button, and visible Pet Room/Shop/Achievements destinations. Run **`bash launch-linux.sh --home`** after creating a profile to open directly to the player home; without `--home`, click **Continue Your Quest** from the title screen. The version check must additionally print **`Player home: World Hub 3.5 verified in source`**. Keep using the same Chromium profile and repository path to preserve saves. Do not mistake an older AppImage or desktop shortcut for the updated source. See [WORLD_HUB_3.5.md](WORLD_HUB_3.5.md).
+After updating the repository, run `bash launch-linux.sh --check` from its root. It must report **Math Quest 3.5.1**, the absolute source directory and **3D renderer: present**; when checked out from Git, it also shows the commit. Then run `bash launch-linux.sh`. The 3.4 title screen is still available, but version **3.5 redesigns the actual World Hub** after selecting a profile. That page now has both live 3D characters in a landscape, grade worlds, a next-lesson button, and visible Pet Room/Shop/Achievements destinations. Run **`bash launch-linux.sh --home`** after creating a profile to open directly to the player home; without `--home`, click **Continue Your Quest** from the title screen. The version check must additionally print **`Player home: World Hub 3.5 verified in source`**. Keep using the same Chromium profile and repository path to preserve saves. Do not mistake an older AppImage or desktop shortcut for the updated source. See [WORLD_HUB_3.5.md](WORLD_HUB_3.5.md).
 
 ## Run locally
 
@@ -48,6 +52,7 @@ CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_college.py
 CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_regression.py
 CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_grade_subjects.py
 CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_worldhub.py
+CHROMIUM_BINARY=/usr/bin/chromium python3 tests/browser_answer_integrity.py
 ```
 
 Browser regressions require Python Playwright and Chromium; binary paths vary by system. Diagnostic flows in browser tests use inline scripts to avoid this test environment's localhost restriction; hosted service worker install/reload and native Android/Desktop packaging have **not** been certified by those tests.

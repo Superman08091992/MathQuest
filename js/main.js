@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         RewardSystem.init();
         AudioSystem.init();
         UIManager.init();
-        console.log('Math Quest 3.5.0 initialized with academic readiness curriculum.');
+        console.log('Math Quest 3.5.1 initialized with academic readiness curriculum.');
     } catch (error) {
         console.error('Math Quest could not start:', error);
         const warning = document.getElementById('app-error');

@@ -50,6 +50,7 @@ def main():
                     pick=page.locator('#answers-grid .answer-btn').filter(has_text=re.compile('^'+re.escape(str(answer))+'$'))
                     assert pick.count()==1, (i,answer,page.locator('#answers-grid .answer-btn').all_inner_texts())
                     pick.click()
+                    page.locator('#answer-continue').click()
                 assert page.locator('.screen.active').get_attribute('id')=='results'
                 assert page.locator('#correct-count').inner_text()==str(total)
                 assert page.locator('#xp-earned').inner_text()=='+0'

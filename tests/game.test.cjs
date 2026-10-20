@@ -88,7 +88,11 @@ test('timed-mode timeout advances to next question and resets countdown', () => 
   scenario.advance(1000);
   assert.equal(g.GameManager.currentGame.currentQuestionIndex,1);
   assert.equal(g.GameManager.timeRemaining,30);
-  g.GameManager.timeRemaining=1;
+  assert.equal(g.GameManager.currentGame.results.answers[0].timedOut,true);
+  assert.equal(scenario.timerTick,null);
+  // The real UI waits for Continue rather than timing the next question in the background.
+  g.GameManager.startTimer();
+  assert.equal(typeof scenario.timerTick,'function');
   g.GameManager.timerDeadline -= 29_000; // Simulate elapsed wall time on second question.
   scenario.advance(1000);
   assert.equal(g.GameManager.currentGame,null);

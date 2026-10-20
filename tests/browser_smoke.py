@@ -72,6 +72,7 @@ def run():
         for _ in range(10):
             answer = page.evaluate('GameManager.currentGame.questions[GameManager.currentGame.currentQuestionIndex].answer')
             page.locator('.answer-btn').filter(has_text=re.compile('^' + re.escape(str(answer)) + '$')).first.click()
+            page.locator('#answer-continue').click()
         assert page.locator('.screen.active').get_attribute('id') == 'results'
         assert page.locator('#correct-count').inner_text() == '10'
         assert page.evaluate('ProfileSystem.getCurrentProfile().stats.perfectGames') == 1

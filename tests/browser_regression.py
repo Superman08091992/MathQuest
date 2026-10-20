@@ -145,6 +145,7 @@ def run():
         for _ in range(10):
             ans = page.evaluate('GameManager.currentGame.questions[GameManager.currentGame.currentQuestionIndex].answer')
             page.locator('.answer-btn').filter(has_text=str(ans)).first.click()
+            page.locator('#answer-continue').click()
         assert current(page) == 'results'
         assert page.locator('#achievements-unlocked').is_visible()
         assert 'First Steps' in page.locator('#achievements-unlocked').inner_text()
@@ -176,6 +177,7 @@ def run():
         for _ in range(expected):
             ans = page.evaluate('GameManager.currentGame.questions[GameManager.currentGame.currentQuestionIndex].answer')
             page.locator('.answer-btn').filter(has_text=str(ans)).first.click()
+            page.locator('#answer-continue').click()
         assert current(page) == 'results'
         assert page.evaluate('ProfileSystem.getCurrentProfile().categoryStats.science.totalQuestions') == expected
         assert errors == [], errors

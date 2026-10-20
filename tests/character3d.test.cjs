@@ -65,7 +65,7 @@ test('The real character renderer is loaded after pet state and before the UI', 
   for (const name of ['pet-model-stage', 'shop-model-stage', 'hub-avatar-stage', 'profile-model-stage', 'study-pet-stage']) {
     assert.ok(html.includes(`id="${name}"`), `${name} missing from game`);
   }
-  assert.ok(sw.includes('js/character3d.js?v=3.5.0'));
+  assert.ok(sw.includes(`js/character3d.js?v=${require('../package.json').version}`));
 });
 
 
@@ -91,8 +91,8 @@ test('The 3.5 adventure home has its own offline stylesheet and working navigati
   assert.ok(html.includes('id="start-game"') && html.includes('id="profiles"') && html.includes('id="settings"'));
   assert.ok(html.includes('id="welcome-avatar-stage"') && html.includes('id="welcome-pet-stage"'));
   assert.ok(html.includes('YOUR MIND') && html.includes('IS THE <em>MAGIC.</em>'));
-  assert.ok(html.includes('css/home.css?v=3.5.0'));
-  assert.ok(worker.includes("'./css/home.css?v=3.5.0'"));
+  assert.ok(html.includes(`css/home.css?v=${require('../package.json').version}`));
+  assert.ok(worker.includes(`'./css/home.css?v=${require('../package.json').version}'`));
   assert.ok(css.includes('@media (max-width: 420px)'));
   assert.ok(css.includes('prefers-reduced-motion'));
   assert.ok(ui.includes("'Continue Your Quest'"));

@@ -34,5 +34,5 @@ test('player World Hub grade actions, pet ownership and launcher are source-back
   const res=spawnSync('bash',[path.join(root,'launch-linux.sh'),'--check'],{encoding:'utf8'});
   assert.equal(res.status,0,res.stderr);
   assert.match(res.stdout,/Player home: World Hub 3\.5 verified in source/);
-  assert.match(res.stdout,/Math Quest 3\.5\.0/);
+  assert.ok(res.stdout.includes(`Math Quest ${require('../package.json').version}`));
 });

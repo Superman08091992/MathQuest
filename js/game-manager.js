@@ -69,19 +69,34 @@ const GameManager = {
         return this.currentGame.questions[this.currentGame.currentQuestionIndex];
     },
 
-    submitAnswer(answer) {
+    submitAnswer(answer, questionId = null) {
         if (!this.currentGame || this.currentGame.completed || this.isPaused) {
             return { accepted: false, error: 'Game is paused or finished' };
         }
         const question = this.currentGame.questions[this.currentGame.currentQuestionIndex];
         if (!question) return { accepted: false, error: 'No current question' };
+        // Each displayed answer button is bound to exactly one question. A touch
+        // click arriving after a timed advance must NEVER grade the next question.
+        if (questionId !== null && questionId !== question.id) {
+            return { accepted: false, error: 'This answer belongs to a previous question' };
+        }
         const isTimed = this.currentGame.mode === 'timed';
-        // Use elapsed wall time instead of trusting throttled interval callbacks.
+        const attemptedAnswer = answer;
+        // Compare the deadline with real elapsed time, not interval callback count.
+        const timedOut = isTimed && (answer === null || answer === undefined ||
+            (this.timerDeadline > 0 && Date.now() >= this.timerDeadline));
         if (isTimed && this.timerDeadline) {
             this.timeRemaining = Math.max(0, Math.ceil((this.timerDeadline - Date.now()) / 1000));
-            if (this.timeRemaining === 0) answer = null;
         }
-        const isCorrect = MathEngine.validateAnswer(question, answer);
+        if (timedOut) answer = null;
+        // Stop the clock before rendering feedback. It starts again only when
+        // the player explicitly continues to the next question.
+        if (isTimed) {
+            if (this.timer) clearInterval(this.timer);
+            this.timer = null;
+            this.timerDeadline = 0;
+        }
+        const isCorrect = !timedOut && MathEngine.validateAnswer(question, answer);
         // Remember only actually presented questions; keep personal history bounded.
         const activeProfile = ProfileSystem.getCurrentProfile();
         if (activeProfile) {
@@ -97,7 +112,9 @@ const GameManager = {
             questionId: question.id,
             question: question.text,
             key: MathEngine.questionKey(question),
-            selected: answer === null || answer === undefined ? '(No answer)' : String(answer),
+            selected: timedOut ? '(Time expired)' : answer === null || answer === undefined ? '(No answer)' : String(answer),
+            attempted: timedOut && attemptedAnswer !== null && attemptedAnswer !== undefined ? String(attemptedAnswer) : null,
+            timedOut,
             expected: String(question.answer),
             explanation: question.explanation || question.hint || 'Review the underlying skill and solution method.',
             category: question.category,
@@ -122,12 +139,18 @@ const GameManager = {
         // Each timed question gets its own full countdown.
         if (this.currentGame.currentQuestionIndex < this.currentGame.questions.length) {
             this.timeRemaining = this.QUESTION_TIME;
-            if (isTimed && this.timer) this.timerDeadline = Date.now() + this.QUESTION_TIME * 1000;
         }
 
         return {
             accepted: true,
             correct: isCorrect,
+            timedOut,
+            questionId: question.id,
+            questionText: question.text,
+            expected: question.answer,
+            caseSensitive: Boolean(question.caseSensitive),
+            selected: answer,
+            explanation: question.explanation || question.hint || 'Review this skill and try a similar question.',
             points: isCorrect && !['diagnostic','checkpoint'].includes(this.currentGame.mode) ? points : 0,
             isLastQuestion: this.currentGame.currentQuestionIndex >= this.currentGame.questions.length
         };
@@ -228,14 +251,14 @@ const GameManager = {
     resume() {
         if (!this.currentGame || this.currentGame.completed) return;
         this.isPaused = false;
-        if (this.currentGame.mode === 'timed') {
+        if (this.currentGame.mode === 'timed' && !this.awaitingContinue) {
             this.startTimer();
         }
     },
 
     startTimer() {
         if (this.timer) clearInterval(this.timer);
-        if (!this.currentGame || this.currentGame.completed || this.currentGame.mode !== 'timed') return;
+        if (!this.currentGame || this.currentGame.completed || this.awaitingContinue || this.currentGame.mode !== 'timed') return;
         this.isPaused = false;
         this.timerDeadline = Date.now() + this.timeRemaining * 1000;
         UIManager.updateTimerUI();
@@ -245,7 +268,8 @@ const GameManager = {
             UIManager.updateTimerUI();
             if (this.timeRemaining === 0) {
                 // Routes through normal scoring, advancing and results exactly once.
-                UIManager.submitAnswer(null);
+                const q = this.currentGame.questions[this.currentGame.currentQuestionIndex];
+                if (q) UIManager.submitAnswer(null, q.id);
             }
         }, 200);
     },
@@ -256,6 +280,7 @@ const GameManager = {
         this.timerDeadline = 0;
         this.currentGame = null;
         this.isPaused = false;
+        this.awaitingContinue = false;
     },
 
     getProgress() {

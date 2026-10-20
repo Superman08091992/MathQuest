@@ -6,16 +6,16 @@
     <title>🎮 Math Quest - Learn Math Through Adventure!</title>
     <meta name="theme-color" content="#1a1a2e">
     <meta name="application-name" content="Math Quest">
-    <meta name="math-quest-version" content="3.5.0">
+    <meta name="math-quest-version" content="3.5.1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="css/style.css?v=3.5.0">
-    <link rel="stylesheet" href="css/icons.css?v=3.5.0">
-    <link rel="stylesheet" href="css/home.css?v=3.5.0">
-    <link rel="stylesheet" href="css/hub.css?v=3.5.0">
+    <link rel="stylesheet" href="css/style.css?v=3.5.1">
+    <link rel="stylesheet" href="css/icons.css?v=3.5.1">
+    <link rel="stylesheet" href="css/home.css?v=3.5.1">
+    <link rel="stylesheet" href="css/hub.css?v=3.5.1">
 </head>
 <body>
     <div id="save-warning" class="save-warning" role="alert" hidden></div>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="home-topbar-right">
                         <span class="home-worlds-label"><span aria-hidden="true">✧</span> 13 WORLDS · ONE JOURNEY</span>
-                        <span class="home-topbar-version">v3.5.0</span>
+                        <span class="home-topbar-version">v3.5.1</span>
                     </div>
                 </header>
 
@@ -102,7 +102,7 @@
                         <article class="home-realm home-realm-crown"><div class="home-realm-icon" aria-hidden="true">✦</div><div><small>10 — 12</small><strong>Master</strong><span>Prepare for what's next</span></div></article>
                     </div>
                 </section>
-                <footer class="version-info"><span>Made for curious minds and brave adventurers.</span><span>Version 3.5.0 · Works offline</span></footer>
+                <footer class="version-info"><span>Made for curious minds and brave adventurers.</span><span>Version 3.5.1 · Works offline</span></footer>
             </div>
         </div>
 
@@ -215,7 +215,7 @@
                         </div>
                     </aside>
                 </div>
-                <footer class="hub-footer">MATH QUEST · WORLD HUB 3.5.0 <span>YOUR LEARNING ADVENTURE CONTINUES</span></footer>
+                <footer class="hub-footer">MATH QUEST · WORLD HUB 3.5.1 <span>YOUR LEARNING ADVENTURE CONTINUES</span></footer>
             </div>
         </div>
 
@@ -340,7 +340,13 @@
                 <div id="answers-grid" class="answers-grid">
                     <!-- Answers will be loaded here -->
                 </div>
-                
+
+                <section id="answer-feedback" class="answer-feedback" role="status" aria-live="polite" hidden>
+                    <strong id="answer-feedback-title"></strong>
+                    <p id="answer-feedback-detail"></p>
+                    <button type="button" id="answer-continue" class="btn btn-primary">Next question</button>
+                </section>
+
                 <button id="hint-btn" class="btn-hint">
                     <i class="fas fa-lightbulb"></i> Hint (Cost: 10 ⭐)
                 </button>
@@ -860,26 +866,26 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/utils.js?v=3.5.0"></script>
-    <script src="js/question-templates.js?v=3.5.0"></script>
-    <script src="js/question-templates-advanced.js?v=3.5.0"></script>
-    <script src="js/question-templates-extended-fixed.js?v=3.5.0"></script>
-    <script src="js/college-curriculum.js?v=3.5.0"></script>
-    <script src="js/college-procedural.js?v=3.5.0"></script>
-    <script src="js/question-catalogue.js?v=3.5.0"></script>
-    <script src="js/math-engine.js?v=3.5.0"></script>
-    <script src="js/readiness-lab.js?v=3.5.0"></script>
-    <script src="js/save-manager.js?v=3.5.0"></script>
-    <script src="js/audio.js?v=3.5.0"></script>
-    <script src="js/profile-system.js?v=3.5.0"></script>
-    <script src="js/progression-system.js?v=3.5.0"></script>
-    <script src="js/reward-system.js?v=3.5.0"></script>
-    <script src="js/shop-system.js?v=3.5.0"></script>
-    <script src="js/pet-manager.js?v=3.5.0"></script>
-    <script src="js/character3d.js?v=3.5.0"></script>
-    <script src="js/game-manager.js?v=3.5.0"></script>
-    <script src="js/ui-manager.js?v=3.5.0"></script>
-    <script src="js/main.js?v=3.5.0"></script>
-    <script src="js/pwa.js?v=3.5.0"></script>
+    <script src="js/utils.js?v=3.5.1"></script>
+    <script src="js/question-templates.js?v=3.5.1"></script>
+    <script src="js/question-templates-advanced.js?v=3.5.1"></script>
+    <script src="js/question-templates-extended-fixed.js?v=3.5.1"></script>
+    <script src="js/college-curriculum.js?v=3.5.1"></script>
+    <script src="js/college-procedural.js?v=3.5.1"></script>
+    <script src="js/question-catalogue.js?v=3.5.1"></script>
+    <script src="js/math-engine.js?v=3.5.1"></script>
+    <script src="js/readiness-lab.js?v=3.5.1"></script>
+    <script src="js/save-manager.js?v=3.5.1"></script>
+    <script src="js/audio.js?v=3.5.1"></script>
+    <script src="js/profile-system.js?v=3.5.1"></script>
+    <script src="js/progression-system.js?v=3.5.1"></script>
+    <script src="js/reward-system.js?v=3.5.1"></script>
+    <script src="js/shop-system.js?v=3.5.1"></script>
+    <script src="js/pet-manager.js?v=3.5.1"></script>
+    <script src="js/character3d.js?v=3.5.1"></script>
+    <script src="js/game-manager.js?v=3.5.1"></script>
+    <script src="js/ui-manager.js?v=3.5.1"></script>
+    <script src="js/main.js?v=3.5.1"></script>
+    <script src="js/pwa.js?v=3.5.1"></script>
 </body>
 </html>

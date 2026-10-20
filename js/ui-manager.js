@@ -8,6 +8,8 @@ const UIManager = {
     lastGameMode: 'relaxed',
     achievementFilter: 'all',
     shopPreview: null,
+    answerPending: false,
+    answerLast: false,
     
     init() {
         this.bindEvents();
@@ -152,6 +154,9 @@ const UIManager = {
             alert(question.hint || 'Try breaking the problem into smaller steps.');
             this.updateGameUI();
         });
+
+        // Students can review the exact marked answer before moving on.
+        document.getElementById('answer-continue')?.addEventListener('click', () => this.continueAfterAnswer());
 
         // Pause menu
         document.getElementById('pause-game')?.addEventListener('click', () => {
@@ -1030,6 +1035,8 @@ const UIManager = {
     },
 
     startGame(mode) {
+        this.answerPending = false;
+        this.answerLast = false;
         const questionsPerGame = SaveManager.data?.settings?.questionsPerGame || 10;
         this.lastGameMode = mode || this.lastGameMode;
         if(this.lastGameMode==='checkpoint'){
@@ -1055,6 +1062,10 @@ const UIManager = {
     renderQuestion() {
         const game = GameManager.currentGame;
         const question = game.questions[game.currentQuestionIndex];
+        if (!question) return;
+        this.answerPending = false;
+        GameManager.awaitingContinue = false;
+        document.getElementById('answer-feedback').hidden = true;
         
         document.getElementById('current-grade').textContent = game.mode==='diagnostic' ? 'Grades 9–12' : game.mode==='checkpoint' ? `${Utils.getGradeName(game.grade)} checkpoint` : Utils.getGradeName(game.grade);
         document.getElementById('game-mode').textContent = '• ' + Utils.capitalize(game.mode);
@@ -1083,8 +1094,9 @@ const UIManager = {
             const btn = document.createElement('button');
             btn.className = 'answer-btn';
             btn.textContent = answer;
+            btn.dataset.questionId = question.id;
             btn.addEventListener('click', () => {
-                this.submitAnswer(answer);
+                this.submitAnswer(answer, question.id);
             });
             grid.appendChild(btn);
         });
@@ -1116,31 +1128,59 @@ const UIManager = {
         }
     },
     
-    submitAnswer(answer) {
-        const result = GameManager.submitAnswer(answer);
+    submitAnswer(answer, questionId = null) {
+        if (this.answerPending) return;
+        const result = GameManager.submitAnswer(answer, questionId);
         if (!result.accepted) return;
 
-        if (result.correct) {
-            AudioSystem.playCorrect();
-        } else {
-            AudioSystem.playIncorrect();
-        }
-        // A study companion reacts to actual answers, not to a fake static
-        // reward animation. This never changes welfare or awards extra XP.
+        this.answerPending = true;
+        this.answerLast = result.isLastQuestion;
+        GameManager.awaitingContinue = true;
+        if (result.correct) AudioSystem.playCorrect();
+        else if (!result.timedOut) AudioSystem.playIncorrect();
         if (typeof Character3D !== 'undefined' && PetManager.getCurrentPet()) {
             const stage = document.getElementById('study-pet-stage');
             Character3D.react(stage, result.correct ? 'play' : 'incorrect');
             document.getElementById('study-pet-caption').textContent = result.correct ?
-                'Nice work!' : 'Keep trying!';
+                'Nice work!' : result.timedOut ? 'Time expired!' : 'Keep trying!';
         }
+        const feedback = document.getElementById('answer-feedback');
+        feedback.hidden = false;
+        feedback.classList.toggle('correct', result.correct);
+        feedback.classList.toggle('timed-out', result.timedOut);
+        document.getElementById('answer-feedback-title').textContent = result.correct ?
+            `Correct! ${result.expected}` : result.timedOut ?
+            `Time expired — correct answer: ${result.expected}` :
+            `Not quite — correct answer: ${result.expected}`;
+        document.getElementById('answer-feedback-detail').textContent =
+            `${result.questionText} — ${result.explanation}`;
+        const continueButton = document.getElementById('answer-continue');
+        continueButton.textContent = result.isLastQuestion ? 'View results' : 'Next question';
+        for (const button of document.querySelectorAll('#answers-grid .answer-btn')) {
+            const value = button.textContent;
+            button.disabled = true;
+            button.classList.toggle('answer-correct', MathEngine.validateAnswer({answer: result.expected, caseSensitive: result.caseSensitive}, value));
+            button.classList.toggle('answer-incorrect', !result.correct && !result.timedOut && String(value) === String(result.selected));
+        }
+        document.getElementById('hint-btn').disabled = true;
+        document.querySelector('.timer-container').hidden = true;
+    },
 
-        if (result.isLastQuestion) {
+    continueAfterAnswer() {
+        if (!this.answerPending || !GameManager.currentGame || GameManager.isPaused) return;
+        const last = this.answerLast;
+        this.answerPending = false;
+        this.answerLast = false;
+        GameManager.awaitingContinue = false;
+        if (last) {
             this.showResults();
             GameManager.quit();
-        } else {
-            this.renderQuestion();
-            this.updateGameUI();
+            return;
         }
+        GameManager.loadNextQuestion();
+        this.renderQuestion();
+        if (GameManager.currentGame.mode === 'timed') GameManager.startTimer();
+        this.updateGameUI();
     },
     
     showResults() {
@@ -1181,9 +1221,9 @@ const UIManager = {
         const heading=document.createElement('h3');heading.textContent='Review your answers and explanations';review.appendChild(heading);
         for(const [i,a] of result.results.answers.entries()){
             const item=document.createElement('section');item.className='review-item';
-            const h=document.createElement('h4');h.textContent=`${i+1}. ${a.correct?'Correct':'Review needed'} — ${Utils.getCategoryName(a.category||'arithmetic')}`;
+            const h=document.createElement('h4');h.textContent=`${i+1}. ${a.correct?'Correct':a.timedOut?'Time expired':'Review needed'} — ${Utils.getCategoryName(a.category||'arithmetic')}`;
             const q=document.createElement('p');q.textContent=a.question;
-            const ans=document.createElement('p');ans.textContent=`Your response: ${a.selected||'(No answer)'} | Keyed response: ${a.expected||'Unavailable'}`;
+            const ans=document.createElement('p');ans.textContent=`Your response: ${a.selected||'(No answer)'} | Keyed response: ${a.expected||'Unavailable'}${a.attempted ? ' | Tap after timeout: ' + a.attempted : ''}`;
             const why=document.createElement('p');why.textContent=a.explanation||'Review the skill and work through the solution.';
             item.append(h,q,ans,why);review.appendChild(item);
         }
