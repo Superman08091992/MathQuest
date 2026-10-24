@@ -18,8 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
+      # These checks use Node built-ins. Native dependencies belong to their packaging jobs.
       - name: Verify game logic and academic readiness
         run: npm test
       - name: Verify registered K–12 curriculum inventory
